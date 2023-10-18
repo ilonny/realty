@@ -69,7 +69,7 @@ router.post("/admin/login", async (req, res) => {
   }
   const passwordHash = sha1(password);
   const existedUser = await user.findOne({
-    where: { password: passwordHash, username: login },
+    where: { password: passwordHash, login },
   });
   if (existedUser) {
     existedUser.access_token = jwt.sign(passwordHash, "mdcsecret");

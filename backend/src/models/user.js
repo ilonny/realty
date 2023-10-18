@@ -50,6 +50,10 @@ module.exports = function(sequelize, DataTypes) {
     photo: {
       type: DataTypes.TEXT,
       allowNull: true
+    },
+    access_token: {
+      type: DataTypes.TEXT,
+      allowNull: true
     }
   }, {
     sequelize,
