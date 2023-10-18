@@ -26,6 +26,7 @@ export const authProvider: AuthProvider = {
     if (user.id) {
       // eslint-disable-next-line no-unused-vars
       localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("token", user.access_token);
       return Promise.resolve();
     }
 

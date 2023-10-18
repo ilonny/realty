@@ -14,221 +14,213 @@ const moment = require("moment");
 // import fetch from "node-fetch";
 
 function omit(key, obj) {
-  const { [key]: omitted, ...rest } = obj;
-  return rest;
+    const { [key]: omitted, ...rest } = obj;
+    return rest;
 }
 
 router.post("/registration", async function (req, res) {
-  const phone = req?.body?.phone || "";
-  if (!phone) {
-    res.json({
-      success: false,
-      message: "Неверно указан номер",
-    });
-  }
-  const existedUser = await user.findOne({
-    where: {
-      phone,
-    },
-  });
-  if (existedUser) {
-    res.json({
-      success: false,
-      message: "Пользователь уже зарегистрирован",
-    });
-  } else {
-    const newUser = user
-      .create({
-        phone,
-        username: phone,
-      })
-      .then((data) => {
-        if (data) {
-          res.send({
-            success: true,
-            message: "На указанный номер выслан код",
-          });
-        } else {
-          res.json({
+    const phone = req?.body?.phone || "";
+    if (!phone) {
+        res.json({
             success: false,
-            message: "Ошибка при регистрации",
-          });
-        }
-      });
-  }
+            message: "Неверно указан номер",
+        });
+    }
+    const existedUser = await user.findOne({
+        where: {
+            phone,
+        },
+    });
+    if (existedUser) {
+        res.json({
+            success: false,
+            message: "Пользователь уже зарегистрирован",
+        });
+    } else {
+        const newUser = user
+            .create({
+                phone,
+                username: phone,
+            })
+            .then((data) => {
+                if (data) {
+                    res.send({
+                        success: true,
+                        message: "На указанный номер выслан код",
+                    });
+                } else {
+                    res.json({
+                        success: false,
+                        message: "Ошибка при регистрации",
+                    });
+                }
+            });
+    }
 });
 
 router.post("/admin/login", async (req, res) => {
-  const { login, password } = req.body;
-  if (!login || !password) {
-    res.json({
-      success: false,
-      message: "Введите логин и пароль",
+    const { login, password } = req.body;
+    if (!login || !password) {
+        res.json({
+            success: false,
+            message: "Введите логин и пароль",
+        });
+        return;
+    }
+    const passwordHash = sha1(password);
+    const existedUser = await user.findOne({
+        where: { password: passwordHash, login },
     });
-    return;
-  }
-  const passwordHash = sha1(password);
-  const existedUser = await user.findOne({
-    where: { password: passwordHash, login },
-  });
-  if (existedUser) {
-    existedUser.access_token = jwt.sign(passwordHash, "mdcsecret");
-    await existedUser.save();
-    res.send(existedUser);
-  } else {
-    res.json({
-      success: false,
-      message: "Неверный логин или пароль",
-    });
-  }
+    if (existedUser) {
+        existedUser.access_token = jwt.sign(passwordHash, "mdcsecret");
+        await existedUser.save();
+        res.send(existedUser);
+    } else {
+        res.json({
+            success: false,
+            message: "Неверный логин или пароль",
+        });
+    }
 });
 
 router.use("/protected", authMiddleWare);
 router.use((err, req, res, next) => {
-  let responseStatusCode = 500;
-  let responseObj = {
-    success: false,
-    data: [],
-    error: err,
-    message: "There was some internal server error",
-  };
+    let responseStatusCode = 500;
+    let responseObj = {
+        success: false,
+        data: [],
+        error: err,
+        message: "There was some internal server error",
+    };
 
-  if (!_.isNil(err)) {
-    if (err.name === "Authentication failed") {
-      responseStatusCode = 401;
-      responseObj.message =
-        "You cannot get the details. You are not authorized to access this protected resource";
+    if (!_.isNil(err)) {
+        if (err.name === "Authentication failed") {
+            responseStatusCode = 401;
+            responseObj.message =
+                "You cannot get the details. You are not authorized to access this protected resource";
+        }
     }
-  }
 
-  if (!res.headersSent) {
-    res.status(responseStatusCode).json(responseObj);
-  }
+    if (!res.headersSent) {
+        res.status(responseStatusCode).json(responseObj);
+    }
 });
 
 router.get("/protected", async (req, res) => {
-  res.send("protected router");
+    res.send("protected router");
 });
 
 router.get("/protected/user-list", async function (req, res) {
-  const list = await user.findAll({ raw: true });
-  for (let i = 0; i < list.length; i++) {
-    const ud = await userData.findOne({
-      where: { user_id: list[i].id },
-      raw: true,
-    });
-    if (ud) {
-      list[i].security_check = ud.security_check;
-      list[i].name = ud.name;
-    } else {
-      list[i].security_check = false;
-    }
-  }
-  res.json(list);
-  return;
+    const list = await user.findAll({ raw: true });
+    res.json(list);
+    return;
 });
 
 router.post("/protected/user-delete", async (req, res) => {
-  try {
-    const existedUser = await user.findOne({
-      where: { id: req.body.id },
-    });
-    await existedUser.update({
-      deleted: "1",
-    });
-    res.json({
-      success: true,
-      message: "User deleted successfully",
-    });
-  } catch (e) {
-    res.json({
-      success: false,
-      message: "user is not found",
-    });
-  }
+    try {
+        const existedUser = await user.findOne({
+            where: { id: req.body.id },
+        });
+        await existedUser.update({
+            deleted: "1",
+        });
+        res.json({
+            success: true,
+            message: "User deleted successfully",
+        });
+    } catch (e) {
+        res.json({
+            success: false,
+            message: "user is not found",
+        });
+    }
 });
 
 router.post("/protected/user-restore", async (req, res) => {
-  try {
-    const existedUser = await user.findOne({
-      where: { id: req.body.id },
-    });
-    await existedUser.update({
-      deleted: "0",
-    });
-    res.json({
-      success: true,
-      message: "User restored successfully",
-    });
-  } catch (e) {
-    res.json({
-      success: false,
-      message: "user is not found",
-    });
-  }
+    try {
+        const existedUser = await user.findOne({
+            where: { id: req.body.id },
+        });
+        await existedUser.update({
+            deleted: "0",
+        });
+        res.json({
+            success: true,
+            message: "User restored successfully",
+        });
+    } catch (e) {
+        res.json({
+            success: false,
+            message: "user is not found",
+        });
+    }
 });
 
 router.post("/protected/user-create", async (req, res) => {
-  try {
-    const { username = "", email = "", phone } = req.body;
-    const data = await user.create({ username, email, phone, confirmed: 1 });
-    res.json({
-      success: true,
-      message: "User created successfully",
-      data,
-    });
-  } catch (e) {
-    res.status(500).json({
-      success: false,
-      message: "Internal server error",
-      trace: e.message,
-    });
-  }
+    try {
+        // const { username = "", email = "", phone } = req.body;
+        // const data = await user.create({ username, email, phone, confirmed: 1 });
+        const data = await user.create({
+            ...req.body,
+            password: sha1(req.body.password),
+        });
+        res.json({
+            success: true,
+            message: "User created successfully",
+            data,
+        });
+    } catch (e) {
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+            trace: e.message,
+        });
+    }
 });
 
 router.get("/protected/user", async (req, res) => {
-  try {
-    const { id } = req.query;
-    const existedUser = await user.findOne({
-      where: { id },
-    });
-    res.json(existedUser);
-  } catch (e) {
-    res.status(500).json({
-      success: false,
-      message: "Internal server error",
-      trace: e.message,
-    });
-  }
+    try {
+        const { id } = req.query;
+        const existedUser = await user.findOne({
+            where: { id },
+        });
+        res.json(existedUser);
+    } catch (e) {
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+            trace: e.message,
+        });
+    }
 });
 
 router.post("/protected/user-update", async (req, res) => {
-  try {
-    const { id, disabled } = req.body;
-    const existedUser = await user.findOne({
-      where: { id },
-    });
-    const dataToSave = omit("id", req.body);
+    try {
+        const { id, disabled } = req.body;
+        const existedUser = await user.findOne({
+            where: { id },
+        });
+        const dataToSave = omit("id", req.body);
 
-    if (disabled === "false" || !disabled) {
-      dataToSave.disabled = null;
-    } else {
-      dataToSave.disabled = disabled;
+        if (disabled === "false" || !disabled) {
+            dataToSave.disabled = null;
+        } else {
+            dataToSave.disabled = disabled;
+        }
+
+        await existedUser.update(dataToSave);
+        res.json({
+            success: true,
+            message: "User updated successfully",
+            data: existedUser,
+        });
+    } catch (e) {
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+            trace: e.message,
+        });
     }
-
-    await existedUser.update(dataToSave);
-    res.json({
-      success: true,
-      message: "User updated successfully",
-      data: existedUser,
-    });
-  } catch (e) {
-    res.status(500).json({
-      success: false,
-      message: "Internal server error",
-      trace: e.message,
-    });
-  }
 });
 
 module.exports = router;
