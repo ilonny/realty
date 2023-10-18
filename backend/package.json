@@ -1,0 +1,39 @@
+{
+  "name": "backend-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "LOCAL=TRUE && nodemon ./src/index.js",
+    "generate-models": "sequelize-auto -h localhost -d realty -u root -x -p 3306  --dialect mysql -o ./src/models"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^17.0.21",
+    "@types/sequelize": "^4.28.11",
+    "body-parser": "^1.19.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.17.3",
+    "express-fileupload": "^1.3.1",
+    "firebase-admin": "^11.0.0",
+    "greensms": "^1.9.1",
+    "install": "^0.13.0",
+    "js-sha1": "^0.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.4",
+    "mysql2": "^2.3.3",
+    "node-fetch": "2",
+    "passport": "^0.5.2",
+    "passport-http-bearer": "^1.0.1",
+    "sequelize": "^6.33.0",
+    "sequelize-auto": "^0.8.8",
+    "typescript": "^4.5.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
