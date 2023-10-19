@@ -4,6 +4,7 @@ import {
   ListGuesser,
   EditGuesser,
   ShowGuesser,
+  Empty,
 } from "react-admin";
 import russianMessages from "ra-language-russian";
 import polyglotI18nProvider from "ra-i18n-polyglot";
@@ -14,6 +15,8 @@ import { useState } from "react";
 import { UserList } from "./resources/users";
 import { UserCreate } from "./resources/UserCreate";
 import { UserEdit } from "./resources/UserEdit";
+import { UserShow } from "./resources/UserShow";
+import { DistrcitCreate } from "./resources/DistrcitCreate";
 
 const i18nProvider = polyglotI18nProvider(() => russianMessages, "ru");
 
@@ -35,9 +38,16 @@ export const App = () => {
           list={UserList}
           create={UserCreate}
           edit={UserEdit}
-          // show={ShowGuesser}
+          show={UserShow}
         />
       )}
+      <Resource
+        name="district"
+        create={DistrcitCreate}
+        list={ListGuesser}
+        edit={EditGuesser}
+        show={ShowGuesser}
+      />
     </Admin>
   );
 };

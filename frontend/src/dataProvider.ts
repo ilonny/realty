@@ -1,5 +1,7 @@
-import { DataProvider, fetchUtils } from "react-admin";
+import simpleRestProvider from "ra-data-simple-rest";
+import { DataProvider, combineDataProviders, fetchUtils } from "react-admin";
 import { stringify } from "query-string";
+const sDataProvider = simpleRestProvider(import.meta.env.VITE_SIMPLE_REST_URL);
 
 const apiUrl = import.meta.env.VITE_SIMPLE_REST_URL;
 const httpClient = async (path: string, options?: Record<any, any>) => {
@@ -46,7 +48,8 @@ export const dataProvider: DataProvider = {
         const users = await httpClient("/user/protected/user-list");
         return { data: users.json, total: users.json.length };
       default:
-        break;
+        const data = await httpClient("/" + resource);
+        return { data: data.json, total: data.json.length };
     }
   },
   create: async (resource, params) => {
@@ -58,7 +61,11 @@ export const dataProvider: DataProvider = {
         });
         return { data: user.data };
       default:
-        break;
+        const data = await httpClient("/" + resource + "/create", {
+          method: "POST",
+          body: getFormDataFromParams(params),
+        });
+        return { data: data.data, id: 12321 };
     }
   },
   getOne: async (resource, params) => {
@@ -67,6 +74,10 @@ export const dataProvider: DataProvider = {
         const user = await httpClient("/user/protected/user?id=" + params.id);
         return { data: user.json };
       default:
+        const data = await httpClient(
+          "/" + resource + "/get-one?id=" + params.id
+        );
+        return { data: data.json };
         break;
     }
   },
@@ -79,7 +90,11 @@ export const dataProvider: DataProvider = {
         });
         return { data: user.data };
       default:
-        break;
+        const data = await httpClient("/" + resource + "/update", {
+          method: "POST",
+          body: getFormDataFromParams(params),
+        });
+        return { data: data.data };
     }
   },
   delete: async (resource, params) => {
@@ -91,7 +106,23 @@ export const dataProvider: DataProvider = {
         });
         return { data: user.data };
       default:
+        const data = await httpClient("/" + resource + "/delete", {
+          method: "POST",
+          body: JSON.stringify({ id: params.id }),
+        });
+        return { data: data.data };
         break;
     }
   },
 };
+
+// export const dataProvider = combineDataProviders((res) => {
+//   return dataProvider1;
+//   switch (res) {
+//     case "user":
+//       return dataProvider;
+
+//     default:
+//       return sDataProvider;
+//   }
+// });
