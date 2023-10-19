@@ -6,6 +6,10 @@ const Strategy = require("passport-http-bearer").Strategy;
 const fileUpload = require("express-fileupload");
 const userController = require("./controllers/user");
 const districtController = require("./controllers/district");
+const seriesController = require("./controllers/series");
+const roomsController = require("./controllers/rooms");
+const stateController = require("./controllers/state");
+const typeController = require("./controllers/type");
 const db = require("./models");
 db.sequelize.sync();
 const port = 3001;
@@ -50,6 +54,10 @@ passport.use(
 
 app.use("/user", userController);
 app.use("/district", districtController);
+app.use("/series", seriesController);
+app.use("/rooms", roomsController);
+app.use("/state", stateController);
+app.use("/type", typeController);
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);

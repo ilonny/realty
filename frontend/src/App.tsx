@@ -48,6 +48,34 @@ export const App = () => {
         edit={EditGuesser}
         show={ShowGuesser}
       />
+      <Resource
+        name="series"
+        create={DistrcitCreate}
+        list={ListGuesser}
+        edit={EditGuesser}
+        show={ShowGuesser}
+      />
+      <Resource
+        name="rooms"
+        create={DistrcitCreate}
+        list={ListGuesser}
+        edit={EditGuesser}
+        show={ShowGuesser}
+      />
+      <Resource
+        name="state"
+        create={DistrcitCreate}
+        list={ListGuesser}
+        edit={EditGuesser}
+        show={ShowGuesser}
+      />
+      <Resource
+        name="type"
+        create={DistrcitCreate}
+        list={ListGuesser}
+        edit={EditGuesser}
+        show={ShowGuesser}
+      />
     </Admin>
   );
 };
