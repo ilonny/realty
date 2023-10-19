@@ -7,6 +7,8 @@ import {
   SimpleForm,
   TextInput,
   required,
+  ImageInput,
+  ImageField,
 } from "react-admin";
 
 export const UserCreate = () => (
@@ -24,6 +26,14 @@ export const UserCreate = () => (
       <TextInput source="thirdname" label="Отчество" fullWidth />
       <TextInput source="email" label="E-mail" fullWidth />
       <TextInput source="phone" label="Телефон" fullWidth />
+      <TextInput source="other" label="Описание" multiline fullWidth />
+      <ImageInput
+        source="photo"
+        placeholder={<p>Переместите фото сюда</p>}
+        label="Фото"
+      >
+        <ImageField source="src" title="title" />
+      </ImageInput>
     </SimpleForm>
   </Create>
 );

@@ -160,10 +160,27 @@ router.post("/protected/user-create", async (req, res) => {
     try {
         // const { username = "", email = "", phone } = req.body;
         // const data = await user.create({ username, email, phone, confirmed: 1 });
-        const data = await user.create({
+
+        const dataToSave = {
             ...req.body,
             password: sha1(req.body.password),
-        });
+        };
+
+        const filesCanBeSaved = ["photo"];
+
+        if (req?.files) {
+            filesCanBeSaved.forEach((docType) => {
+                if (req?.files[docType]) {
+                    let file = req?.files[docType];
+                    let file_path =
+                        "uploads/" + new Date().getTime() + file.name;
+                    file.mv(file_path);
+                    dataToSave[docType] = file_path;
+                }
+            });
+        }
+
+        const data = await user.create(dataToSave);
         res.json({
             success: true,
             message: "User created successfully",
@@ -201,6 +218,20 @@ router.post("/protected/user-update", async (req, res) => {
             where: { id },
         });
         const dataToSave = omit("id", req.body);
+
+        const filesCanBeSaved = ["photo"];
+
+        if (req?.files) {
+            filesCanBeSaved.forEach((docType) => {
+                if (req?.files[docType]) {
+                    let file = req?.files[docType];
+                    let file_path =
+                        "uploads/" + new Date().getTime() + file.name;
+                    file.mv(file_path);
+                    dataToSave[docType] = file_path;
+                }
+            });
+        }
 
         if (disabled === "false" || !disabled) {
             dataToSave.disabled = null;

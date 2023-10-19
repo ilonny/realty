@@ -13,6 +13,7 @@ import { authProvider } from "./authProvider";
 import { useState } from "react";
 import { UserList } from "./resources/users";
 import { UserCreate } from "./resources/UserCreate";
+import { UserEdit } from "./resources/UserEdit";
 
 const i18nProvider = polyglotI18nProvider(() => russianMessages, "ru");
 
@@ -33,7 +34,7 @@ export const App = () => {
           name="user"
           list={UserList}
           create={UserCreate}
-          // edit={EditGuesser}
+          edit={UserEdit}
           // show={ShowGuesser}
         />
       )}
