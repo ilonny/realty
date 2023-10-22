@@ -76,6 +76,13 @@ export const App = () => {
         edit={EditGuesser}
         show={ShowGuesser}
       />
+      <Resource
+        name="category"
+        create={DistrcitCreate}
+        list={ListGuesser}
+        edit={EditGuesser}
+        show={ShowGuesser}
+      />
     </Admin>
   );
 };

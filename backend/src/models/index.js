@@ -20,4 +20,5 @@ db.series = require("./series.js")(sequelize, Sequelize);
 db.rooms = require("./rooms.js")(sequelize, Sequelize);
 db.state = require("./state.js")(sequelize, Sequelize);
 db.type = require("./type.js")(sequelize, Sequelize);
+db.category = require("./category.js")(sequelize, Sequelize);
 module.exports = db;
