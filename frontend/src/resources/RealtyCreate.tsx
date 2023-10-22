@@ -13,6 +13,8 @@ import {
   SelectInput,
   AutocompleteInput,
 } from "react-admin";
+import authProvider from "../authProvider";
+import { useEffect, useState } from "react";
 
 export const RealtyCreate = () => {
   const districtData = useGetList("district");
@@ -21,6 +23,17 @@ export const RealtyCreate = () => {
   const stateData = useGetList("state");
   const typeData = useGetList("type");
   const categoryData = useGetList("category");
+  const [userId, setUserId] = useState();
+  useEffect(() => {
+    authProvider?.getIdentity &&
+      authProvider?.getIdentity().then((user) => {
+        setUserId(user.id);
+      });
+  }, []);
+
+  if (!userId) {
+    return null;
+  }
   return (
     <Create>
       <SimpleForm>
@@ -31,6 +44,8 @@ export const RealtyCreate = () => {
           hiddenLabel
           validate={[required()]}
           fullWidth
+          style={{ display: "none" }}
+          defaultValue={userId}
         />
         <TextInput
           source="name"
@@ -39,6 +54,7 @@ export const RealtyCreate = () => {
           fullWidth
         />
         <TextInput
+          type="number"
           source="price"
           label="Цена"
           validate={[required()]}
@@ -117,6 +133,9 @@ export const RealtyCreate = () => {
           label="Особенности и удобства"
           fullWidth
         />
+        <ImageInput source="photos" multiple>
+          <ImageField source="src" title="title" />
+        </ImageInput>
       </SimpleForm>
     </Create>
   );

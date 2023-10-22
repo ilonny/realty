@@ -14,6 +14,7 @@ const httpClient = async (path: string, options?: Record<any, any>) => {
 };
 
 const getFormDataFromParams = (params: any) => {
+  console.log("params", params);
   const formData = new FormData();
   Object.keys(params).forEach((key) => {
     if (params[key] == "undefined") {
@@ -24,6 +25,16 @@ const getFormDataFromParams = (params: any) => {
     const isNotUndef =
       params.data[param] !== "undefined" && params.data[param] !== undefined;
     if (params.data[param] == "undefined") {
+      continue;
+    }
+    if (
+      param === "photos" &&
+      isNotUndef &&
+      typeof params.data[param] === "object"
+    ) {
+      typeof params.data[param].forEach((p) => {
+        formData.append("photos", p.rawFile);
+      });
       continue;
     }
     if (

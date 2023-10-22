@@ -44,17 +44,20 @@ router.post("/create", async (req, res) => {
             ...req.body,
         };
 
-        const filesCanBeSaved = ["photo"];
-
+        const filesCanBeSaved = ["photos"];
+        let paths = [];
         if (req?.files) {
+            console.log("req?.files", req?.files);
             filesCanBeSaved.forEach((docType) => {
                 if (req?.files[docType]) {
-                    let file = req?.files[docType];
-                    let file_path =
-                        "uploads/" + new Date().getTime() + file.name;
-                    file.mv(file_path);
-                    dataToSave[docType] = file_path;
+                    req?.files[docType].forEach((file) => {
+                        let file_path =
+                            "uploads/" + new Date().getTime() + file.name;
+                        file.mv(file_path);
+                        paths.push(file_path);
+                    });
                 }
+                dataToSave[docType] = JSON.stringify(paths);
             });
         }
 
@@ -63,7 +66,7 @@ router.post("/create", async (req, res) => {
             success: true,
             message: "created successfully",
             data,
-            id: data.id
+            id: data.id,
         });
     } catch (e) {
         res.status(500).json({
