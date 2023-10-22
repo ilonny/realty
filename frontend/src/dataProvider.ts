@@ -32,9 +32,19 @@ const getFormDataFromParams = (params: any) => {
       isNotUndef &&
       typeof params.data[param] === "object"
     ) {
+      let oldFilesForSave: string[] = [];
       typeof params.data[param].forEach((p) => {
-        formData.append("photos", p.rawFile);
+        console.log("p?", p);
+        if (p.rawFile) {
+          formData.append("photos", p.rawFile);
+        } 
+        if (!p.rawFile && p.src) {
+          oldFilesForSave.push("uploads/" + p.src.split("/").reverse()[0]);
+        }
       });
+      if (oldFilesForSave.length) {
+        formData.append("oldFilesForSave", JSON.stringify(oldFilesForSave));
+      }
       continue;
     }
     if (

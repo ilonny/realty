@@ -18,6 +18,8 @@ import { UserEdit } from "./resources/UserEdit";
 import { UserShow } from "./resources/UserShow";
 import { DistrcitCreate } from "./resources/DistrcitCreate";
 import { RealtyCreate } from "./resources/RealtyCreate";
+import { RealtyList } from "./resources/RealtyList";
+import { RealtyEdit } from "./resources/RealtyEdit";
 
 const i18nProvider = polyglotI18nProvider(() => russianMessages, "ru");
 
@@ -87,9 +89,8 @@ export const App = () => {
       <Resource
         name="realty"
         create={RealtyCreate}
-        list={ListGuesser}
-        edit={EditGuesser}
-        show={ShowGuesser}
+        list={RealtyList}
+        edit={RealtyEdit}
       />
     </Admin>
   );

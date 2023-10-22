@@ -79,25 +79,45 @@ router.post("/create", async (req, res) => {
 
 router.post("/update", async (req, res) => {
     try {
-        const { id } = req.body;
+        const { id, photos, oldFilesForSave } = req.body;
         const existedModel = await realty.findOne({
             where: { id },
         });
         const dataToSave = omit("id", req.body);
+        let oldSaved = [];
+        try {
+            oldSaved = JSON.parse(existingModel.photos);
+        } catch (e) {}
+        const filesCanBeSaved = ["photos"];
+        let paths = [];
 
-        const filesCanBeSaved = ["photo"];
+        if (photos) {
+            oldSaved = _.union(oldSaved, JSON.parse(photos));
+        }
+        if (oldFilesForSave) {
+            console.log("oldFilesForSave saving", oldFilesForSave);
+            oldSaved = _.union(oldSaved, JSON.parse(oldFilesForSave));
+        }
 
         if (req?.files) {
+            console.log("req?.files", req?.files);
             filesCanBeSaved.forEach((docType) => {
                 if (req?.files[docType]) {
-                    let file = req?.files[docType];
-                    let file_path =
-                        "uploads/" + new Date().getTime() + file.name;
-                    file.mv(file_path);
-                    dataToSave[docType] = file_path;
+                    if (!Array.isArray(req.files[docType])) {
+                        req.files[docType] = [req.files[docType]];
+                    }
+                    req?.files[docType].forEach((file) => {
+                        let file_path = "uploads/" + file.name;
+                        file.mv(file_path);
+                        paths.push(file_path);
+                    });
                 }
             });
         }
+        dataToSave['photos'] = JSON.stringify(_.union(oldSaved, paths));
+
+        console.log("oldSaved", oldSaved);
+        console.log("oldFilesForSave", oldFilesForSave);
 
         await existedModel.update(dataToSave);
         res.json({
