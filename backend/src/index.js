@@ -17,7 +17,7 @@ const developerController = require("./controllers/developer");
 const apartment_complexController = require("./controllers/apartment_complex");
 const db = require("./models");
 db.sequelize.sync();
-const port = 3001;
+const port = 3002;
 const app = express();
 
 // app.use("/uploads", express.static(__dirname + "../uploads"));
