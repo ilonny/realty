@@ -82,6 +82,14 @@ module.exports = function(sequelize, DataTypes) {
     photos: {
       type: DataTypes.TEXT,
       allowNull: true
+    },
+    owner_id: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    agent_price: {
+      type: DataTypes.TEXT,
+      allowNull: true
     }
   }, {
     sequelize,

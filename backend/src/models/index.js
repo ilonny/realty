@@ -22,4 +22,5 @@ db.state = require("./state.js")(sequelize, Sequelize);
 db.type = require("./type.js")(sequelize, Sequelize);
 db.category = require("./category.js")(sequelize, Sequelize);
 db.realty = require("./realty.js")(sequelize, Sequelize);
+db.owner = require("./owner.js")(sequelize, Sequelize);
 module.exports = db;

@@ -20,6 +20,9 @@ import { DistrcitCreate } from "./resources/DistrcitCreate";
 import { RealtyCreate } from "./resources/RealtyCreate";
 import { RealtyList } from "./resources/RealtyList";
 import { RealtyEdit } from "./resources/RealtyEdit";
+import { OwnerCreate } from "./resources/OwnerCreate";
+import { OwnerEdit } from "./resources/OwnerEdit";
+import { OwnerList } from "./resources/OwnerList";
 
 const i18nProvider = polyglotI18nProvider(() => russianMessages, "ru");
 
@@ -35,15 +38,13 @@ export const App = () => {
       authProvider={authProvider}
       i18nProvider={i18nProvider}
     >
-      {isAdmin && (
-        <Resource
-          name="user"
-          list={UserList}
-          create={UserCreate}
-          edit={UserEdit}
-          show={UserShow}
-        />
-      )}
+      <Resource
+        name="user"
+        list={UserList}
+        create={UserCreate}
+        edit={UserEdit}
+        show={UserShow}
+      />
       <Resource
         name="district"
         create={DistrcitCreate}
@@ -84,6 +85,13 @@ export const App = () => {
         create={DistrcitCreate}
         list={ListGuesser}
         edit={EditGuesser}
+        show={ShowGuesser}
+      />
+      <Resource
+        name="owner"
+        create={OwnerCreate}
+        list={OwnerList}
+        edit={OwnerEdit}
         show={ShowGuesser}
       />
       <Resource

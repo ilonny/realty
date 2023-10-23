@@ -111,7 +111,23 @@ router.get("/protected", async (req, res) => {
 });
 
 router.get("/protected/user-list", async function (req, res) {
-    const list = await user.findAll({ raw: true });
+    const authString = req.headers.authorization;
+    const currentUser = await user.findOne({
+        where: {
+            access_token: authString.replace("Bearer ", ""),
+        },
+        raw: true,
+    });
+
+    let list;
+    if (currentUser.role === "admin") {
+        list = await user.findAll({ raw: true });
+    } else {
+        list = await user.findAll({
+            raw: true,
+            where: { id: currentUser.id },
+        });
+    }
     res.json(list);
     return;
 });

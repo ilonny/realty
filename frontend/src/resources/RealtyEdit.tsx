@@ -34,10 +34,10 @@ const AddressInput = () => {
         center: address
           ? address.geometry.location
           : {
-              lat: 59.96586,
-              lng: 30.3055,
+              lat: 42.8756504,
+              lng: 74.5910862,
             },
-        zoom: 10,
+        zoom: 13,
       });
       console.log("gmap", gmap);
       gmap.addListener("click", (e) => {
@@ -87,6 +87,7 @@ export const RealtyEdit = () => {
   const stateData = useGetList("state");
   const typeData = useGetList("type");
   const categoryData = useGetList("category");
+  const ownerData = useGetList("owner");
   const [userId, setUserId] = useState();
   const [gmapsLoaded, setGmapsLoaded] = useState(false);
 
@@ -132,6 +133,12 @@ export const RealtyEdit = () => {
           source="price"
           label="Цена"
           validate={[required()]}
+          fullWidth
+        />
+        <TextInput
+          type="number"
+          source="agent_price"
+          label="Цена на руки для агента"
           fullWidth
         />
         <AutocompleteInput
@@ -207,6 +214,21 @@ export const RealtyEdit = () => {
           label="Особенности и удобства"
           fullWidth
         />
+        <TextInput
+          source="description_additional"
+          label="Особенности и удобства"
+          fullWidth
+        />
+        <AutocompleteInput
+          label="Собственник"
+          source="owner_id"
+          choices={ownerData.data}
+          optionText="name"
+          optionValue="id"
+          isLoading={ownerData.isLoading}
+          fullWidth
+        />
+
         <AddressInput />
 
         <ImageInput

@@ -6,7 +6,6 @@ import {
   ImageField,
   useGetList,
   AutocompleteInput,
-  Edit,
   Create,
 } from "react-admin";
 import authProvider from "../authProvider";
@@ -14,6 +13,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { usePlacesWidget } from "react-google-autocomplete";
 import { useFormContext } from "react-hook-form";
 import TextField from "@mui/material/TextField";
+import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import { Loader } from "@googlemaps/js-api-loader";
 const loader = new Loader({
   apiKey: "AIzaSyBbDfrPKMdXXJ4i1TVofmhrJOG7nsPDz0U",
@@ -25,19 +25,19 @@ const AddressInput = () => {
   const mapRef = useRef();
   const form = useFormContext();
   const values = form.getValues();
-  const address = JSON.parse(values["address"] || "") || "";
+  const address = "";
   console.log("address", address);
   useEffect(() => {
     setTimeout(() => {
       console.log("mapRef", mapRef);
       const gmap = new window.google.maps.Map(mapRef.current, {
         center: address
-          ? address.geometry.location
+          ? address?.geometry.location
           : {
-              lat: 59.96586,
-              lng: 30.3055,
+              lat: 42.8756504,
+              lng: 74.5910862,
             },
-        zoom: 10,
+        zoom: 13,
       });
       console.log("gmap", gmap);
       gmap.addListener("click", (e) => {
@@ -50,7 +50,7 @@ const AddressInput = () => {
 
   const { ref: materialRef } = usePlacesWidget({
     apiKey: "AIzaSyBbDfrPKMdXXJ4i1TVofmhrJOG7nsPDz0U",
-    inputAutocompleteValue: address.formatted_address,
+    inputAutocompleteValue: address?.formatted_address,
     onPlaceSelected: (place) => {
       form.setValue("address", JSON.stringify(place));
 
@@ -69,7 +69,7 @@ const AddressInput = () => {
     <>
       <TextField
         key={address}
-        defaultValue={address.formatted_address}
+        defaultValue={address?.formatted_address}
         placeholder="Введите адрес"
         label="Введите адрес"
         inputRef={materialRef}
@@ -87,6 +87,7 @@ export const RealtyCreate = () => {
   const stateData = useGetList("state");
   const typeData = useGetList("type");
   const categoryData = useGetList("category");
+  const ownerData = useGetList("owner");
   const [userId, setUserId] = useState();
   const [gmapsLoaded, setGmapsLoaded] = useState(false);
 
@@ -109,7 +110,7 @@ export const RealtyCreate = () => {
   }
 
   return (
-    <Create>
+    <Create mutationMode="optimistic">
       <SimpleForm>
         <TextInput
           source="agent_id"
@@ -132,6 +133,12 @@ export const RealtyCreate = () => {
           source="price"
           label="Цена"
           validate={[required()]}
+          fullWidth
+        />
+        <TextInput
+          type="number"
+          source="agent_price"
+          label="Цена на руки для агента"
           fullWidth
         />
         <AutocompleteInput
@@ -207,6 +214,21 @@ export const RealtyCreate = () => {
           label="Особенности и удобства"
           fullWidth
         />
+        <TextInput
+          source="description_additional"
+          label="Особенности и удобства"
+          fullWidth
+        />
+        <AutocompleteInput
+          label="Собственник"
+          source="owner_id"
+          choices={ownerData.data}
+          optionText="name"
+          optionValue="id"
+          isLoading={ownerData.isLoading}
+          fullWidth
+        />
+
         <AddressInput />
 
         <ImageInput
