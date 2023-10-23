@@ -3,7 +3,7 @@ module.exports = {
   HOST: "localhost",
   USER: process.env.LOCAL ? "root" : "mdc",
   PASSWORD: process.env.LOCAL ? "root" : "xC8zO6cI3lvM3j",
-  DB: process.env.LOCAL ? "realty" : "realty",
+  DB: process.env.LOCAL ? "realty" : "realty-dev",
   dialect: "mysql",
   pool: {
     max: 5,
