@@ -73,6 +73,36 @@ export const dataProvider: DataProvider = {
         return { data: users.json, total: users.json.length };
       default:
         const data = await httpClient("/" + resource);
+        if (resource === "realty") {
+          if (params?.filter?.user_id) {
+            const user_id = params.filter.user_id;
+            return {
+              data: data.json.filter((d) => d.agent_id == user_id),
+              total: data.json.filter((d) => d.agent_id == user_id).length,
+            };
+          }
+        }
+
+        return { data: data.json, total: data.json.length };
+    }
+  },
+  getMany: async (resource, params) => {
+    switch (resource) {
+      case "user":
+        const users = await httpClient("/user/protected/user-list");
+        return { data: users.json, total: users.json.length };
+      default:
+        const data = await httpClient("/" + resource);
+        if (resource === "realty") {
+          if (params?.filter?.user_id) {
+            const user_id = params.filter.user_id;
+            return {
+              data: data.json.filter((d) => d.agent_id == user_id),
+              total: data.json.filter((d) => d.agent_id == user_id).length,
+            };
+          }
+        }
+
         return { data: data.json, total: data.json.length };
     }
   },

@@ -90,6 +90,14 @@ module.exports = function(sequelize, DataTypes) {
     agent_price: {
       type: DataTypes.TEXT,
       allowNull: true
+    },
+    developer_id: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    apartment_complex_id: {
+      type: DataTypes.TEXT,
+      allowNull: true
     }
   }, {
     sequelize,

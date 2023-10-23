@@ -16,7 +16,7 @@ import TextField from "@mui/material/TextField";
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import { Loader } from "@googlemaps/js-api-loader";
 const loader = new Loader({
-  apiKey: "AIzaSyBbDfrPKMdXXJ4i1TVofmhrJOG7nsPDz0U",
+  apiKey: "AIzaSyDiP_G-lzOY2kdw0UaTIlw-0IyYBP-4glg",
   version: "weekly",
   libraries: ["places", "maps"],
 });
@@ -48,7 +48,7 @@ const AddressInput = () => {
   }, []);
 
   const { ref: materialRef } = usePlacesWidget({
-    apiKey: "AIzaSyBbDfrPKMdXXJ4i1TVofmhrJOG7nsPDz0U",
+    apiKey: "AIzaSyDiP_G-lzOY2kdw0UaTIlw-0IyYBP-4glg",
     inputAutocompleteValue: address?.formatted_address,
     onPlaceSelected: (place) => {
       form.setValue("address", JSON.stringify(place));
@@ -87,6 +87,8 @@ export const RealtyCreate = () => {
   const typeData = useGetList("type");
   const categoryData = useGetList("category");
   const ownerData = useGetList("owner");
+  const developerData = useGetList("developer");
+  const apartment_complexData = useGetList("apartment_complex");
   const [userId, setUserId] = useState();
   const [gmapsLoaded, setGmapsLoaded] = useState(false);
 
@@ -213,11 +215,6 @@ export const RealtyCreate = () => {
           label="Особенности и удобства"
           fullWidth
         />
-        <TextInput
-          source="description_additional"
-          label="Особенности и удобства"
-          fullWidth
-        />
         <AutocompleteInput
           label="Собственник"
           source="owner_id"
@@ -227,9 +224,27 @@ export const RealtyCreate = () => {
           isLoading={ownerData.isLoading}
           fullWidth
         />
-
+        <AutocompleteInput
+          label="Застройщик"
+          source="developer_id"
+          choices={developerData.data}
+          optionText="name"
+          optionValue="id"
+          isLoading={developerData.isLoading}
+          fullWidth
+        />
+        <AutocompleteInput
+          label="Жилой комплекс"
+          source="apartment_complex_id"
+          choices={apartment_complexData.data}
+          optionText="name"
+          optionValue="id"
+          isLoading={apartment_complexData.isLoading}
+          fullWidth
+        />
         <AddressInput />
-
+        <br />
+        <br />
         <ImageInput
           format={(f) => {
             try {
