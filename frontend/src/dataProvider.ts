@@ -13,7 +13,7 @@ const httpClient = async (path: string, options?: Record<any, any>) => {
   });
 };
 
-const getFormDataFromParams = (params: any) => {
+const getFormDataFromParams = (params: any, resource: any) => {
   console.log("params", params);
   const formData = new FormData();
   Object.keys(params).forEach((key) => {
@@ -37,7 +37,7 @@ const getFormDataFromParams = (params: any) => {
         console.log("p?", p);
         if (p.rawFile) {
           formData.append("photos", p.rawFile);
-        } 
+        }
         if (!p.rawFile && p.src) {
           oldFilesForSave.push("uploads/" + p.src.split("/").reverse()[0]);
         }
@@ -59,6 +59,9 @@ const getFormDataFromParams = (params: any) => {
       formData.append(param, params.data[param]);
     }
   }
+  // if (resource === "realty") {
+  //   formData.append("address", localStorage.getItem("address") || "");
+  // }
   return formData;
 };
 
@@ -84,7 +87,7 @@ export const dataProvider: DataProvider = {
       default:
         const data = await httpClient("/" + resource + "/create", {
           method: "POST",
-          body: getFormDataFromParams(params),
+          body: getFormDataFromParams(params, resource),
         });
         return { data: data.data, id: 12321 };
     }
@@ -113,7 +116,7 @@ export const dataProvider: DataProvider = {
       default:
         const data = await httpClient("/" + resource + "/update", {
           method: "POST",
-          body: getFormDataFromParams(params),
+          body: getFormDataFromParams(params, resource),
         });
         return { data: data.data };
     }
