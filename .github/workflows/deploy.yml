@@ -1,0 +1,29 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      # Setup key
+      - run: set -eu
+      - run: mkdir "$HOME/.ssh"
+      - run: echo "${{ secrets.key }}" > "$HOME/.ssh/key"
+      - run: chmod 600 "$HOME/.ssh/key"
+      # Build
+      - run: cd ./backend && yarn
+      - run: cd ./frontend && yarn && yarn build
+      # Deploy
+      - run: cd ./backend && rsync -e "ssh -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --exclude 'uploads' src --archive --compress --delete . mdc@194.58.107.74:/var/www/mdc/data/www/194.58.107.74/realty-dev/backend
+      - run: cd ./frontend/dist && rsync -e "ssh -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --archive --compress --delete . mdc@194.58.107.74:/var/www/mdc/data/www/194.58.107.74/realty-dev/frontend
