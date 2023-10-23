@@ -26,7 +26,6 @@ const AddressInput = () => {
   const form = useFormContext();
   const values = form.getValues();
   const address = "";
-  console.log("address", address);
   useEffect(() => {
     setTimeout(() => {
       console.log("mapRef", mapRef);

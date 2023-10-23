@@ -13,6 +13,8 @@ const typeController = require("./controllers/type");
 const categoryController = require("./controllers/category");
 const realtyController = require("./controllers/realty");
 const ownerController = require("./controllers/owner");
+const developerController = require("./controllers/developer");
+const apartment_complexController = require("./controllers/apartment_complex");
 const db = require("./models");
 db.sequelize.sync();
 const port = 3001;
@@ -64,6 +66,8 @@ app.use("/type", typeController);
 app.use("/category", categoryController);
 app.use("/realty", realtyController);
 app.use("/owner", ownerController);
+app.use("/developer", developerController);
+app.use("/apartment_complex", apartment_complexController);
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);

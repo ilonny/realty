@@ -23,4 +23,6 @@ db.type = require("./type.js")(sequelize, Sequelize);
 db.category = require("./category.js")(sequelize, Sequelize);
 db.realty = require("./realty.js")(sequelize, Sequelize);
 db.owner = require("./owner.js")(sequelize, Sequelize);
+db.developer = require("./developer.js")(sequelize, Sequelize);
+db.apartment_complex = require("./apartment_complex.js")(sequelize, Sequelize);
 module.exports = db;

@@ -1,5 +1,7 @@
 var DataTypes = require("sequelize").DataTypes;
+var _apartment_complex = require("./apartment_complex");
 var _category = require("./category");
+var _developer = require("./developer");
 var _district = require("./district");
 var _owner = require("./owner");
 var _realty = require("./realty");
@@ -10,7 +12,9 @@ var _type = require("./type");
 var _user = require("./user");
 
 function initModels(sequelize) {
+  var apartment_complex = _apartment_complex(sequelize, DataTypes);
   var category = _category(sequelize, DataTypes);
+  var developer = _developer(sequelize, DataTypes);
   var district = _district(sequelize, DataTypes);
   var owner = _owner(sequelize, DataTypes);
   var realty = _realty(sequelize, DataTypes);
@@ -22,7 +26,9 @@ function initModels(sequelize) {
 
 
   return {
+    apartment_complex,
     category,
+    developer,
     district,
     owner,
     realty,
