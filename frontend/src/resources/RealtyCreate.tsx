@@ -16,40 +16,26 @@ import TextField from "@mui/material/TextField";
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import { Loader } from "@googlemaps/js-api-loader";
 const loader = new Loader({
-  apiKey: "AIzaSyDiP_G-lzOY2kdw0UaTIlw-0IyYBP-4glg",
+  apiKey: "AIzaSyBbDfrPKMdXXJ4i1TVofmhrJOG7nsPDz0U",
   version: "weekly",
   libraries: ["places", "maps"],
 });
 
 const AddressInput = () => {
   const mapRef = useRef();
+  const gmapRef = useRef();
   const form = useFormContext();
   const values = form.getValues();
-  const address = "";
-  useEffect(() => {
-    setTimeout(() => {
-      console.log("mapRef", mapRef);
-      const gmap = new window.google.maps.Map(mapRef.current, {
-        center: address
-          ? address?.geometry.location
-          : {
-              lat: 42.8756504,
-              lng: 74.5910862,
-            },
-        zoom: 13,
-      });
-      console.log("gmap", gmap);
-      gmap.addListener("click", (e) => {
-        console.log("click e: ", e);
-        const lat = e.latLng.lat();
-        const lng = e.latLng.lng();
-      });
-    }, 1000);
-  }, []);
+  let address = "";
+  try {
+    address = JSON.parse(values["address"] || "") || "";
+  } catch (err) {}
 
-  const { ref: materialRef } = usePlacesWidget({
-    apiKey: "AIzaSyDiP_G-lzOY2kdw0UaTIlw-0IyYBP-4glg",
-    inputAutocompleteValue: address?.formatted_address,
+  const placesService = usePlacesService({});
+
+  const { ref: materialRef, autocompleteRef } = usePlacesWidget({
+    apiKey: "AIzaSyBbDfrPKMdXXJ4i1TVofmhrJOG7nsPDz0U",
+    inputAutocompleteValue: address.formatted_address,
     onPlaceSelected: (place) => {
       form.setValue("address", JSON.stringify(place));
 
@@ -61,14 +47,67 @@ const AddressInput = () => {
       // form.formState.isDirty = true;
       form.trigger("address");
       form.trigger("documents");
+      const lat = place?.geometry?.location?.lat();
+      const lng = place?.geometry?.location?.lng();
+      gmapRef.current?.setCenter({ lat, lng });
+      console.log("gmapRef", gmapRef.current?.setCenter);
     },
   });
+
+  const findPlaceByCoords = (lat, lng) => {
+    let geocoder = new window.google.maps.Geocoder();
+    geocoder.geocode(
+      {
+        latLng: { lat, lng },
+      },
+      (cb) => {
+        console.log("cb?", cb);
+        if (!cb?.length) {
+          return;
+        }
+        form.setValue("address", JSON.stringify(cb[0]));
+
+        form.control._updateFormState({
+          dirtyFields: { documents: true },
+          isDirty: true,
+          isValid: true,
+        });
+        // form.formState.isDirty = true;
+        form.trigger("address");
+        form.trigger("documents");
+        materialRef.current.value = cb[0].formatted_address;
+      }
+    );
+  };
+
+  useEffect(() => {
+    const gmap = new window.google.maps.Map(mapRef.current, {
+      center: address
+        ? address.geometry.location
+        : {
+            lat: 42.8756504,
+            lng: 74.5910862,
+          },
+      zoom: 13,
+    });
+
+    gmap.addListener("click", (e) => {
+      console.log("click e: ", e);
+      const lat = e.latLng.lat();
+      const lng = e.latLng.lng();
+      findPlaceByCoords(lat, lng);
+      // findPlaceByCoords(lat, lng);
+
+      // console.log('geocoder', geocoder)
+    });
+    gmapRef.current = gmap;
+  }, []);
 
   return (
     <>
       <TextField
         key={address}
-        defaultValue={address?.formatted_address}
+        defaultValue={address.formatted_address}
         placeholder="Введите адрес"
         label="Введите адрес"
         inputRef={materialRef}
