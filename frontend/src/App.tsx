@@ -40,6 +40,20 @@ export const App = () => {
       i18nProvider={i18nProvider}
     >
       <Resource
+        name="owner"
+        create={OwnerCreate}
+        list={OwnerList}
+        edit={OwnerEdit}
+        show={ShowGuesser}
+      />
+      <Resource
+        name="realty"
+        create={RealtyCreate}
+        list={RealtyList}
+        edit={RealtyEdit}
+        show={RealtyShow}
+      />
+      <Resource
         name="user"
         list={UserList}
         create={UserCreate}
@@ -106,21 +120,6 @@ export const App = () => {
           />
         </>
       )}
-
-      <Resource
-        name="owner"
-        create={OwnerCreate}
-        list={OwnerList}
-        edit={OwnerEdit}
-        show={ShowGuesser}
-      />
-      <Resource
-        name="realty"
-        create={RealtyCreate}
-        list={RealtyList}
-        edit={RealtyEdit}
-        show={RealtyShow}
-      />
     </Admin>
   );
 };
