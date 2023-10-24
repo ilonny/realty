@@ -11,10 +11,12 @@ import {
 import authProvider from "../authProvider";
 import React, { useEffect, useRef, useState } from "react";
 import { usePlacesWidget } from "react-google-autocomplete";
+import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
 import { useFormContext } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import { Loader } from "@googlemaps/js-api-loader";
+
 const loader = new Loader({
   apiKey: "AIzaSyBbDfrPKMdXXJ4i1TVofmhrJOG7nsPDz0U",
   version: "weekly",
