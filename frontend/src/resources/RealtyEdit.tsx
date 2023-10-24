@@ -38,6 +38,7 @@ const AddressInput = () => {
   const { ref: materialRef, autocompleteRef } = usePlacesWidget({
     apiKey: "AIzaSyBbDfrPKMdXXJ4i1TVofmhrJOG7nsPDz0U",
     inputAutocompleteValue: address.formatted_address,
+    options: {},
     onPlaceSelected: (place) => {
       form.setValue("address", JSON.stringify(place));
 
@@ -111,7 +112,7 @@ const AddressInput = () => {
         key={address}
         defaultValue={address.formatted_address}
         placeholder="Введите адрес"
-        label="Введите адрес"
+        label="Выберите адрес на карте"
         inputRef={materialRef}
         fullWidth
       />

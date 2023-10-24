@@ -109,7 +109,7 @@ const AddressInput = () => {
         key={address}
         defaultValue={address.formatted_address}
         placeholder="Введите адрес"
-        label="Введите адрес"
+        label="Выберите адрес на карте"
         inputRef={materialRef}
         fullWidth
       />

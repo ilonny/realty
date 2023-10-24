@@ -46,67 +46,72 @@ export const App = () => {
         edit={UserEdit}
         show={UserShow}
       />
-      <Resource
-        name="district"
-        create={DistrcitCreate}
-        list={ListGuesser}
-        edit={EditGuesser}
-        show={ShowGuesser}
-      />
-      <Resource
-        name="series"
-        create={DistrcitCreate}
-        list={ListGuesser}
-        edit={EditGuesser}
-        show={ShowGuesser}
-      />
-      <Resource
-        name="rooms"
-        create={DistrcitCreate}
-        list={ListGuesser}
-        edit={EditGuesser}
-        show={ShowGuesser}
-      />
-      <Resource
-        name="state"
-        create={DistrcitCreate}
-        list={ListGuesser}
-        edit={EditGuesser}
-        show={ShowGuesser}
-      />
-      <Resource
-        name="type"
-        create={DistrcitCreate}
-        list={ListGuesser}
-        edit={EditGuesser}
-        show={ShowGuesser}
-      />
-      <Resource
-        name="category"
-        create={DistrcitCreate}
-        list={ListGuesser}
-        edit={EditGuesser}
-        show={ShowGuesser}
-      />
+      {isAdmin && (
+        <>
+          <Resource
+            name="district"
+            create={DistrcitCreate}
+            list={ListGuesser}
+            edit={EditGuesser}
+            show={ShowGuesser}
+          />
+          <Resource
+            name="series"
+            create={DistrcitCreate}
+            list={ListGuesser}
+            edit={EditGuesser}
+            show={ShowGuesser}
+          />
+          <Resource
+            name="rooms"
+            create={DistrcitCreate}
+            list={ListGuesser}
+            edit={EditGuesser}
+            show={ShowGuesser}
+          />
+          <Resource
+            name="state"
+            create={DistrcitCreate}
+            list={ListGuesser}
+            edit={EditGuesser}
+            show={ShowGuesser}
+          />
+          <Resource
+            name="type"
+            create={DistrcitCreate}
+            list={ListGuesser}
+            edit={EditGuesser}
+            show={ShowGuesser}
+          />
+          <Resource
+            name="category"
+            create={DistrcitCreate}
+            list={ListGuesser}
+            edit={EditGuesser}
+            show={ShowGuesser}
+          />
+          <Resource
+            name="developer"
+            create={DistrcitCreate}
+            list={ListGuesser}
+            edit={EditGuesser}
+            show={ShowGuesser}
+          />
+          <Resource
+            name="apartment_complex"
+            create={DistrcitCreate}
+            list={ListGuesser}
+            edit={EditGuesser}
+            show={ShowGuesser}
+          />
+        </>
+      )}
+
       <Resource
         name="owner"
         create={OwnerCreate}
         list={OwnerList}
         edit={OwnerEdit}
-        show={ShowGuesser}
-      />
-      <Resource
-        name="developer"
-        create={DistrcitCreate}
-        list={ListGuesser}
-        edit={EditGuesser}
-        show={ShowGuesser}
-      />
-      <Resource
-        name="apartment_complex"
-        create={DistrcitCreate}
-        list={ListGuesser}
-        edit={EditGuesser}
         show={ShowGuesser}
       />
       <Resource
