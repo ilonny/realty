@@ -1,6 +1,7 @@
 import simpleRestProvider from "ra-data-simple-rest";
 import { DataProvider, combineDataProviders, fetchUtils } from "react-admin";
 import { stringify } from "query-string";
+import authProvider from "./authProvider";
 const sDataProvider = simpleRestProvider(import.meta.env.VITE_SIMPLE_REST_URL);
 
 const apiUrl = import.meta.env.VITE_SIMPLE_REST_URL;
@@ -79,7 +80,29 @@ export const dataProvider: DataProvider = {
     switch (resource) {
       case "user":
         const users = await httpClient("/user/protected/user-list");
-        return { data: users.json, total: users.json.length };
+        try {
+          const user = JSON.parse(localStorage.getItem("user"));
+          if (user.role === "admin") {
+            return { data: users.json, total: users.json.length };
+          } else {
+            return {
+              data: users.json.filter((u) => u.id === user.id),
+              total: users.json.filter((u) => u.id === user.id).length,
+            };
+          }
+        } catch (err) {
+          return { data: users.json, total: users.json.length };
+        }
+        authProvider.getIdentity().then((user) => {
+          if (user.role === "admin") {
+            return { data: users.json, total: users.json.length };
+          } else {
+            return {
+              data: users.json.filter((user) => user.id === user.id),
+              total: users.json.filter((user) => user.id === user.id).length,
+            };
+          }
+        });
       default:
         const data = await httpClient("/" + resource);
         if (resource === "realty") {

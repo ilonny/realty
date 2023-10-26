@@ -120,14 +120,22 @@ router.get("/protected/user-list", async function (req, res) {
     });
 
     let list;
-    if (currentUser.role === "admin") {
-        list = await user.findAll({ raw: true });
-    } else {
-        list = await user.findAll({
-            raw: true,
-            where: { id: currentUser.id },
-        });
-    }
+    list = await user.findAll({ raw: true });
+    // if (currentUser.role === "admin") {
+    // } else {
+    //     list = await user.findAll({
+    //         raw: true,
+    //         where: { id: currentUser.id },
+    //     });
+    // }
+    res.json(list);
+    return;
+});
+
+router.get("/protected/user-list-all", async function (req, res) {
+    let list;
+    list = await user.findAll({ raw: true });
+
     res.json(list);
     return;
 });
