@@ -25,4 +25,6 @@ db.realty = require("./realty.js")(sequelize, Sequelize);
 db.owner = require("./owner.js")(sequelize, Sequelize);
 db.developer = require("./developer.js")(sequelize, Sequelize);
 db.apartment_complex = require("./apartment_complex.js")(sequelize, Sequelize);
+db.communication = require("./communication.js")(sequelize, Sequelize);
+db.document = require("./document.js")(sequelize, Sequelize);
 module.exports = db;

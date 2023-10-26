@@ -105,6 +105,13 @@ export const App = () => {
             show={ShowGuesser}
           />
           <Resource
+            name="communication"
+            create={DistrcitCreate}
+            list={ListGuesser}
+            edit={EditGuesser}
+            show={ShowGuesser}
+          />
+          <Resource
             name="developer"
             create={DistrcitCreate}
             list={ListGuesser}

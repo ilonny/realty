@@ -48,7 +48,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     house_floor_number: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.TEXT,
       allowNull: true
     },
     conditions: {
@@ -56,11 +56,11 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     total_area: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.TEXT,
       allowNull: true
     },
     floor: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.TEXT,
       allowNull: true
     },
     documents: {
@@ -68,7 +68,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     rooms_count: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.TEXT,
       allowNull: true
     },
     description_additional: {
@@ -96,6 +96,26 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     apartment_complex_id: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    balcony: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    balcony_glass: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    communication_id: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    document_id: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    main_photo: {
       type: DataTypes.TEXT,
       allowNull: true
     }

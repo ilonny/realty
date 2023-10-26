@@ -7,6 +7,8 @@ import {
   useGetList,
   AutocompleteInput,
   Edit,
+  FormDataConsumer,
+  SelectInput,
 } from "react-admin";
 import authProvider from "../authProvider";
 import React, { useCallback, useEffect, useRef, useState } from "react";
@@ -131,6 +133,8 @@ export const RealtyEdit = () => {
   const ownerData = useGetList("owner");
   const developerData = useGetList("developer");
   const apartment_complexData = useGetList("apartment_complex");
+  const communicationData = useGetList("communication");
+  const documentData = useGetList("document");
   const [userId, setUserId] = useState();
   const [gmapsLoaded, setGmapsLoaded] = useState(false);
 
@@ -155,155 +159,260 @@ export const RealtyEdit = () => {
   return (
     <Edit mutationMode="optimistic">
       <SimpleForm>
-        <TextInput
-          source="agent_id"
-          label="ID агента"
-          hidden
-          hiddenLabel
-          validate={[required()]}
-          fullWidth
-          style={{ display: "none" }}
-          defaultValue={userId}
-        />
-        <TextInput
-          source="name"
-          label="Название"
-          validate={[required()]}
-          fullWidth
-        />
-        <TextInput
-          type="number"
-          source="price"
-          label="Цена"
-          validate={[required()]}
-          fullWidth
-        />
-        <TextInput
-          type="number"
-          source="agent_price"
-          label="Цена на руки для агента"
-          fullWidth
-        />
-        <AutocompleteInput
-          label="Район"
-          source="district_id"
-          choices={districtData.data}
-          optionText="name"
-          optionValue="id"
-          isLoading={districtData.isLoading}
-          fullWidth
-        />
-        <AutocompleteInput
-          label="Комнаты"
-          source="rooms_id"
-          choices={roomsData.data}
-          optionText="name"
-          optionValue="id"
-          isLoading={roomsData.isLoading}
-          fullWidth
-        />
-        <AutocompleteInput
-          label="Серия"
-          source="series_id"
-          choices={seriesData.data}
-          optionText="name"
-          optionValue="id"
-          isLoading={seriesData.isLoading}
-          fullWidth
-        />
-        <AutocompleteInput
-          label="Состояние"
-          source="state_id"
-          choices={stateData.data}
-          optionText="name"
-          optionValue="id"
-          isLoading={stateData.isLoading}
-          fullWidth
-        />
-        <AutocompleteInput
-          label="Тип отношений"
-          source="type_id"
-          choices={typeData.data}
-          optionText="name"
-          optionValue="id"
-          isLoading={typeData.isLoading}
-          fullWidth
-        />
-        <AutocompleteInput
-          label="Категория"
-          source="category_id"
-          choices={categoryData.data}
-          optionText="name"
-          optionValue="id"
-          isLoading={categoryData.isLoading}
-          fullWidth
-        />
-        <TextInput source="description" label="Описание" multiline fullWidth />
-        <TextInput
-          source="house_floor_number"
-          label="Этажей в доме"
-          fullWidth
-        />
-        <TextInput source="total_area" label="Общая площадь" fullWidth />
-        <TextInput source="floor" label="Этаж" fullWidth />
-        <TextInput
-          source="documents"
-          label="Правоустанавливающие документы"
-          fullWidth
-        />
-        <TextInput source="rooms_count" label="Количество комнат" fullWidth />
-        <TextInput
-          source="description_additional"
-          label="Особенности и удобства"
-          fullWidth
-        />
-        <AutocompleteInput
-          label="Собственник"
-          source="owner_id"
-          choices={ownerData.data}
-          optionText="name"
-          optionValue="id"
-          isLoading={ownerData.isLoading}
-          fullWidth
-        />
-        <AutocompleteInput
-          label="Застройщик"
-          source="developer_id"
-          choices={developerData.data}
-          optionText="name"
-          optionValue="id"
-          isLoading={developerData.isLoading}
-          fullWidth
-        />
-        <AutocompleteInput
-          label="Жилой комплекс"
-          source="apartment_complex_id"
-          choices={apartment_complexData.data}
-          optionText="name"
-          optionValue="id"
-          isLoading={apartment_complexData.isLoading}
-          fullWidth
-        />
-        <AddressInput />
-        <br />
-        <br />
-        <ImageInput
-          format={(f) => {
-            try {
-              if (typeof f === "object") {
-                return f;
-              }
-              const res = JSON.parse(f).map((s) => ({
-                src: import.meta.env.VITE_SIMPLE_REST_URL + "/" + s,
-              }));
-              return res;
-            } catch (e) {}
+        <FormDataConsumer>
+          {({ formData }) => {
+            console.log("formData", formData);
+            return (
+              <div>
+                <TextInput
+                  source="agent_id"
+                  label="ID агента"
+                  hidden
+                  hiddenLabel
+                  validate={[required()]}
+                  fullWidth
+                  style={{ display: "none" }}
+                  defaultValue={userId}
+                />
+                <TextInput
+                  source="name"
+                  label="Название"
+                  validate={[required()]}
+                  fullWidth
+                />
+                <AutocompleteInput
+                  label="Категория"
+                  source="category_id"
+                  choices={categoryData.data}
+                  optionText="name"
+                  optionValue="id"
+                  isLoading={categoryData.isLoading}
+                  fullWidth
+                />
+                {formData.category_id != 3 ? (
+                  <AutocompleteInput
+                    label="Серия"
+                    source="series_id"
+                    choices={seriesData.data}
+                    optionText="name"
+                    optionValue="id"
+                    isLoading={seriesData.isLoading}
+                    fullWidth
+                  />
+                ) : (
+                  <></>
+                )}
+                {formData.category_id == 3 ? (
+                  <>
+                    <AutocompleteInput
+                      label="Застройщик"
+                      source="developer_id"
+                      choices={developerData.data}
+                      optionText="name"
+                      optionValue="id"
+                      isLoading={developerData.isLoading}
+                      fullWidth
+                    />
+                    <AutocompleteInput
+                      label="Жилой комплекс"
+                      source="apartment_complex_id"
+                      choices={apartment_complexData.data}
+                      optionText="name"
+                      optionValue="id"
+                      isLoading={apartment_complexData.isLoading}
+                      fullWidth
+                    />
+                  </>
+                ) : (
+                  <></>
+                )}
+                <AutocompleteInput
+                  label="Собственник"
+                  source="owner_id"
+                  choices={ownerData.data}
+                  optionText="name"
+                  optionValue="id"
+                  isLoading={ownerData.isLoading}
+                  fullWidth
+                />
+                <br />
+                <br />
+                <AddressInput />
+                <AutocompleteInput
+                  label="Район"
+                  source="district_id"
+                  choices={districtData.data}
+                  optionText="name"
+                  optionValue="id"
+                  isLoading={districtData.isLoading}
+                  fullWidth
+                />
+                <br />
+                <br />
+                <TextInput
+                  source="total_area"
+                  label="Общая площадь"
+                  fullWidth
+                />
+                {/* <TextInput
+                  source="rooms_count"
+                  label="Количество комнат"
+                  fullWidth
+                /> */}
+                <AutocompleteInput
+                  label="Количество комнат"
+                  source="rooms_id"
+                  choices={roomsData.data}
+                  optionText="name"
+                  optionValue="id"
+                  isLoading={roomsData.isLoading}
+                  fullWidth
+                />
+                <TextInput source="floor" label="Этаж" fullWidth />
+                <TextInput
+                  source="house_floor_number"
+                  label="Этажей в доме"
+                  fullWidth
+                />
+                <SelectInput
+                  label="Балкон"
+                  source="balcony"
+                  optionText="label"
+                  optionValue="value"
+                  fullWidth
+                  choices={[
+                    {
+                      value: "",
+                      label: "Нет",
+                    },
+                    {
+                      value: "balcony",
+                      label: "Балкон",
+                    },
+                    {
+                      value: "loggia",
+                      label: "Лоджия",
+                    },
+                  ]}
+                />
+                <SelectInput
+                  label="Застекление"
+                  source="balcony_glass"
+                  optionText="label"
+                  optionValue="value"
+                  fullWidth
+                  choices={[
+                    {
+                      value: "0",
+                      label: "Нет",
+                    },
+                    {
+                      value: "1",
+                      label: "Да",
+                    },
+                  ]}
+                />
+                <AutocompleteInput
+                  label="Коммуникации"
+                  source="communication_id"
+                  choices={communicationData.data}
+                  optionText="name"
+                  optionValue="id"
+                  isLoading={communicationData.isLoading}
+                  fullWidth
+                />
+                <AutocompleteInput
+                  label="Состояние"
+                  source="state_id"
+                  choices={stateData.data}
+                  optionText="name"
+                  optionValue="id"
+                  isLoading={stateData.isLoading}
+                  fullWidth
+                />
+                <br />
+                <br />
+                <AutocompleteInput
+                  label="Правоустанавливающие документы"
+                  source="document_id"
+                  choices={documentData.data}
+                  optionText="name"
+                  optionValue="id"
+                  isLoading={documentData.isLoading}
+                  fullWidth
+                />
+                <TextInput
+                  type="number"
+                  source="price"
+                  label="Цена"
+                  validate={[required()]}
+                  fullWidth
+                />
+                <TextInput
+                  type="number"
+                  source="agent_price"
+                  label="Цена на руки для агента"
+                  fullWidth
+                />
+                <AutocompleteInput
+                  label="Тип отношений"
+                  source="type_id"
+                  choices={typeData.data}
+                  optionText="name"
+                  optionValue="id"
+                  isLoading={typeData.isLoading}
+                  fullWidth
+                />
+                <TextInput
+                  source="description"
+                  label="Описание"
+                  multiline
+                  fullWidth
+                />
+                <br />
+                <br />
+                <ImageInput
+                  format={(f) => {
+                    console.log("f??? 123", f);
+                    if (f.rawFile) {
+                      return f
+                    }
+                    if (formData.main_photo) {
+                      return {
+                        src:
+                          import.meta.env.VITE_SIMPLE_REST_URL +
+                          "/" +
+                          formData.main_photo,
+                      };
+                    }
+                  }}
+                  source="main_photo"
+                  label="Главное фото"
+                >
+                  <ImageField source="src" title="title" />
+                </ImageInput>
+                <ImageInput
+                  format={(f) => {
+                    try {
+                      if (typeof f === "object") {
+                        return f;
+                      }
+                      const res = JSON.parse(f).map((s) => ({
+                        src: import.meta.env.VITE_SIMPLE_REST_URL + "/" + s,
+                      }));
+                      return res;
+                    } catch (e) {}
+                  }}
+                  source="photos"
+                  label="Галерея фотографий"
+                  multiple
+                >
+                  <ImageField source="src" title="title" />
+                </ImageInput>
+              </div>
+            );
           }}
-          source="photos"
-          multiple
-        >
-          <ImageField source="src" title="title" />
-        </ImageInput>
+        </FormDataConsumer>
       </SimpleForm>
     </Edit>
   );

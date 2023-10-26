@@ -47,12 +47,21 @@ const getFormDataFromParams = (params: any, resource: any) => {
       }
       continue;
     }
+
     if (
       param === "photo" &&
       isNotUndef &&
       typeof params.data[param] === "object"
     ) {
       formData.append("photo", params.data[param].rawFile);
+      continue;
+    }
+    if (
+      param === "main_photo" &&
+      isNotUndef &&
+      typeof params.data[param] === "object"
+    ) {
+      formData.append("main_photo", params.data[param].rawFile);
       continue;
     }
     if (params.data[param] && isNotUndef) {

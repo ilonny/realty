@@ -92,13 +92,19 @@ export const RealtyList = (props) => {
               let photoSrc;
               try {
                 console.log("record", record);
-                photoSrc = JSON.parse(record.photos);
+                // photoSrc = JSON.parse(record.photos);
                 photoSrc =
-                  import.meta.env.VITE_SIMPLE_REST_URL + "/" + photoSrc[0];
+                  import.meta.env.VITE_SIMPLE_REST_URL +
+                  "/" +
+                  record.main_photo;
               } catch (e) {}
               return (
                 <TableCell key={`${id}-${field.props.source}`}>
-                  {photoSrc ? <img src={photoSrc} /> : <p>Нет фото</p>}
+                  {photoSrc ? (
+                    <img style={{ maxWidth: 200 }} src={photoSrc} />
+                  ) : (
+                    <p>Нет фото</p>
+                  )}
                 </TableCell>
               );
             }
