@@ -20,7 +20,8 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "noImplicitAny": false,
-    "strictPropertyInitialization": false
+    "strictPropertyInitialization": false,
+    "useDefineForClassFields": true
   },
   "include": [
     "src"
