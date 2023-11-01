@@ -7,6 +7,7 @@ function App() {
         <HashRouter>
             <Routes>
                 <Route index element={<HomeScreen />} />
+                <Route path={"/sell"} element={<HomeScreen />} />
             </Routes>
         </HashRouter>
     );
