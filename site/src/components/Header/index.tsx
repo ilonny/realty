@@ -141,6 +141,7 @@ const SideBar = styled.div`
 `;
 
 const HeaderWrap = styled.div`
+    background: #fff;
     @media screen and (max-width: 800px) {
         & ${DesktopHeader} {
             display: none;

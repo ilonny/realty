@@ -87,3 +87,23 @@ p {
 .marker-content a{
   color: black;
 }
+
+.chakra-input, .chakra-select {
+  border-color: #eee !important;
+}
+
+.chakra-input:focus-visible,
+.chakra-select:focus-visible,
+.chakra-input[data-focus-visible],
+.chakra-select[data-focus-visible] {
+  box-shadow: 0 0 0 1px #92a6b9 !important;
+}
+
+.chakra-checkbox__control  {
+  background: #eee !important;
+}
+.chakra-checkbox__control[data-checked]  {
+  border-color: #CF1409 !important;
+  background: #CF1409 !important;
+
+}
