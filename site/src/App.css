@@ -52,12 +52,14 @@ p {
 
 /* HTML marker styles */
 .price-tag {
-  background-color: #4285F4;
+  background-color: #fff;
+  box-shadow: 3px 9px 15px -1px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  color: #FFFFFF;
+  color: #222222;
   font-size: 14px;
   padding: 10px 15px;
   position: relative;
+  font-weight: 600;
 }
 
 .price-tag::after {
@@ -70,9 +72,18 @@ p {
   height: 0;
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-top: 8px solid #4285F4;
+  border-top: 8px solid #fff;
+  box-shadow: 3px 9px 15px -1px rgba(0, 0, 0, 0.1);
 }
 
 [class$=api-load-alpha-banner] {
   display: none;
+}
+
+.marker-content {
+  display: flex;
+}
+
+.marker-content a{
+  color: black;
 }

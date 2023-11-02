@@ -161,7 +161,7 @@ export const RealtyEdit = () => {
       <SimpleForm>
         <FormDataConsumer>
           {({ formData }) => {
-            console.log("formData", formData);
+            // console.log("formData", formData);
             return (
               <div>
                 <TextInput
@@ -374,7 +374,7 @@ export const RealtyEdit = () => {
                 <ImageInput
                   format={(f) => {
                     console.log("f??? 123", f);
-                    if (f.rawFile) {
+                    if (f?.rawFile) {
                       return f
                     }
                     if (formData.main_photo) {
