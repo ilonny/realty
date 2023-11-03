@@ -15,7 +15,7 @@ export const Map = () => {
     const mapDivRef = useRef();
     const gmapRef = useRef();
     const markersRef = useRef([]);
-    const { data } = useContext(FilterContext);
+    const { filteredData } = useContext(FilterContext);
     const status = useScript(
         `https://maps.googleapis.com/maps/api/js?key=AIzaSyBbDfrPKMdXXJ4i1TVofmhrJOG7nsPDz0U&v=beta&libraries=marker&callback=Function.prototype`,
         {
@@ -40,11 +40,10 @@ export const Map = () => {
     }, [status]);
 
     useEffect(() => {
-        console.log("effect", gmapsLoaded);
         if (gmapsLoaded) {
             markersRef.current.forEach((m) => m?.setMap(null));
             markersRef.current = [];
-            data?.forEach((r) => {
+            filteredData?.forEach((r) => {
                 const priceTag = document.createElement("div");
                 priceTag.className = "price-tag";
                 priceTag.textContent = "$" + (r.price / 1000).toFixed(2) + "K";
@@ -85,7 +84,7 @@ export const Map = () => {
                 }
             });
         }
-    }, [data, gmapsLoaded]);
+    }, [filteredData, gmapsLoaded]);
 
     return (
         <>

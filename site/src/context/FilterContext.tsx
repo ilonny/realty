@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { API_URL } from "../constants";
 
 export type TCtx = any;
@@ -19,6 +19,7 @@ export const FilterProvider = ({ children }: any) => {
 
     const [loading, setLoading] = useState(false);
 
+    const [idFilter, setIdFilter] = useState("");
     const [districtsFilter, setDistrictsFilter] = useState([]);
     const [seriesFilter, setSeriesFilter] = useState([]);
     const [roomsFilter, setRoomsFilter] = useState([]);
@@ -26,8 +27,7 @@ export const FilterProvider = ({ children }: any) => {
     const [typeFilter, setTypeFilter] = useState([]);
     const [priceMinFilter, setPriceMinFilter] = useState(0);
     const [priceMaxFilter, setPriceMaxFilter] = useState(100000);
-    const [apartmentComplexFilter, setApartmentComplexFilter] =
-        useState([]);
+    const [apartmentComplexFilter, setApartmentComplexFilter] = useState([]);
 
     const [categoryId, setCategoryId] = useState<number>(1);
 
@@ -91,6 +91,19 @@ export const FilterProvider = ({ children }: any) => {
         setCategoryId(undefined);
     }, []);
 
+    const filteredData = useMemo(() => {
+        let result = data || [];
+        if (parseInt(idFilter)) {
+            result = result.filter((r) => r.id == idFilter);
+        }
+        if (Array.isArray(districtsFilter) && districtsFilter?.length) {
+            result = result.filter((realty) => {
+                return districtsFilter.some((f) => f.id == realty.district_id);
+            });
+        }
+        return result;
+    }, [data, idFilter, districtsFilter]);
+
     return (
         <FilterContext.Provider
             value={{
@@ -122,6 +135,9 @@ export const FilterProvider = ({ children }: any) => {
                 apartmentComplex,
                 apartmentComplexFilter,
                 setApartmentComplexFilter,
+                filteredData,
+                idFilter,
+                setIdFilter,
             }}
         >
             {children}

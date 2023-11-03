@@ -1,3 +1,5 @@
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import "./App.css";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import { HomeScreen } from "./pages/home";

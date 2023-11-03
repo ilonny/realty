@@ -52,6 +52,8 @@ const Filters = () => {
         apartmentComplex,
         apartmentComplexFilter,
         setApartmentComplexFilter,
+        idFilter,
+        setIdFilter,
     } = useContext(FilterContext);
     const [districtsSearchString, setDistrictsSearchString] = useState("");
     const [apartmentSearchString, setApartmentSearchString] = useState("");
@@ -117,6 +119,8 @@ const Filters = () => {
                     </FiltersContainer>
                     <FiltersContainer gap={5} paddingTop={0}>
                         <Input
+                            value={idFilter}
+                            onChange={(e) => setIdFilter(e.target.value)}
                             variant="outline"
                             placeholder="Недвижимость ID"
                         />
