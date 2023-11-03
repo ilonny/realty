@@ -17,6 +17,7 @@ const developerController = require("./controllers/developer");
 const apartment_complexController = require("./controllers/apartment_complex");
 const communicationController = require("./controllers/communication");
 const documentController = require("./controllers/document");
+const district_parentController = require("./controllers/district_parent");
 const db = require("./models");
 db.sequelize.sync();
 const port = 3002;
@@ -72,7 +73,7 @@ app.use("/developer", developerController);
 app.use("/apartment_complex", apartment_complexController);
 app.use("/communication", communicationController);
 app.use("/document", documentController);
-
+app.use("/district_parent", district_parentController);
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });

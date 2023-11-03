@@ -54,12 +54,14 @@ const Filters = () => {
         setApartmentComplexFilter,
         idFilter,
         setIdFilter,
+        districtsParent,
     } = useContext(FilterContext);
     const [districtsSearchString, setDistrictsSearchString] = useState("");
     const [apartmentSearchString, setApartmentSearchString] = useState("");
     const [districtsModalOpened, setDistrictsModalOpened] = useState(false);
     const [apartmensModalOpened, setApartmensModalOpened] = useState(false);
     const [chosenDev, setChosenDev] = useState([]);
+    const [chosenDistrictParent, setChosenDistrictParent] = useState([]);
 
     return (
         <>
@@ -191,7 +193,6 @@ const Filters = () => {
                                 );
                             })}
                         </Select>
-                        <Spacer />
                     </FiltersContainer>
                     <FiltersContainer gap={5} paddingTop={0}>
                         <Select
@@ -283,60 +284,133 @@ const Filters = () => {
                         <br />
                         <br />
                         <ModalFiltersContainer>
-                            {districts
-                                .filter((d) => {
-                                    if (!districtsSearchString) {
-                                        return true;
-                                    }
-                                    return d?.name
-                                        ?.toLowerCase()
-                                        .includes(
-                                            districtsSearchString.toLowerCase()
-                                        );
-                                })
-                                .map((district) => {
-                                    return (
-                                        <ModalItemWrapper key={district.id}>
+                            {districtsParent?.map((parent) => {
+                                return (
+                                    <React.Fragment key={parent.id}>
+                                        <ModalItemWrapperBig>
                                             <Checkbox
-                                                isChecked={
-                                                    !!districtsFilter?.find(
-                                                        (d) =>
-                                                            d.id === district.id
-                                                    )
-                                                }
                                                 onChange={() => {
+                                                    setDistrictsFilter(
+                                                        (chosenAparts) => {
+                                                            return chosenAparts.filter(
+                                                                (ap) =>
+                                                                    ap.parent_id !=
+                                                                    parent.id
+                                                            );
+                                                        }
+                                                    );
                                                     if (
-                                                        !!districtsFilter?.find(
-                                                            (d) =>
-                                                                d.id ===
-                                                                district.id
+                                                        chosenDistrictParent.includes(
+                                                            parent.id
                                                         )
                                                     ) {
-                                                        setDistrictsFilter(
-                                                            (f) =>
-                                                                f.filter(
-                                                                    (
-                                                                        oldFilter
-                                                                    ) =>
-                                                                        oldFilter.id !==
-                                                                        district.id
+                                                        setChosenDistrictParent(
+                                                            (d) =>
+                                                                d.filter(
+                                                                    (old) =>
+                                                                        old !==
+                                                                        parent.id
                                                                 )
                                                         );
                                                     } else {
-                                                        setDistrictsFilter(
-                                                            (f) =>
-                                                                f.concat(
-                                                                    district
+                                                        setChosenDistrictParent(
+                                                            (d) =>
+                                                                d.concat(
+                                                                    parent.id
                                                                 )
+                                                        );
+                                                        setDistrictsFilter(
+                                                            (chosenAparts) => {
+                                                                const devAparts =
+                                                                    districts.filter(
+                                                                        (a) =>
+                                                                            a.parent_id ==
+                                                                            parent.id
+                                                                    );
+                                                                console.log(
+                                                                    "devAparts",
+                                                                    devAparts
+                                                                );
+                                                                return chosenAparts.concat(
+                                                                    devAparts
+                                                                );
+                                                            }
                                                         );
                                                     }
                                                 }}
+                                                size={"lg"}
+                                                isChecked={chosenDistrictParent.includes(
+                                                    parent.id
+                                                )}
                                             >
-                                                {district.name}
+                                                {parent.name}
                                             </Checkbox>
-                                        </ModalItemWrapper>
-                                    );
-                                })}
+                                        </ModalItemWrapperBig>
+                                        {districts
+                                            .filter(
+                                                (d) => d.parent_id == parent.id
+                                            )
+                                            .filter((d) => {
+                                                if (!districtsSearchString) {
+                                                    return true;
+                                                }
+                                                return d?.name
+                                                    ?.toLowerCase()
+                                                    .includes(
+                                                        districtsSearchString.toLowerCase()
+                                                    );
+                                            })
+                                            .map((district) => {
+                                                return (
+                                                    <ModalItemWrapper
+                                                        key={district.id}
+                                                    >
+                                                        <Checkbox
+                                                            isChecked={
+                                                                !!districtsFilter?.find(
+                                                                    (d) =>
+                                                                        d.id ===
+                                                                        district.id
+                                                                )
+                                                            }
+                                                            onChange={() => {
+                                                                if (
+                                                                    !!districtsFilter?.find(
+                                                                        (d) =>
+                                                                            d.id ===
+                                                                            district.id
+                                                                    )
+                                                                ) {
+                                                                    setDistrictsFilter(
+                                                                        (f) =>
+                                                                            f.filter(
+                                                                                (
+                                                                                    oldFilter
+                                                                                ) =>
+                                                                                    oldFilter.id !==
+                                                                                    district.id
+                                                                            )
+                                                                    );
+                                                                } else {
+                                                                    setDistrictsFilter(
+                                                                        (f) =>
+                                                                            f.concat(
+                                                                                district
+                                                                            )
+                                                                    );
+                                                                }
+                                                            }}
+                                                        >
+                                                            {district.name}
+                                                        </Checkbox>
+                                                    </ModalItemWrapper>
+                                                );
+                                            })}
+                                        <br />
+                                        <br />
+                                    </React.Fragment>
+                                );
+                            })}
                         </ModalFiltersContainer>
                     </ModalBody>
                     <ModalFooter>
@@ -532,6 +606,7 @@ const FiltersContainer = styled(Flex)`
     padding: 20px;
     background: #fff;
     border-radius: 6px;
+    justify-content: space-between;
     @media screen and (max-width: 800px) {
         flex-wrap: wrap;
     }

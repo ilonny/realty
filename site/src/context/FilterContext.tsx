@@ -10,6 +10,7 @@ export const FilterContext = React.createContext<TCtx>(defaultState);
 export const FilterProvider = ({ children }: any) => {
     const [data, setData] = useState([]);
     const [districts, setDistricts] = useState([]);
+    const [districtsParent, setDistrictsParent] = useState([]);
     const [series, setSeries] = useState([]);
     const [rooms, setRooms] = useState([]);
     const [state, setState] = useState([]);
@@ -81,6 +82,12 @@ export const FilterProvider = ({ children }: any) => {
                 setApartmentComplex(res);
             })
             .finally(() => setLoading(false));
+        fetch(API_URL + "/district_parent")
+            .then((res) => res.json())
+            .then((res) => {
+                setDistrictsParent(res);
+            })
+            .finally(() => setLoading(false));
     }, []);
 
     useEffect(() => {
@@ -138,6 +145,7 @@ export const FilterProvider = ({ children }: any) => {
                 filteredData,
                 idFilter,
                 setIdFilter,
+                districtsParent,
             }}
         >
             {children}

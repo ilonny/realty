@@ -4,6 +4,7 @@ var _category = require("./category");
 var _communication = require("./communication");
 var _developer = require("./developer");
 var _district = require("./district");
+var _district_parent = require("./district_parent");
 var _document = require("./document");
 var _owner = require("./owner");
 var _realty = require("./realty");
@@ -19,6 +20,7 @@ function initModels(sequelize) {
   var communication = _communication(sequelize, DataTypes);
   var developer = _developer(sequelize, DataTypes);
   var district = _district(sequelize, DataTypes);
+  var district_parent = _district_parent(sequelize, DataTypes);
   var document = _document(sequelize, DataTypes);
   var owner = _owner(sequelize, DataTypes);
   var realty = _realty(sequelize, DataTypes);
@@ -35,6 +37,7 @@ function initModels(sequelize) {
     communication,
     developer,
     district,
+    district_parent,
     document,
     owner,
     realty,

@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('district', {
+  return sequelize.define('district_parent', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
@@ -14,14 +14,10 @@ module.exports = function(sequelize, DataTypes) {
     other: {
       type: DataTypes.TEXT,
       allowNull: true
-    },
-    parent_id: {
-      type: DataTypes.TEXT,
-      allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'district',
+    tableName: 'district_parent',
     timestamps: false,
     indexes: [
       {
