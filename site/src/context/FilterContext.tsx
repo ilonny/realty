@@ -22,10 +22,10 @@ export const FilterProvider = ({ children }: any) => {
 
     const [idFilter, setIdFilter] = useState("");
     const [districtsFilter, setDistrictsFilter] = useState([]);
-    const [seriesFilter, setSeriesFilter] = useState([]);
-    const [roomsFilter, setRoomsFilter] = useState([]);
-    const [stateFilter, setStateFilter] = useState([]);
-    const [typeFilter, setTypeFilter] = useState([]);
+    const [seriesFilter, setSeriesFilter] = useState();
+    const [roomsFilter, setRoomsFilter] = useState();
+    const [stateFilter, setStateFilter] = useState();
+    const [typeFilter, setTypeFilter] = useState();
     const [priceMinFilter, setPriceMinFilter] = useState(0);
     const [priceMaxFilter, setPriceMaxFilter] = useState(100000);
     const [apartmentComplexFilter, setApartmentComplexFilter] = useState([]);
@@ -100,6 +100,9 @@ export const FilterProvider = ({ children }: any) => {
 
     const filteredData = useMemo(() => {
         let result = data || [];
+        if (categoryId) {
+            result = result = result.filter((r) => r.category_id == categoryId);
+        }
         if (parseInt(idFilter)) {
             result = result.filter((r) => r.id == idFilter);
         }
@@ -108,8 +111,65 @@ export const FilterProvider = ({ children }: any) => {
                 return districtsFilter.some((f) => f.id == realty.district_id);
             });
         }
+        if (seriesFilter && categoryId == 1) {
+            result = result.filter((realty) => {
+                return realty?.series_id == seriesFilter;
+            });
+        }
+        if (roomsFilter) {
+            console.log("roomsFilter", roomsFilter);
+            result = result.filter((realty) => {
+                return realty?.rooms_id == roomsFilter;
+            });
+        }
+        if (stateFilter) {
+            result = result.filter((realty) => {
+                return realty?.state_id == stateFilter;
+            });
+        }
+        if (typeFilter) {
+            result = result.filter((realty) => {
+                return realty?.type_id == typeFilter;
+            });
+        }
+        if (categoryId == 3 && apartmentComplexFilter) {
+            if (
+                Array.isArray(apartmentComplexFilter) &&
+                apartmentComplexFilter?.length
+            ) {
+                result = result.filter((realty) => {
+                    return apartmentComplexFilter.some(
+                        (f) => f.id == realty.apartment_complex_id
+                    );
+                });
+            }
+        }
+        if (priceMinFilter !== undefined && priceMaxFilter !== undefined) {
+            result = result.filter((realty) => {
+                if (
+                    realty.price >= priceMinFilter &&
+                    realty.price <= priceMaxFilter
+                ) {
+                    return true;
+                }
+                return false;
+            });
+        }
+        console.log("data, result", data, result);
         return result;
-    }, [data, idFilter, districtsFilter]);
+    }, [
+        data,
+        idFilter,
+        districtsFilter,
+        seriesFilter,
+        categoryId,
+        roomsFilter,
+        stateFilter,
+        priceMinFilter,
+        priceMaxFilter,
+        apartmentComplexFilter,
+        typeFilter,
+    ]);
 
     return (
         <FilterContext.Provider

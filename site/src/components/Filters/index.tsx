@@ -82,21 +82,21 @@ const Filters = () => {
                             active={categoryId === 2}
                             onClick={
                                 () => setCategoryId(2)
-                                // setCategoryId((c) => (c === 2 ? null : 2))
-                            }
-                        >
-                            <IconCat2 />
-                            <p>Элитка</p>
-                        </CategoryFilter>
-                        <CategoryFilter
-                            active={categoryId === 3}
-                            onClick={
-                                () => setCategoryId(3)
                                 // setCategoryId((c) => (c === 3 ? null : 3))
                             }
                         >
                             <IconCat3 />
                             <p>Новостройки</p>
+                        </CategoryFilter>
+                        <CategoryFilter
+                            active={categoryId === 3}
+                            onClick={
+                                () => setCategoryId(3)
+                                // setCategoryId((c) => (c === 2 ? null : 2))
+                            }
+                        >
+                            <IconCat2 />
+                            <p>Элитка</p>
                         </CategoryFilter>
                         <CategoryFilter
                             active={categoryId === 4}
@@ -153,7 +153,7 @@ const Filters = () => {
                                 })}
                             </Select>
                         )}
-                        {!!(categoryId == 2) && (
+                        {!!(categoryId == 3) && (
                             <Input
                                 readOnly
                                 placeholder="Жилой комплекс"
@@ -260,7 +260,7 @@ const Filters = () => {
                                 <RangeSliderThumb boxSize={6} index={1} />
                             </RangeSlider>
                         </RangeWrapper>
-                        <SearchButton>Поиск</SearchButton>
+                        {/* <SearchButton>Поиск</SearchButton> */}
                     </FiltersContainer>
                 </div>
             </StyledContent>
@@ -327,10 +327,6 @@ const Filters = () => {
                                                                             a.parent_id ==
                                                                             parent.id
                                                                     );
-                                                                console.log(
-                                                                    "devAparts",
-                                                                    devAparts
-                                                                );
                                                                 return chosenAparts.concat(
                                                                     devAparts
                                                                 );
