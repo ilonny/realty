@@ -235,6 +235,27 @@ router.get("/protected/user", async (req, res) => {
     }
 });
 
+router.get("/get-agents", async (req, res) => {
+    try {
+        const agents = await user.findAll({
+            where: { role: null },
+            raw: true
+        });
+        agents?.forEach((agent) => {
+            delete agent.password;
+            delete agent.access_token;
+            delete agent.role;
+        });
+        res.json(agents);
+    } catch (e) {
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+            trace: e.message,
+        });
+    }
+});
+
 router.get("/get-one", async (req, res) => {
     try {
         const { id } = req.query;

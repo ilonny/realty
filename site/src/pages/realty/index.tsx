@@ -208,7 +208,16 @@ export const RealtyScreen = (props) => {
                                             }
                                         />
                                     )}
-                                <p>Агент: {agentData.name}</p>
+                                <p>
+                                    Агент:{" "}
+                                    {agentData.surname
+                                        ? agentData.surname + " "
+                                        : ""}{" "}
+                                    {agentData.name ? agentData.name + " " : ""}{" "}
+                                    {agentData.thirdname
+                                        ? agentData.thirdname + " "
+                                        : ""}
+                                </p>
                                 <br />
                                 <Flex gap="20px" flexWrap={"wrap"}>
                                     <a href={`tel:${agentData.phone}`}>
@@ -438,7 +447,16 @@ export const RealtyScreen = (props) => {
                                     src={API_URL + "/" + agentData.photo}
                                 />
                             )}
-                            <div className="title">Агент: {agentData.name}</div>
+                            <div className="title">
+                                Агент:{" "}
+                                {agentData.surname
+                                    ? agentData.surname + " "
+                                    : ""}{" "}
+                                {agentData.name ? agentData.name + " " : ""}{" "}
+                                {agentData.thirdname
+                                    ? agentData.thirdname + " "
+                                    : ""}
+                            </div>
                             <div>
                                 <span className="title">Телефон&nbsp;</span>
                                 <span className="text">{agentData.phone}</span>
@@ -550,8 +568,8 @@ const DetailRow = styled.div`
         width: 50%;
     }
     @media screen and (max-width: 480px) {
-      width: 100%;
-  }
+        width: 100%;
+    }
 `;
 
 const TitleWrapper = styled.div`

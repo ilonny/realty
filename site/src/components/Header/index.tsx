@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Flex } from "@chakra-ui/react";
 import { StyledContent } from "../StyledContent";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { styled } from "styled-components";
 import { Colors } from "../../constants";
 import LogoSrc from "../../assets/images/logo.svg";
@@ -10,6 +10,9 @@ import BurgerSrc from "../../assets/images/burger.svg";
 
 export const Header = () => {
     const [sidebarOpened, setSidebarOpened] = useState(false);
+    useEffect(() => {
+        setSidebarOpened(false);
+    }, [window?.location?.hash]);
     return (
         <HeaderWrap>
             <StyledContent>
@@ -19,7 +22,9 @@ export const Header = () => {
                         alignItems="center"
                         minHeight={"90px"}
                     >
-                        <img alt="logo" src={LogoSrc} />
+                        <Link to={"/"}>
+                            <img alt="logo" src={LogoSrc} />
+                        </Link>
                         <Flex gap={"20px"}>
                             <LinksList />
                         </Flex>
@@ -37,15 +42,17 @@ export const Header = () => {
                         >
                             <img src={BurgerSrc} alt="menu opener" />
                         </BurgerButton>
-                        <img
-                            alt="logo"
-                            src={LogoSrc}
-                            style={{
-                                position: "absolute",
-                                left: "50%",
-                                marginLeft: "-40px",
-                            }}
-                        />
+                        <Link to={"/"}>
+                            <img
+                                alt="logo"
+                                src={LogoSrc}
+                                style={{
+                                    position: "absolute",
+                                    left: "50%",
+                                    marginLeft: "-40px",
+                                }}
+                            />
+                        </Link>
                         <PhoneLink />
                     </Flex>
                 </TabletHeader>
@@ -134,6 +141,7 @@ const SideBar = styled.div`
     height: 100%;
     padding: 10px;
     background: white;
+    z-index: 1;
     & a {
         margin-bottom: 20px;
         display: block;

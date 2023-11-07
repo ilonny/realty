@@ -1,4 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
+import { Spinner } from "@chakra-ui/react";
 import { Loader } from "@googlemaps/js-api-loader";
 import styled from "styled-components";
 import { useScript } from "@uidotdev/usehooks";
@@ -27,18 +28,20 @@ export const Map = ({ realty }) => {
     useEffect(() => {
         if (status === "ready") {
             setTimeout(() => {
-                if (!gmapRef.current) {
-                    const gmap = new window.google.maps.Map(
-                        mapDivRef?.current,
-                        {
-                            center: defaultLatLng,
-                            zoom: 13,
-                            mapId: "DEMO_MAP_ID",
-                        }
-                    );
-                    gmapRef.current = gmap;
-                }
-                setGmapsLoaded(true);
+                try {
+                    if (!gmapRef.current) {
+                        const gmap = new window.google.maps.Map(
+                            mapDivRef?.current,
+                            {
+                                center: defaultLatLng,
+                                zoom: 13,
+                                mapId: "DEMO_MAP_ID",
+                            }
+                        );
+                        gmapRef.current = gmap;
+                    }
+                    setGmapsLoaded(true);
+                } catch (e) {}
             }, 3000);
         }
     }, [status]);
@@ -68,13 +71,14 @@ export const Map = ({ realty }) => {
                         infoWindow.setContent(
                             `
                             <div class="marker-content">
-                            <a href="#">
+                            <a href="/#/realty/${r.id}">
                                 ${
-                                    !!r.main_photo &&
-                                    `
-                                <img style="width: 70px" src=${
+                                    !!r.main_photo
+                                        ? `
+                                <img style="width: 70px" src="${
                                     API_URL + "/" + r.main_photo
-                                } />`
+                                }" />`
+                                        : ``
                                 }
                                 <p>${r.name}</p>
                                 </a>
@@ -92,7 +96,9 @@ export const Map = ({ realty }) => {
 
     return (
         <>
-            <MapWrapper ref={mapDivRef} id="map" />
+            <MapWrapper ref={mapDivRef} id="map">
+                <Spinner size="xl" />
+            </MapWrapper>
         </>
     );
 };
@@ -100,4 +106,7 @@ export const Map = ({ realty }) => {
 const MapWrapper = styled.div`
     width: 100%;
     height: 350px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `;
