@@ -171,6 +171,17 @@ export const OwnerEdit = () => {
                   console.log("e", e);
                 }
               }
+
+              if (formData?.price) {
+                try {
+                  realtyFiltered = realtyFiltered.filter((realty) => {
+                    if (realty?.price <= formData?.price) {
+                      return true;
+                    }
+                    return false;
+                  });
+                } catch (e) {}
+              }
               // setRealtyFilteredState(realtyFiltered || []);
             }
             // }, 1000);
