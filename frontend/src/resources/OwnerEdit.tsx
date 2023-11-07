@@ -208,6 +208,9 @@ export const OwnerEdit = () => {
                 />
                 <SelectArrayInput
                   format={(value) => {
+                    if (value === null) {
+                      return [];
+                    }
                     if (Array.isArray(value)) {
                       return value;
                     }
@@ -229,6 +232,9 @@ export const OwnerEdit = () => {
                 >
                   <SelectArrayInput
                     format={(value) => {
+                      if (value === null) {
+                        return [];
+                      }
                       if (Array.isArray(value)) {
                         return value;
                       }
@@ -243,6 +249,9 @@ export const OwnerEdit = () => {
                 </ReferenceInput>
                 <AutocompleteArrayInput
                   format={(value) => {
+                    if (value === null) {
+                      return [];
+                    }
                     if (Array.isArray(value)) {
                       return value;
                     }
@@ -258,6 +267,9 @@ export const OwnerEdit = () => {
                 />
                 <AutocompleteArrayInput
                   format={(value) => {
+                    if (value === null) {
+                      return [];
+                    }
                     if (Array.isArray(value)) {
                       return value;
                     }
