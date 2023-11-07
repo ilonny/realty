@@ -10,12 +10,13 @@ const defaultLatLng = {
     lng: 74.5910862,
 };
 
-export const Map = () => {
+export const Map = ({ realty }) => {
     const [gmapsLoaded, setGmapsLoaded] = useState(false);
     const mapDivRef = useRef();
     const gmapRef = useRef();
     const markersRef = useRef([]);
     const { filteredData } = useContext(FilterContext);
+    const mapData = realty ? [realty] : filteredData;
     const status = useScript(
         `https://maps.googleapis.com/maps/api/js?key=AIzaSyBbDfrPKMdXXJ4i1TVofmhrJOG7nsPDz0U&v=beta&libraries=marker&callback=Function.prototype`,
         {
@@ -27,11 +28,14 @@ export const Map = () => {
         if (status === "ready") {
             setTimeout(() => {
                 if (!gmapRef.current) {
-                    const gmap = new window.google.maps.Map(mapDivRef?.current, {
-                        center: defaultLatLng,
-                        zoom: 13,
-                        mapId: "DEMO_MAP_ID",
-                    });
+                    const gmap = new window.google.maps.Map(
+                        mapDivRef?.current,
+                        {
+                            center: defaultLatLng,
+                            zoom: 13,
+                            mapId: "DEMO_MAP_ID",
+                        }
+                    );
                     gmapRef.current = gmap;
                 }
                 setGmapsLoaded(true);
@@ -43,7 +47,7 @@ export const Map = () => {
         if (gmapsLoaded) {
             markersRef.current.forEach((m) => m?.setMap(null));
             markersRef.current = [];
-            filteredData?.forEach((r) => {
+            mapData?.forEach((r) => {
                 const priceTag = document.createElement("div");
                 priceTag.className = "price-tag";
                 priceTag.textContent = "$" + (r.price / 1000).toFixed(2) + "K";
@@ -84,7 +88,7 @@ export const Map = () => {
                 }
             });
         }
-    }, [filteredData, gmapsLoaded]);
+    }, [mapData, gmapsLoaded]);
 
     return (
         <>
