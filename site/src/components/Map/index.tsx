@@ -27,7 +27,7 @@ export const Map = () => {
         if (status === "ready") {
             setTimeout(() => {
                 if (!gmapRef.current) {
-                    const gmap = new window.google.maps.Map(mapDivRef.current, {
+                    const gmap = new window.google.maps.Map(mapDivRef?.current, {
                         center: defaultLatLng,
                         zoom: 13,
                         mapId: "DEMO_MAP_ID",

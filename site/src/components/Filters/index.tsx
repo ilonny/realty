@@ -616,7 +616,7 @@ const RangeWrapper = styled.div`
     }
 `;
 
-const SearchButton = styled.button`
+export const SearchButton = styled.button`
     width: 100%;
     max-width: 250px;
     height: 40px;

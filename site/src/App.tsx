@@ -5,6 +5,7 @@ import { HashRouter, Route, Routes } from "react-router-dom";
 import { HomeScreen } from "./pages/home";
 import { FilterProvider } from "./context/FilterContext";
 import { ChakraProvider } from "@chakra-ui/react";
+import { RealtyScreen } from "./pages/realty";
 
 function App() {
     return (
@@ -13,6 +14,7 @@ function App() {
                 <HashRouter>
                     <Routes>
                         <Route index element={<HomeScreen />} />
+                        <Route path={"/realty/:id"} element={<RealtyScreen />} />
                         <Route path={"/sell"} element={<HomeScreen />} />
                     </Routes>
                 </HashRouter>

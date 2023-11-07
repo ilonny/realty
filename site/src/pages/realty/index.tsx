@@ -1,73 +1,142 @@
-import { useContext } from "react";
-import Slider from "react-slick";
-import { StyledContent } from "../StyledContent";
-import { FilterContext } from "../../context/FilterContext";
-import styled from "styled-components";
+import "react-image-gallery/styles/css/image-gallery.css";
 import { Flex, Spacer } from "@chakra-ui/react";
+import { MainLayout } from "../../components/MainLayout";
+import { RealtyButton, RealtyList } from "../../components/RealtyList";
+import { useParams } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
 import { API_URL, Colors } from "../../constants";
-import { Link } from "react-router-dom";
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbSeparator,
+} from "@chakra-ui/react";
+import { StyledContent } from "../../components/StyledContent";
+import styled from "styled-components";
+import ImageGallery from "react-image-gallery";
+import { SearchButton } from "../../components/Filters";
 
-const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-};
+export const RealtyScreen = (props) => {
+    let { id } = useParams();
+    console.log("RealtyScreen", id);
 
-export const RealtyList = () => {
-    const { filteredData } = useContext(FilterContext);
-    if (!filteredData || !filteredData?.length) {
-        return null;
+    const [data, setData] = useState<any>();
+    const [agentData, setAgentData] = useState<any>();
+
+    useEffect(() => {
+        if (!id) {
+            return;
+        }
+        fetch(API_URL + "/realty/get-one?id=" + id)
+            .then((res) => res.json())
+            .then((res) => {
+                setData(res);
+                fetch(API_URL + "/user/get-one?id=" + res.agent_id)
+                    .then((res) => res.json())
+                    .then((res) => {
+                        setAgentData(res);
+                    });
+            });
+    }, [id]);
+
+    const address = useMemo(() => {
+        try {
+            return JSON.parse(data.address);
+        } catch (e) {
+            return;
+        }
+    }, [data]);
+
+    const photos = useMemo(() => {
+        if (!data) {
+            return [];
+        }
+        const res: any = [];
+        if (data.main_photo) {
+            res.push(API_URL + "/" + data.main_photo);
+        }
+        let gallery;
+        try {
+            gallery = JSON.parse(data.photos);
+        } catch (e) {}
+        if (Array.isArray(gallery)) {
+            gallery.forEach((g) => {
+                res.push(API_URL + "/" + g);
+            });
+        }
+        return Array.from(new Set(res));
+    }, [data]);
+
+    if (!data) {
+        return <></>;
     }
+
+    console.log("data", data);
+    console.log("address", address);
+    console.log("photos", photos);
     return (
-        <StyledContent>
-            <Wrapper wrap="wrap">
-                {filteredData.map((realty) => {
-                    let photos = [];
-                    if (realty.main_photo) {
-                        photos.push(API_URL + "/" + realty.main_photo);
-                    }
-                    try {
-                        let gallery = JSON.parse(realty.photos);
-                        photos = photos.concat(
-                            gallery.map((g) => API_URL + "/" + g)
-                        );
-                    } catch (e) {}
-                    return (
-                        <RealtyWrapper
-                            key={realty.id}
-                            to={`/realty/${realty.id}`}
-                        >
-                            <RealtyContent>
-                                {!!photos.length && (
-                                    <Slider {...settings}>
-                                        {photos.map((p) => {
-                                            return (
-                                                <RealtyImageWrapper key={p}>
-                                                    <img
-                                                        src={p}
-                                                        style={{
-                                                            maxWidth: "100%",
-                                                        }}
-                                                    />
-                                                </RealtyImageWrapper>
-                                            );
-                                        })}
-                                    </Slider>
-                                )}
-                                <RealtyContentPadding>
-                                    <RealtyTitle>{realty.name}</RealtyTitle>
-                                    <RealtyPrice>
-                                        ${(realty.price / 1000).toFixed(3)}
-                                    </RealtyPrice>
-                                    <RealtyText>
-                                        {realty?.description?.slice(0, 100)} ...
-                                    </RealtyText>
-                                    <br />
-                                    <hr />
-                                    <br />
-                                    <Flex gap="20px">
+        <>
+            <MainLayout>
+                <StyledContent>
+                    <Spacer height={10} />
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <BreadcrumbLink href="/">Главная</BreadcrumbLink>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem isCurrentPage>
+                            <BreadcrumbLink href="#">
+                                {data.name}
+                            </BreadcrumbLink>
+                        </BreadcrumbItem>
+                    </Breadcrumb>
+                    <Spacer height={5} />
+                    <Flex
+                        justifyContent={"space-between"}
+                        align="center"
+                        flexWrap={"wrap"}
+                    >
+                        <TitleWrapper>
+                            <h1>{data.name}</h1>
+                            <div className="address">
+                                <Flex alignItems="center" gap="5px">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path d="M12 2c3.196 0 6 2.618 6 5.602 0 3.093-2.493 7.132-6 12.661-3.507-5.529-6-9.568-6-12.661 0-2.984 2.804-5.602 6-5.602m0-2c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z" />
+                                    </svg>
+                                    <span>{address.formatted_address}</span>
+                                </Flex>
+                            </div>
+                        </TitleWrapper>
+                        <PriceTitle>
+                            <p>${(data?.price / 1000).toFixed(3)}</p>
+                        </PriceTitle>
+                    </Flex>
+                    <Spacer height={5} />
+                    <Flex
+                        justifyContent={"space-between"}
+                        align="flex-start"
+                        flexWrap={"wrap"}
+                    >
+                        <GalleryWrap>
+                            <ImageGallery
+                                items={photos.map((p) => {
+                                    return {
+                                        original: p,
+                                        thumbnail: p,
+                                    };
+                                })}
+                            />
+                        </GalleryWrap>
+                        {!!agentData && (
+                            <InfoWrap>
+                                <p>Агент: {agentData.name}</p>
+                                <br />
+                                <Flex gap="20px">
+                                    <a href={`tel:${agentData.phone}`}>
                                         <RealtyButton>
                                             <svg
                                                 height="15px"
@@ -111,6 +180,10 @@ export const RealtyList = () => {
                                             </svg>
                                             <span>Звонок</span>
                                         </RealtyButton>
+                                    </a>
+                                    <a
+                                        href={`https://wa.me/${agentData.phone}`}
+                                    >
                                         <RealtyButton>
                                             <svg
                                                 height="15px"
@@ -147,90 +220,72 @@ export const RealtyList = () => {
                                                 </g>
                                             </svg>
                                         </RealtyButton>
-                                    </Flex>
-                                </RealtyContentPadding>
-                            </RealtyContent>
-                        </RealtyWrapper>
-                    );
-                })}
-            </Wrapper>
-        </StyledContent>
+                                    </a>
+                                </Flex>
+                            </InfoWrap>
+                        )}
+                    </Flex>
+                    <Spacer height={10} />
+                    <InfoWrapBottom>
+                        <div className="title">Описание</div>
+                        <div className="text">{data.description}</div>
+                    </InfoWrapBottom>
+                </StyledContent>
+            </MainLayout>
+        </>
     );
 };
 
-const Wrapper = styled(Flex)``;
-
-const RealtyWrapper = styled(Link)`
-    width: 100%;
-    max-width: 33.33333%;
-    padding: 10px;
-    @media screen and (max-width: 800px) {
-        max-width: 50%;
+const TitleWrapper = styled.div`
+    h1 {
+        font-size: 35px;
+        font-weight: 500;
     }
-    @media screen and (max-width: 400px) {
+    .address {
+        font-size: 14px;
+        color: #5c727d;
+        svg {
+            width: 12px;
+            height: 12px;
+            fill: #5c727d;
+        }
+    }
+`;
+
+const PriceTitle = styled.div`
+    color: ${Colors.MAIN_RED};
+    font-size: 30px;
+    font-weight: 500;
+`;
+
+const GalleryWrap = styled.div`
+    max-width: 800px;
+`;
+
+const InfoWrap = styled.div`
+    background: #fff;
+    padding: 20px;
+    max-width: 200px;
+    width: 100%;
+    @media screen and (max-width: 900px) {
         max-width: initial;
     }
 `;
 
-const RealtyContent = styled.div`
-    background-color: #fff;
-`;
-
-const RealtyContentPadding = styled.div`
+const InfoWrapBottom = styled.div`
+    background: #fff;
     padding: 20px;
-`;
-
-const RealtyImageWrapper = styled.div`
     width: 100%;
-    height: 200px;
-    overflow: hidden;
-    & img {
-        width: 100%;
-    }
-`;
-
-const RealtyTitle = styled.a`
-    font-size: 18px;
-    font-weight: bold;
-    color: ${Colors.MAIN_BLACK};
-    margin-bottom: 5px;
-    transition: all 250ms ease;
-    cursor: pointer;
-    &:hover {
-        color: ${Colors.MAIN_RED};
-    }
-`;
-
-const RealtyPrice = styled.p`
-    color: ${Colors.MAIN_RED};
-    font-weight: bold;
-    margin-bottom: 5px;
-`;
-
-const RealtyText = styled.p`
-    color: #5c727d;
-`;
-
-export const RealtyButton = styled.button`
-    height: 100%;
-    background: #cf14091a;
-    padding: 5px 15px;
-    color: ${Colors.MAIN_RED};
-    border-radius: 5px;
     font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    & svg {
-        fill: ${Colors.MAIN_RED};
-        transition: all 250ms ease;
+    .title {
+      font-weight: 500;
+      font-size: 16px;
+      margin-bottom: 15px;
     }
-    transition: all 250ms ease;
-    &:hover {
-        color: #fff;
-        background: ${Colors.MAIN_RED};
-        & svg {
-            fill: #fff;
-        }
+    .text {
+      #5c727d
+    }
+    .bold {
+      font-weight: 500;
     }
 `;

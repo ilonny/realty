@@ -235,6 +235,26 @@ router.get("/protected/user", async (req, res) => {
     }
 });
 
+router.get("/get-one", async (req, res) => {
+    try {
+        const { id } = req.query;
+        const existedUser = await user.findOne({
+            where: { id },
+            raw: true,
+        });
+        delete existedUser.password;
+        delete existedUser.access_token;
+        delete existedUser.role;
+        res.json(existedUser);
+    } catch (e) {
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+            trace: e.message,
+        });
+    }
+});
+
 router.post("/protected/user-update", async (req, res) => {
     try {
         const { id, disabled } = req.body;
