@@ -22,6 +22,26 @@ module.exports = function(sequelize, DataTypes) {
     agent_id: {
       type: DataTypes.TEXT,
       allowNull: true
+    },
+    category_id: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    price: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    state_id: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    district_id: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    apartment_complex_id: {
+      type: DataTypes.TEXT,
+      allowNull: true
     }
   }, {
     sequelize,
