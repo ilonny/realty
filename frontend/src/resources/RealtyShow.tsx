@@ -21,7 +21,7 @@ import authProvider from "../authProvider";
 
 const ImagesShow = () => {
   const { record } = useShowContext();
-  console.log("record", record);
+  // console.log("record", record);
   if (!record.photos) return null;
   try {
     const photos = JSON.parse(record.photos).map((p) => {

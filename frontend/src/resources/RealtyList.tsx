@@ -17,9 +17,16 @@ import {
   WrapperField,
   EditButton,
   ShowButton,
+  SelectInput,
+  SavedQueriesList,
+  FilterLiveSearch,
+  FilterList,
+  FilterListItem,
 } from "react-admin";
 import authProvider from "../authProvider";
-import { Chip } from "@mui/material";
+import { Chip, Card, CardContent } from "@mui/material";
+import MailIcon from "@mui/icons-material/MailOutline";
+import CategoryIcon from "@mui/icons-material/LocalOffer";
 import { TableCell, TableRow, Checkbox } from "@mui/material";
 
 const QuickFilter = ({ label }) => {
@@ -40,28 +47,46 @@ export const RealtyList = (props) => {
     return null;
   }
 
-  const filters = [
-    <QuickFilter source="user_id" label="Только мои" defaultValue={userId} />,
-  ];
+  const PostFilterSidebar = () => (
+    <Card sx={{ order: -1, mr: 2, mt: 0, width: 200 }}>
+      <CardContent>
+        <FilterList label="Категория" icon={null}>
+          <FilterListItem label="Вторичная" value={{ category_id: 1 }} />
+          <FilterListItem label="Новостройка" value={{ category_id: 2 }} />
+          <FilterListItem label="Элитка" value={{ category_id: 3 }} />
+          <FilterListItem label="Дома и участки" value={{ category_id: 4 }} />
+          <FilterListItem label="Коммерческая" value={{ category_id: 5 }} />
+        </FilterList>
+        <FilterLiveSearch label="Недвижимость ID" />
+        {/* <QuickFilter
+          key={1}
+          source="user_id"
+          label="Только мои"
+          defaultValue={userId}
+        /> */}
+        {/* <FilterList label="Subscribed to newsletter" icon={<MailIcon />}>
+          <FilterListItem label="Yes" value={{ has_newsletter: true }} />
+          <FilterListItem label="No" value={{ has_newsletter: false }} />
+        </FilterList>
+        <FilterList label="Category" icon={<CategoryIcon />}>
+          <FilterListItem label="Tests" value={{ category: "tests" }} />
+          <FilterListItem label="News" value={{ category: "news" }} />
+          <FilterListItem label="Deals" value={{ category: "deals" }} />
+          <FilterListItem label="Tutorials" value={{ category: "tutorials" }} />
+        </FilterList> */}
+      </CardContent>
+    </Card>
+  );
 
-  const ImagesShow = (props) => {
-    // const { record } = useListContext();
-    console.log("props", props);
-    return;
-    if (!record.photos) return null;
-    try {
-      const photos = JSON.parse(record.photos).map((p) => {
-        return {
-          src: import.meta.env.VITE_SIMPLE_REST_URL + "/" + p,
-        };
-      });
-      return photos.map((p) => {
-        return <img src={p.src} style={{ maxWidth: 500 }} />;
-      });
-    } catch (err) {
-      return <></>;
-    }
-  };
+  const filters: any = [
+    <QuickFilter
+      key={1}
+      source="user_id"
+      label="Только мои"
+      defaultValue={userId}
+    />,
+    <SelectInput key={2} source="category_id" label="Категория" />,
+  ];
 
   const MyDatagridRow = ({
     record,
@@ -91,7 +116,7 @@ export const RealtyList = (props) => {
             if (field.props.source === "photo") {
               let photoSrc;
               try {
-                console.log("record", record);
+                // console.log("record", record);
                 // photoSrc = JSON.parse(record.photos);
                 photoSrc =
                   import.meta.env.VITE_SIMPLE_REST_URL +
@@ -128,7 +153,7 @@ export const RealtyList = (props) => {
   );
 
   return (
-    <List filters={filters}>
+    <List aside={<PostFilterSidebar />}>
       <WithListContext
         render={({ data }) => {
           // console.log("data??", data);

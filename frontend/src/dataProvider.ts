@@ -107,6 +107,7 @@ export const dataProvider: DataProvider = {
       default:
         const data = await httpClient("/" + resource);
         if (resource === "realty") {
+          console.log("params", params);
           if (params?.filter?.user_id) {
             const user_id = params.filter.user_id;
             return {
