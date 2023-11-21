@@ -32,6 +32,8 @@ import {
   useTranslate,
   useFormGroup,
   AutocompleteInput,
+  Button,
+  useGetOne,
 } from "react-admin";
 import authProvider from "../authProvider";
 import { Chip, Card, CardContent } from "@mui/material";
@@ -45,66 +47,19 @@ const QuickFilter = ({ label }) => {
 };
 
 export const RealtyList = (props) => {
-  console.log("props", props);
   const [userId, setUserId] = useState();
+  const [userData, setUserData] = useState();
   useEffect(() => {
     authProvider?.getIdentity &&
       authProvider?.getIdentity().then((user) => {
         setUserId(user.id);
+        setUserData(user);
       });
   }, []);
 
   if (!userId) {
     return null;
   }
-
-  const FilteSelectSearch = (props: any) => {
-    const { filterValues, setFilters } = useListFilterContext();
-    const translate = useTranslate();
-
-    const {
-      source = "q",
-      label = translate("ra.action.search"),
-      placeholder,
-      ...rest
-    } = props;
-
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-      if (event.target) {
-        setFilters({ ...filterValues, [source]: event.target.value }, null);
-      } else {
-        const { [source]: _, ...filters } = filterValues;
-        setFilters(filters, null, false);
-      }
-    };
-
-    const initialValues = useMemo(
-      () => ({
-        [source]: filterValues[source],
-      }),
-      [filterValues, source]
-    );
-
-    const form = useFormGroup({ defaultValues: initialValues });
-
-    const onSubmit = () => undefined;
-    return (
-      <FormProvider {...form}>
-        <form onSubmit={onSubmit}>
-          <SelectInput
-            resettable
-            helperText={false}
-            source={source}
-            onChange={handleChange}
-            size="small"
-            label={rest.hiddenLabel ? false : label}
-            placeholder={placeholder ?? (rest.hiddenLabel ? label : undefined)}
-            {...rest}
-          />
-        </form>
-      </FormProvider>
-    );
-  };
 
   const PostFilterSidebar = () => {
     const seriesData = useGetList("series");
@@ -131,7 +86,6 @@ export const RealtyList = (props) => {
     const resetFilter = () => {
       setFilters({}, []);
     };
-    console.log("filterValues", filterValues, displayedFilters);
     return (
       <Card sx={{ order: -1, mr: 2, mt: 0, width: 300 }}>
         <CardContent>
@@ -232,28 +186,21 @@ export const RealtyList = (props) => {
     selected,
     selectable,
     rowClick,
-  }: DatagridRowProps) =>
-    id ? (
+  }: DatagridRowProps) => {
+    const agentData = useGetOne("user", { id: record.agent_id });
+    const districtData = useGetOne("district", { id: record.district_id });
+    let address;
+    try {
+      address = JSON.parse(record.address);
+    } catch (e) {}
+    console.log('record', record)
+    return id ? (
       <RecordContextProvider value={record}>
         <TableRow onClick={rowClick}>
-          <TableCell padding="none">
-            {selectable && (
-              <Checkbox
-                checked={selected}
-                onClick={(event) => {
-                  if (onToggleItem) {
-                    onToggleItem(id, event);
-                  }
-                }}
-              />
-            )}
-          </TableCell>
           {React.Children.map(children, (field) => {
             if (field.props.source === "photo") {
               let photoSrc;
               try {
-                // console.log("record", record);
-                // photoSrc = JSON.parse(record.photos);
                 photoSrc =
                   import.meta.env.VITE_SIMPLE_REST_URL +
                   "/" +
@@ -269,17 +216,82 @@ export const RealtyList = (props) => {
                 </TableCell>
               );
             }
+            if (field.props.source === "name") {
+              return React.isValidElement<FieldProps>(field) &&
+                field.props.source ? (
+                <TableCell key={`${id}-${field.props.source}`}>
+                  ID: {record.id}
+                  <br />
+                  <strong>{record.name}</strong>
+                  <br />
+                  {districtData?.data?.name || ""}
+                  {address?.formatted_address ? (
+                    <>
+                      <br />
+                      {address?.formatted_address}
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                </TableCell>
+              ) : null;
+            }
+            if (field.props.source === "price") {
+              const c =
+                record.price &&
+                record.total_area &&
+                (record.price / record.total_area).toFixed(3);
+              return React.isValidElement<FieldProps>(field) &&
+                field.props.source ? (
+                <TableCell key={`${id}-${field.props.source}`}>
+                  <strong>{record.price}</strong>
+                  <br />
+                  {!!c ? `${c}$ / м` : ""}
+                  <sup></sup>
+                </TableCell>
+              ) : null;
+            }
+            if (field.props.source === "agent_id") {
+              return (
+                <TableCell>
+                  Агент: <br />
+                  <strong>
+                    {agentData?.data?.name} {agentData?.data?.phone}
+                  </strong>
+                  <hr />
+                  {record?.owner_name ? (
+                    <div>
+                      Собственник: <br />
+                      <strong>
+                        {record?.owner_name} {record?.owner_phone}
+                      </strong>
+                    </div>
+                  ) : (
+                    <></>
+                  )}
+                </TableCell>
+              );
+            }
             return React.isValidElement<FieldProps>(field) &&
               field.props.source ? (
               <TableCell key={`${id}-${field.props.source}`}>{field}</TableCell>
             ) : null;
           })}
-          <TableCell>
-            {userId == record?.agent_id ? <EditButton /> : <ShowButton />}
-          </TableCell>
+          {(() => {
+            return (
+              <TableCell>
+                {userId == record?.agent_id || userData?.role == "admin" ? (
+                  <EditButton />
+                ) : (
+                  <ShowButton />
+                )}
+              </TableCell>
+            );
+          })()}
         </TableRow>
       </RecordContextProvider>
     ) : null;
+  };
 
   const MyDatagridBody = (props: DatagridBodyProps) => (
     <DatagridBody {...props} row={<MyDatagridRow />} />
@@ -289,13 +301,15 @@ export const RealtyList = (props) => {
   );
 
   return (
-    <List aside={<PostFilterSidebar />}>
+    <List aside={<PostFilterSidebar />} bulkActionButtons={false}>
       <WithListContext
         render={({ data }) => {
           // console.log("data??", data);
           // return data?.map((el) => {});
           return (
             <MyDatagrid
+              bulkActionButtons={false}
+              contentEditable={false}
               rowClick={(id, res, rec) => {
                 console.log("id: ", id, res, rec);
                 return `/${res}/${id}/${
@@ -304,12 +318,13 @@ export const RealtyList = (props) => {
               }}
             >
               <TextField source="id" label="ID" />
-              <TextField source="name" label="Название" />
               <TextField source="photo" label="Фото" />
+              <TextField source="name" label="Об объекте" />
+              <TextField source="price" label="Цена" />
               <ReferenceField
                 source="agent_id"
                 reference="user"
-                label="Агент"
+                label="Контакты"
                 link={false}
               >
                 <TextField source="name" /> <TextField source="phone" />
