@@ -113,6 +113,12 @@ export const RealtyShow = () => {
             }
           }}
         />
+        <TextField source="owner_name" label="ФИО собственника" fullWidth />
+        <TextField
+          source="owner_phone"
+          label="Телефон собственника"
+          fullWidth
+        />
         <ImagesShow />
       </SimpleShowLayout>
     </Show>

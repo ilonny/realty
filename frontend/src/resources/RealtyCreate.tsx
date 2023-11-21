@@ -368,6 +368,16 @@ export const RealtyCreate = () => {
                   multiline
                   fullWidth
                 />
+                <TextInput
+                  source="owner_name"
+                  label="ФИО собственника"
+                  fullWidth
+                />
+                <TextInput
+                  source="owner_phone"
+                  label="Телефон собственника"
+                  fullWidth
+                />
                 <br />
                 <br />
                 <ImageInput

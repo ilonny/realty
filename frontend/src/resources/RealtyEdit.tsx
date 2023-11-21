@@ -369,13 +369,23 @@ export const RealtyEdit = () => {
                   multiline
                   fullWidth
                 />
+                <TextInput
+                  source="owner_name"
+                  label="ФИО собственника"
+                  fullWidth
+                />
+                <TextInput
+                  source="owner_phone"
+                  label="Телефон собственника"
+                  fullWidth
+                />
                 <br />
                 <br />
                 <ImageInput
                   format={(f) => {
                     console.log("f??? 123", f);
                     if (f?.rawFile) {
-                      return f
+                      return f;
                     }
                     if (formData.main_photo) {
                       return {

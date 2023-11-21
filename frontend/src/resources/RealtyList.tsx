@@ -36,7 +36,7 @@ import {
   useGetOne,
 } from "react-admin";
 import authProvider from "../authProvider";
-import { Chip, Card, CardContent } from "@mui/material";
+import { Chip, Card, CardContent, FormControl } from "@mui/material";
 import MailIcon from "@mui/icons-material/MailOutline";
 import CategoryIcon from "@mui/icons-material/LocalOffer";
 import { TableCell, TableRow, Checkbox } from "@mui/material";
@@ -109,6 +109,7 @@ export const RealtyList = (props) => {
               </FilterList>
               <FilterLiveSearch source="id" label="Недвижимость ID" />
               <AutocompleteInput
+                style={{ maxWidth: 223 }}
                 source="district_id"
                 choices={districtData?.data || []}
                 optionText="name"
@@ -120,6 +121,7 @@ export const RealtyList = (props) => {
                 }}
               />
               <AutocompleteInput
+                style={{ maxWidth: 223 }}
                 source="apartment_complex_id"
                 choices={apartment_complexData?.data || []}
                 optionText="name"
@@ -193,7 +195,7 @@ export const RealtyList = (props) => {
     try {
       address = JSON.parse(record.address);
     } catch (e) {}
-    console.log('record', record)
+    console.log("record", record);
     return id ? (
       <RecordContextProvider value={record}>
         <TableRow onClick={rowClick}>
@@ -244,10 +246,9 @@ export const RealtyList = (props) => {
               return React.isValidElement<FieldProps>(field) &&
                 field.props.source ? (
                 <TableCell key={`${id}-${field.props.source}`}>
-                  <strong>{record.price}</strong>
+                  <strong>{record.price}$</strong>
                   <br />
-                  {!!c ? `${c}$ / м` : ""}
-                  <sup></sup>
+                  {record?.total_area ? `${record?.total_area} кв. м.` : ""}
                 </TableCell>
               ) : null;
             }
