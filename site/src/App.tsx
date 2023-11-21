@@ -8,6 +8,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { RealtyScreen } from "./pages/realty";
 import { AgentsScreen } from "./pages/agents";
 import { AgentDetailsScreen } from "./pages/agentDetails";
+import { AboutScreen } from "./pages/about";
 
 function App() {
   return (
@@ -20,7 +21,7 @@ function App() {
             <Route path={"/sell"} element={<HomeScreen />} />
             <Route path={"/agents"} element={<AgentsScreen />} />
             <Route path={"/agent/:id"} element={<AgentDetailsScreen />} />
-            AgentsScreen
+            <Route path={"/about"} element={<AboutScreen />} />
           </Routes>
         </HashRouter>
       </FilterProvider>
