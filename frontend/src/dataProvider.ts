@@ -108,13 +108,47 @@ export const dataProvider: DataProvider = {
         const data = await httpClient("/" + resource);
         if (resource === "realty") {
           console.log("params", params);
-          if (params?.filter?.user_id) {
-            const user_id = params.filter.user_id;
-            return {
-              data: data.json.filter((d) => d.agent_id == user_id),
-              total: data.json.filter((d) => d.agent_id == user_id).length,
-            };
+          let res = data.json;
+          if (params?.filter?.category_id) {
+            console.log("data.json", data.json);
+            const category_id = params.filter.category_id.toString();
+            res = data.json.filter((d) => d.category_id == category_id);
           }
+          if (params?.filter?.district_id) {
+            const district_id = params.filter.district_id.toString();
+            res = data.json.filter((d) => d.district_id == district_id);
+          }
+          if (params?.filter?.apartment_complex_id) {
+            const apartment_complex_id =
+              params.filter.apartment_complex_id.toString();
+            res = data.json.filter(
+              (d) => d.apartment_complex_id == apartment_complex_id
+            );
+          }
+          if (params?.filter?.id) {
+            const id = params.filter.id;
+            res = data.json.filter((d) => d.id == id);
+          }
+          if (params?.filter?.price_min) {
+            const price_min = params.filter.price_min;
+            res = data.json.filter((d) => d.price >= price_min);
+          }
+          if (params?.filter?.price_max) {
+            const price_max = params.filter.price_max;
+            res = data.json.filter((d) => d.price <= price_max);
+          }
+          if (params?.filter?.series_id) {
+            const series_id = params.filter.series_id;
+            res = data.json.filter((d) => d.series_id == series_id);
+          }
+          if (params?.filter?.rooms_id) {
+            const rooms_id = params.filter.rooms_id;
+            res = data.json.filter((d) => d.rooms_id == rooms_id);
+          }
+          return {
+            data: res,
+            total: res.length,
+          };
         }
 
         return { data: data.json, total: data.json.length };
