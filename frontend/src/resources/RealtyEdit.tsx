@@ -383,7 +383,6 @@ export const RealtyEdit = () => {
                 <br />
                 <ImageInput
                   format={(f) => {
-                    console.log("f??? 123", f);
                     if (f?.rawFile) {
                       return f;
                     }

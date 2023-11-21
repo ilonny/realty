@@ -9,6 +9,8 @@ import {
   Create,
   FormDataConsumer,
   SelectInput,
+  useNotify,
+  useRedirect,
 } from "react-admin";
 import authProvider from "../authProvider";
 import React, { useEffect, useRef, useState } from "react";
@@ -123,6 +125,8 @@ const AddressInput = () => {
 };
 
 export const RealtyCreate = () => {
+  const notify = useNotify();
+  const redirect = useRedirect()
   const districtData = useGetList("district");
   const roomsData = useGetList("rooms");
   const seriesData = useGetList("series");
@@ -156,11 +160,24 @@ export const RealtyCreate = () => {
   }
 
   return (
-    <Create>
+    <Create
+      mutationOptions={{
+        onSuccess(data, variables, context) {
+          notify("success", "info");
+        },
+        onError(data, variables, context) {
+          // console.log("error data", data);
+          // // notify("success");
+          redirect('/realty')
+
+        },
+        useErrorBoundary: false,
+      }}
+    >
       <SimpleForm>
         <FormDataConsumer>
           {({ formData }) => {
-            console.log("formData", formData);
+            // console.log("formData", formData);
             return (
               <div>
                 <TextInput

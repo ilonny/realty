@@ -204,7 +204,8 @@ export const dataProvider: DataProvider = {
           method: "POST",
           body: getFormDataFromParams(params, resource),
         });
-        return { data: data.data, id: 12321 };
+        console.log("create data", data);
+        return Promise.resolve({ data: data.data, id: 12321, ...data.data });
     }
   },
   getOne: async (resource, params) => {
