@@ -1,4 +1,10 @@
-import { List, Datagrid, TextField, EmailField } from "react-admin";
+import {
+  List,
+  Datagrid,
+  TextField,
+  EmailField,
+  ReferenceField,
+} from "react-admin";
 
 export const OwnerList = () => (
   <List>
@@ -7,6 +13,14 @@ export const OwnerList = () => (
       <TextField source="name" label="ФИО" />
       <TextField source="phone" label="Телефон" />
       <TextField source="email" label="E-mail" />
+      <ReferenceField
+        source="agent_id"
+        reference="user"
+        label="Контакты агента"
+        link={false}
+      >
+        <TextField source="name" /> <TextField source="phone" />
+      </ReferenceField>
     </Datagrid>
   </List>
 );
