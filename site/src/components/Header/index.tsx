@@ -87,7 +87,7 @@ const PhoneLink = () => {
     return (
         <StyledLinkContainer>
             <a href="tel:+996990766008">
-                <Flex gap={10}>
+                <Flex gap={"10px"}>
                     <img src={PhoneSrc} alt="phone icon" />
                     <span>+996 990 766 008</span>
                 </Flex>

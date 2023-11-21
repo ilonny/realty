@@ -319,7 +319,7 @@ export const OwnerEdit = () => {
                           <TableCell>
                             {agent ? (
                               <p>
-                                {agent.name} {agent.phone}
+                                {agent?.name} {agent?.phone}
                               </p>
                             ) : (
                               <p>admin</p>
