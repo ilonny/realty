@@ -151,6 +151,23 @@ export const dataProvider: DataProvider = {
           };
         }
 
+        if (resource === "owner") {
+          console.log("owner data", data.json);
+          try {
+            const user = JSON.parse(localStorage.getItem("user"));
+            if (user.role === "admin") {
+              return { data: data.json, total: data.json.length };
+            } else {
+              return {
+                data: data.json.filter((u) => u.agent_id == user.id),
+                total: data.json.filter((u) => u.agent_id == user.id).length,
+              };
+            }
+          } catch (err) {
+            return { data: data.json, total: data.json.length };
+          }
+        }
+
         return { data: data.json, total: data.json.length };
     }
   },
@@ -199,7 +216,7 @@ export const dataProvider: DataProvider = {
         const data = await httpClient(
           "/" + resource + "/get-one?id=" + params.id
         );
-        return { data: data.json };
+        return { data: data.json, id: data.json?.id || "" };
         break;
     }
   },

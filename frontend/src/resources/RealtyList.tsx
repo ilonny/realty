@@ -195,7 +195,7 @@ export const RealtyList = (props) => {
     try {
       address = JSON.parse(record.address);
     } catch (e) {}
-    console.log("record", record);
+    // console.log("record", record);
     return id ? (
       <RecordContextProvider value={record}>
         <TableRow onClick={rowClick}>

@@ -25,7 +25,21 @@ import { OwnerEdit } from "./resources/OwnerEdit";
 import { OwnerList } from "./resources/OwnerList";
 import { RealtyShow } from "./resources/RealtyShow";
 
-const i18nProvider = polyglotI18nProvider(() => russianMessages, "ru");
+const i18nProvider = polyglotI18nProvider(() => {
+  return {
+    ...russianMessages,
+    resources: {
+      shoe: {
+        name: "Owner |||| Owners",
+        fields: {
+          model: "Собственники",
+          stock: "Nb in stock",
+          color: "Color",
+        },
+      },
+    },
+  };
+}, "ru");
 
 export const App = () => {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -45,6 +59,9 @@ export const App = () => {
         list={OwnerList}
         edit={OwnerEdit}
         show={ShowGuesser}
+        options={{
+          label: "Клиенты",
+        }}
       />
       <Resource
         name="realty"
@@ -52,6 +69,9 @@ export const App = () => {
         list={RealtyList}
         edit={RealtyEdit}
         show={RealtyShow}
+        options={{
+          label: "Недвижимость",
+        }}
       />
       <Resource
         name="user"
@@ -59,6 +79,9 @@ export const App = () => {
         create={UserCreate}
         edit={UserEdit}
         show={UserShow}
+        options={{
+          label: "Агенты",
+        }}
       />
       {isAdmin && (
         <>
@@ -68,6 +91,9 @@ export const App = () => {
             list={ListGuesser}
             edit={EditGuesser}
             show={ShowGuesser}
+            options={{
+              label: "Районы",
+            }}
           />
           <Resource
             name="series"
@@ -75,6 +101,9 @@ export const App = () => {
             list={ListGuesser}
             edit={EditGuesser}
             show={ShowGuesser}
+            options={{
+              label: "Серии",
+            }}
           />
           <Resource
             name="rooms"
@@ -82,6 +111,9 @@ export const App = () => {
             list={ListGuesser}
             edit={EditGuesser}
             show={ShowGuesser}
+            options={{
+              label: "Комнаты",
+            }}
           />
           <Resource
             name="state"
@@ -89,6 +121,9 @@ export const App = () => {
             list={ListGuesser}
             edit={EditGuesser}
             show={ShowGuesser}
+            options={{
+              label: "Состояния недвижимости",
+            }}
           />
           <Resource
             name="type"
@@ -96,6 +131,9 @@ export const App = () => {
             list={ListGuesser}
             edit={EditGuesser}
             show={ShowGuesser}
+            options={{
+              label: "Типы отношений",
+            }}
           />
           <Resource
             name="category"
@@ -103,6 +141,9 @@ export const App = () => {
             list={ListGuesser}
             edit={EditGuesser}
             show={ShowGuesser}
+            options={{
+              label: "Категории недвижимости",
+            }}
           />
           <Resource
             name="communication"
@@ -110,6 +151,9 @@ export const App = () => {
             list={ListGuesser}
             edit={EditGuesser}
             show={ShowGuesser}
+            options={{
+              label: "Типы коммуникаций",
+            }}
           />
           <Resource
             name="developer"
@@ -117,6 +161,9 @@ export const App = () => {
             list={ListGuesser}
             edit={EditGuesser}
             show={ShowGuesser}
+            options={{
+              label: "Застройщики",
+            }}
           />
           <Resource
             name="apartment_complex"
@@ -124,6 +171,9 @@ export const App = () => {
             list={ListGuesser}
             edit={EditGuesser}
             show={ShowGuesser}
+            options={{
+              label: "Жилые комплексы",
+            }}
           />
         </>
       )}
