@@ -612,7 +612,7 @@ const RangeWrapper = styled.div`
     width: 100%;
     font-size: 13px;
     & span {
-        color: ${Colors.MAIN_RED};
+        color: ${Colors.MAIN_RED}  !important;
     }
 `;
 
@@ -620,14 +620,14 @@ export const SearchButton = styled.button`
     width: 100%;
     max-width: 250px;
     height: 40px;
-    color: #fff;
+    color: #fff  !important;
     background: ${Colors.MAIN_RED};
     text-transform: uppercase;
     border-radius: 4px;
     transition: all 250ms ease;
     border: 1px solid transparent;
     &:hover {
-        color: ${Colors.MAIN_RED};
+        color: ${Colors.MAIN_RED}  !important;
         background-color: #fff;
         border: 1px solid ${Colors.MAIN_RED};
     }

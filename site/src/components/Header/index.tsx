@@ -177,10 +177,10 @@ const HeaderWrap = styled.div`
 const StyledLinkContainer = styled.div`
     & a {
         text-decoration: none;
-        color: ${Colors.MAIN_BLACK};
+        color: ${Colors.MAIN_BLACK}  !important;
         font-weight: 500;
         &.active {
-            color: ${Colors.MAIN_RED};
+            color: ${Colors.MAIN_RED}  !important;
         }
     }
 `;

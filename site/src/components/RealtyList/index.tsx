@@ -295,7 +295,7 @@ const RealtyWrapper = styled.div`
 `;
 
 const RealtyContent = styled.div`
-  background-color: #fff;
+  background-color: #fff  !important;
 `;
 
 const RealtyContentPadding = styled.div`
@@ -316,23 +316,23 @@ const RealtyImageWrapper = styled.div`
 const RealtyTitle = styled.a`
   font-size: 18px;
   font-weight: bold;
-  color: ${Colors.MAIN_BLACK};
+  color: ${Colors.MAIN_BLACK}  !important;
   margin-bottom: 5px;
   transition: all 250ms ease;
   cursor: pointer;
   &:hover {
-    color: ${Colors.MAIN_RED};
+    color: ${Colors.MAIN_RED}  !important;
   }
 `;
 
 const RealtyPrice = styled.p`
-  color: ${Colors.MAIN_RED};
+  color: ${Colors.MAIN_RED}  !important;
   font-weight: bold;
   margin-bottom: 5px;
 `;
 
 const RealtyText = styled.p`
-  color: #5c727d;
+  color: #5c727d  !important;
 `;
 
 export const RealtyButton = styled.a`
@@ -344,7 +344,7 @@ export const RealtyButton = styled.a`
   height: 100%;
   background: #cf14091a;
   padding: 5px 15px;
-  color: ${Colors.MAIN_RED};
+  color: ${Colors.MAIN_RED}  !important;
   border-radius: 5px;
   font-size: 14px;
   display: flex;
@@ -356,7 +356,7 @@ export const RealtyButton = styled.a`
   }
   transition: all 250ms ease;
   &:hover {
-    color: #fff;
+    color: #fff  !important;
     background: ${Colors.MAIN_RED};
     & svg,
     & path {

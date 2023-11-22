@@ -109,7 +109,7 @@ const Wrapper = styled.footer`
     & .logo {
         p {
             text-transform: uppercase;
-            color: #fff;
+            color: #fff  !important;
             font-weight: 600;
             line-height: 15px;
             margin-top: 10px;
@@ -128,7 +128,7 @@ const MainContent = styled(Flex)``;
 
 const DataRow = styled(Flex)`
     font-size: 14px;
-    color: #fff;
+    color: #fff  !important;
     & .col {
         min-width: 160px;
         & a {

@@ -217,7 +217,7 @@ const AgentContent = styled.div`
     margin-bottom: 16px;
   }
   & .count {
-    color: ${Colors.MAIN_RED};
+    color: ${Colors.MAIN_RED}  !important;
     font-weight: 500;
   }
   & .name {

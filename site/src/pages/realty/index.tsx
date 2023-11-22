@@ -561,7 +561,7 @@ const TitleWrapper = styled.div`
   }
   .address {
     font-size: 14px;
-    color: #5c727d;
+    color: #5c727d  !important;
     svg {
       width: 12px;
       height: 12px;
@@ -571,7 +571,7 @@ const TitleWrapper = styled.div`
 `;
 
 const PriceTitle = styled.div`
-  color: ${Colors.MAIN_RED};
+  color: ${Colors.MAIN_RED}  !important;
   font-size: 30px;
   font-weight: 500;
 `;
