@@ -5,9 +5,9 @@ import { Header } from "../Header";
 export const MainLayout = ({ children }: { children: JSX.Element }) => {
     return (
         <Wrapper>
-            <Header />
+            {/* <Header /> */}
             {children}
-            <Footer />
+            {/* <Footer /> */}
         </Wrapper>
     );
 };
