@@ -18,13 +18,14 @@ const apartment_complexController = require("./controllers/apartment_complex");
 const communicationController = require("./controllers/communication");
 const documentController = require("./controllers/document");
 const district_parentController = require("./controllers/district_parent");
+const pageController = require("./controllers/page");
 const db = require("./models");
 db.sequelize.sync();
 const port = 3002;
 const app = express();
 
 // app.use("/uploads", express.static(__dirname + "../uploads"));
-var dir = path.join(__dirname, "/uploads");
+var dir = path.join(__dirname, "../uploads");
 app.use("/uploads", express.static(dir));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -74,6 +75,7 @@ app.use("/apartment_complex", apartment_complexController);
 app.use("/communication", communicationController);
 app.use("/document", documentController);
 app.use("/district_parent", district_parentController);
+app.use("/page", pageController);
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });
