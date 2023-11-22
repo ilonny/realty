@@ -117,7 +117,7 @@ export const FilterProvider = ({ children }: any) => {
             });
         }
         if (roomsFilter) {
-            console.log("roomsFilter", roomsFilter);
+            // console.log("roomsFilter", roomsFilter);
             result = result.filter((realty) => {
                 return realty?.rooms_id == roomsFilter;
             });
@@ -155,7 +155,7 @@ export const FilterProvider = ({ children }: any) => {
                 return false;
             });
         }
-        console.log("data, result", data, result);
+        // console.log("data, result", data, result);
         return result;
     }, [
         data,

@@ -43,7 +43,7 @@ export const AgentDetailsScreen = () => {
     if (!currentAgent || !agent) {
         return <></>;
     }
-    console.log("currentAgent", currentAgent);
+    // console.log("currentAgent", currentAgent);
 
     return (
         <>

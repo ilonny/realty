@@ -137,7 +137,7 @@ export const RealtyScreen = (props) => {
     return <></>;
   }
 
-  console.log("data", data);
+  // console.log("data", data);
   return (
     <>
       <MainLayout>

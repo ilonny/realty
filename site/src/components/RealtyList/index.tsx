@@ -122,7 +122,7 @@ export const RealtyList = ({ agentId }) => {
       <Wrapper wrap="wrap">
         {dataToRender.map((realty) => {
           const agent = agents?.find((a) => a.id == realty.agent_id);
-          console.log("agent?", agent);
+          // console.log("agent?", agent);
           let photos = [];
           if (realty.main_photo) {
             photos.push(API_URL + "/" + realty.main_photo);
@@ -313,7 +313,7 @@ const RealtyImageWrapper = styled.div`
   }
 `;
 
-const RealtyTitle = styled.a`
+const RealtyTitle = styled.div`
   font-size: 18px;
   font-weight: bold;
   color: ${Colors.MAIN_BLACK}  !important;

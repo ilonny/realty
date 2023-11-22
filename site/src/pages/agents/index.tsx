@@ -30,7 +30,7 @@ export const AgentsScreen = () => {
       });
   }, []);
 
-  console.log("agentsData", agentsData);
+  // console.log("agentsData", agentsData);
 
   return (
     <>
