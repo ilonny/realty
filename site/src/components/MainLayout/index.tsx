@@ -14,5 +14,5 @@ export const MainLayout = ({ children }: { children: JSX.Element }) => {
 
 const Wrapper = styled.div`
     background: #f8f8f8;
-    min-height: 100vh;
+    // min-height: 100vh;
 `;
