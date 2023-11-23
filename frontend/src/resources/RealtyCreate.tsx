@@ -242,7 +242,7 @@ export const RealtyCreate = () => {
                 ) : (
                   <></>
                 )}
-                <AutocompleteInput
+                {/* <AutocompleteInput
                   label="Собственник"
                   source="owner_id"
                   choices={ownerData.data}
@@ -250,7 +250,7 @@ export const RealtyCreate = () => {
                   optionValue="id"
                   isLoading={ownerData.isLoading}
                   fullWidth
-                />
+                /> */}
                 <br />
                 <br />
                 <AddressInput />
