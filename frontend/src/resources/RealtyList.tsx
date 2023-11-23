@@ -63,6 +63,7 @@ export const RealtyList = (props) => {
 
   const PostFilterSidebar = () => {
     const seriesData = useGetList("series");
+    const [agents, setAgents] = useState([]);
     const roomsData = useGetList("rooms");
     const stateData = useGetList("state");
     const districtData = useGetList("district");
@@ -72,6 +73,14 @@ export const RealtyList = (props) => {
     const form = useForm({
       defaultValues: filterValues,
     });
+
+    useEffect(() => {
+      fetch(import.meta.env.VITE_SIMPLE_REST_URL + "/" + "user/get-agents")
+        .then((res) => res.json())
+        .then((res) => {
+          setAgents(res);
+        });
+    }, []);
 
     // if (!displayedFilters.main) return null;
 
@@ -86,11 +95,19 @@ export const RealtyList = (props) => {
     const resetFilter = () => {
       setFilters({}, []);
     };
+
     return (
       <Card sx={{ order: -1, mr: 2, mt: 0, width: 300 }}>
         <CardContent>
           <FormProvider {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
+              <Button onClick={() => {
+                setFilters({})
+                form.reset()
+                setTimeout(() => {
+                  window.location.reload()
+                }, 1000);
+              }}>Сбросить все фильтры</Button>
               <FilterList label="Категория" icon={null}>
                 <FilterListItem label="Вторичная" value={{ category_id: 1 }} />
                 <FilterListItem
@@ -107,6 +124,24 @@ export const RealtyList = (props) => {
                   value={{ category_id: 5 }}
                 />
               </FilterList>
+              <AutocompleteInput
+                style={{ maxWidth: 223 }}
+                source="agent_id"
+                choices={agents || []}
+                optionText={(agentData) => {
+                  return `${
+                    agentData.surname ? agentData.surname + " " : ""
+                  }${" "}
+                  ${agentData.name ? agentData.name + " " : ""}${" "}
+                  ${agentData.thirdname ? agentData.thirdname + " " : ""}`;
+                }}
+                optionValue="id"
+                label="Агент"
+                onChange={(val) => {
+                  console.log("val", val);
+                  setFilters({ ...filterValues, agent_id: val }, {});
+                }}
+              />
               <FilterLiveSearch source="id" label="Недвижимость ID" />
               <AutocompleteInput
                 style={{ maxWidth: 223 }}

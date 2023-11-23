@@ -55,6 +55,7 @@ const Filters = () => {
         idFilter,
         setIdFilter,
         districtsParent,
+        clearFilterContext,
     } = useContext(FilterContext);
     const [districtsSearchString, setDistrictsSearchString] = useState("");
     const [apartmentSearchString, setApartmentSearchString] = useState("");
@@ -260,7 +261,9 @@ const Filters = () => {
                                 <RangeSliderThumb boxSize={6} index={1} />
                             </RangeSlider>
                         </RangeWrapper>
-                        {/* <SearchButton>Поиск</SearchButton> */}
+                        <ResetButton onClick={() => clearFilterContext()}>
+                            Сбросить фильтры
+                        </ResetButton>
                     </FiltersContainer>
                 </div>
             </StyledContent>
@@ -612,7 +615,7 @@ const RangeWrapper = styled.div`
     width: 100%;
     font-size: 13px;
     & span {
-        color: ${Colors.MAIN_RED}  !important;
+        color: ${Colors.MAIN_RED} !important;
     }
 `;
 
@@ -620,14 +623,14 @@ export const SearchButton = styled.button`
     width: 100%;
     max-width: 250px;
     height: 40px;
-    color: #fff  !important;
+    color: #fff !important;
     background: ${Colors.MAIN_RED};
     text-transform: uppercase;
     border-radius: 4px;
     transition: all 250ms ease;
     border: 1px solid transparent;
     &:hover {
-        color: ${Colors.MAIN_RED}  !important;
+        color: ${Colors.MAIN_RED} !important;
         background-color: #fff;
         border: 1px solid ${Colors.MAIN_RED};
     }
@@ -635,6 +638,27 @@ export const SearchButton = styled.button`
         max-width: initial;
     }
 `;
+
+export const ResetButton = styled.button`
+    width: 100%;
+    max-width: 250px;
+    height: 40px;
+    color: ${Colors.MAIN_RED} !important;
+    background: #fff;
+    text-transform: uppercase;
+    border-radius: 4px;
+    transition: all 250ms ease;
+    border: 1px solid ${Colors.MAIN_RED};
+    &:hover {
+        color: #fff !important;
+        background-color: ${Colors.MAIN_RED};
+        border: 1px solid ${Colors.MAIN_RED};
+    }
+    @media screen and (max-width: 800px) {
+        max-width: initial;
+    }
+`;
+
 
 const CategoryFilter = styled(Flex)`
     cursor: pointer;

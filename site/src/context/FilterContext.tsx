@@ -95,7 +95,18 @@ export const FilterProvider = ({ children }: any) => {
     }, [getData]);
 
     const clearFilterContext = useCallback(() => {
-        setCategoryId(undefined);
+        
+        setIdFilter("");
+        setDistrictsFilter([]);
+        setSeriesFilter(undefined);
+        setRoomsFilter(undefined);
+        setStateFilter(undefined);
+        setTypeFilter(undefined);
+        setPriceMinFilter(0);
+        setPriceMaxFilter(100000);
+        setApartmentComplexFilter([]);
+    
+        setCategoryId(1);
     }, []);
 
     const filteredData = useMemo(() => {

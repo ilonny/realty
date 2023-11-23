@@ -114,6 +114,10 @@ export const dataProvider: DataProvider = {
             const category_id = params.filter.category_id.toString();
             res = data.json.filter((d) => d.category_id == category_id);
           }
+          if (params?.filter?.agent_id) {
+            const agent_id = params.filter.agent_id.toString();
+            res = data.json.filter((d) => d.agent_id == agent_id);
+          }
           if (params?.filter?.district_id) {
             const district_id = params.filter.district_id.toString();
             res = data.json.filter((d) => d.district_id == district_id);

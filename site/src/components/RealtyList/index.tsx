@@ -165,7 +165,7 @@ export const RealtyList = ({ agentId }) => {
                     <hr />
                     <br />
                   </Link>
-                  <Flex gap="20px">
+                  <Flex gap="10px">
                     <RealtyButton href={`tel:${agent?.phone}`}>
                       <svg
                         height="15px"
@@ -289,7 +289,7 @@ const RealtyWrapper = styled.div`
   @media screen and (max-width: 800px) {
     max-width: 50%;
   }
-  @media screen and (max-width: 400px) {
+  @media screen and (max-width: 640px) {
     max-width: initial;
   }
 `;
