@@ -2,6 +2,7 @@ import { Box, Button, styled } from "@mui/material";
 
 export const HeaderWrapper = styled(Box)`
   width: 100%;
+  margin-bottom: 20px;
 `;
 
 export const Container = styled(Box)`

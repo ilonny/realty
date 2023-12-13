@@ -17,6 +17,7 @@
     "@googlemaps/react-wrapper": "^1.1.35",
     "@mui/icons-material": "^5.14.19",
     "@mui/material": "^5.14.20",
+    "@mui/x-data-grid": "^6.18.4",
     "ra-data-simple-rest": "^4.14.0",
     "ra-language-russian": "^4.14.1",
     "react": "^18.2.0",

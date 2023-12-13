@@ -11,11 +11,7 @@ const Wrapper = styled("div")`
 
 const Content = styled("div")`
   width: 100%;
-  height: calc(100% - 96px - 109px - 44px);
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  height: auto;
 `;
 
 export const ScreenWidget = () => {

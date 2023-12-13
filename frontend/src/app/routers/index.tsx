@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { OwnerList } from "../../pages/Owner";
-import { ScreenWidget } from "../../widgets/ScreenWidget";
+import { OwnerList } from "../../pages/owner";
+import { ScreenWidget } from "../../widgets/screenWidget";
 
 export const Routers: FC = () => (
   <BrowserRouter>
