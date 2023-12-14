@@ -1,10 +1,10 @@
-import russianMessages from "ra-language-russian";
-import polyglotI18nProvider from "ra-i18n-polyglot";
+// import russianMessages from "ra-language-russian";
+// import polyglotI18nProvider from "ra-i18n-polyglot";
 import CssBaseline from "@mui/material/CssBaseline";
 
 // import { dataProvider } from "./dataProvider";
-import { authProvider } from "./authProvider";
-import { useState } from "react";
+// import { authProvider } from "./authProvider";
+// import { useState } from "react";
 import { Routers } from "./app/routers";
 
 // const i18nProvider = polyglotI18nProvider(() => {
@@ -42,7 +42,7 @@ export const App = () => {
     //   <Resource
     //     name="owner"
     //     create={OwnerCreate}
-    //     list={OwnerList}
+    //     list={RealtyList}
     //     edit={OwnerEdit}
     //     show={ShowGuesser}
     //     options={{
