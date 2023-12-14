@@ -12,3 +12,5 @@ export const tabNavigation: {
   { name: "Агенты", link: "/user", icon: RealtyIcon },
   { name: "Системные поля", link: "/other" },
 ];
+
+

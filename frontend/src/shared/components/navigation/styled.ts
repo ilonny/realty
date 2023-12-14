@@ -25,7 +25,7 @@ export const Navigationli = styled("li")<{ isActive?: boolean }>`
   list-style: none;
   border-top: 1px solid #f8f8f8;
   background: #fff;
-
+  box-sizing: content-box;
   border-radius: var(--none, 0px);
 
   border-right: ${({ isActive }) =>
@@ -38,13 +38,14 @@ export const Navigationli = styled("li")<{ isActive?: boolean }>`
     isActive
       ? "var(--none, 0px) solid #DC371E"
       : "var(--none, 1px) solid #f8f8f8"};
+
   & svg {
     color: transparent;
     background: transparent;
   }
 `;
 
-export const NavigationLink = styled(Link)`
+export const NavigationLink = styled(Link)<{ isActive?: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -52,7 +53,7 @@ export const NavigationLink = styled(Link)`
   width: 100%;
   height: 100%;
   text-decoration: none;
-  color: #dc371e;
+  color: ${({ isActive }) => (isActive ? "#dc371e" : "#000")};
   text-align: center;
   font-family: Roboto, sans-serif;
   font-size: 16px;

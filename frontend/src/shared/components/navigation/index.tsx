@@ -14,7 +14,7 @@ export const NavigationTab = () => {
       <NavigationUl>
         {tabNavigation.map(({ name, link, icon }) => (
           <Navigationli key={name} isActive={link === pathname}>
-            <NavigationLink to={link}>
+            <NavigationLink to={link} isActive={link === pathname}>
               {icon && <img src={icon} alt={name} />}
               {name}
             </NavigationLink>
