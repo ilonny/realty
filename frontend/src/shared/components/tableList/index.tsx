@@ -1,40 +1,21 @@
-import { GridColDef } from "@mui/x-data-grid";
-import { CustomDataGrid } from "./styles";
 import {FC} from "react";
+import {ownerColumns} from "../../../constants/app.constants";
+import {CustomDataGrid} from "./styles";
+import {GridColDef} from "@mui/x-data-grid";
 
-const columns: GridColDef[] = [
-  { field: "id", headerName: "ID", flex: 1 },
-  {
-    field: "name",
-    headerName: "ФИО",
-    flex: 1,
-  },
-  {
-    field: "phone",
-    headerName: "Телефон",
-    flex: 1,
-  },
-  {
-    field: "mail",
-    headerName: "E-mail",
-    flex: 1,
-  },
-  {
-    field: "agent_id",
-    headerName: "Контакты агента",
-    flex: 1,
-  },
-];
+interface ITableListProps {
+    data: { [key: string]: any }[],
+    columns: GridColDef[]
+}
 
-
-export const TableList:FC<{data: { [key: string]: any }[]}> = ({data}) => {
-  return (
-    <CustomDataGrid
-      rows={data}
-      columns={columns}
-      hideFooterPagination
-      hideFooter
-      disableColumnMenu
-    />
-  );
+export const TableList: FC<ITableListProps> = ({data, columns}) => {
+    return (
+        <CustomDataGrid
+            rows={data}
+            columns={columns}
+            hideFooterPagination
+            hideFooter
+            disableColumnMenu
+        />
+    );
 };
