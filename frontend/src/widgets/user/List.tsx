@@ -9,7 +9,12 @@ export const List = () => {
     const [usersData, setAgentsData] = useState([]);
 
     useEffect(() => {
-        fetch(API_URL + "/user/protected/user-list")
+        fetch(API_URL + "/user/protected/user-list",
+            {
+                headers: new Headers({
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                }),
+            })
             .then((res) => res.json())
             .then((res) => {
                 setAgentsData(res);

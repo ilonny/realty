@@ -1,16 +1,23 @@
 import { FC } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { ScreenWidget } from "../../widgets/screenWidget";
-import { OwnerList } from "../../pages/owner";
+import { Authorized } from "../../widgets/authorized";
+import { Unauthorized } from "../../widgets/unauthorized";
+import { OwnerDetail, OwnerList } from "../../pages/owner";
 import { RealtyList } from "../../pages/realty";
 import { UserList } from "../../pages/user";
 import { SystemSettings } from "../../pages/systemSettings";
+import { Login } from "../../pages/login";
 
 export const Routers: FC = () => (
   <BrowserRouter>
     <Routes>
-      <Route element={<ScreenWidget />}>
+      <Route element={<Unauthorized />}>
+        <Route path="/login" element={<Login />} />
+      </Route>
+      <Route element={<Authorized />}>
         <Route path="/owner" element={<OwnerList />} />
+        <Route path="/owner/:ownerId" element={<OwnerDetail />} />
+        <Route path="/owner/create" element={<OwnerDetail />} />
         <Route path="/realty" element={<RealtyList />} />
         <Route path="/user" element={<UserList />} />
         <Route path="/other" element={<SystemSettings />} />

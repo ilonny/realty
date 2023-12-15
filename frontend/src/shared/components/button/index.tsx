@@ -1,9 +1,9 @@
 import { FC } from "react";
-import AddIcon from "@mui/icons-material/Add";
-import { CustomButton } from "./styled";
+import { CustomContainedButton, CustomOutlinedButton } from "./styled";
 
 interface UIButtonProps {
   children: string;
+
   [p: string]: any;
 }
 
@@ -12,8 +12,16 @@ export const UIContainedButton: FC<UIButtonProps> = ({
   ...props
 }) => {
   return (
-    <CustomButton variant={"contained"} {...props} startIcon={<AddIcon />}>
+    <CustomContainedButton variant={"contained"} {...props}>
       {children}
-    </CustomButton>
+    </CustomContainedButton>
+  );
+};
+
+export const UIOutlinedButton: FC<UIButtonProps> = ({ children, ...props }) => {
+  return (
+    <CustomOutlinedButton variant={"outlined"} {...props}>
+      {children}
+    </CustomOutlinedButton>
   );
 };

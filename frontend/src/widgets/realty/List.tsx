@@ -9,7 +9,12 @@ export const List = () => {
     const [realtiesData, setRealtiesData] = useState([]);
 
     useEffect(() => {
-        fetch(API_URL + "/" + "realty")
+        fetch(API_URL + "/" + "realty",
+            {
+                headers: new Headers({
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                }),
+            })
             .then((res) => res.json())
             .then((res) => {
                 setRealtiesData(res);

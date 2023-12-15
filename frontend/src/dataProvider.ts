@@ -175,6 +175,11 @@ export const dataProvider: DataProvider = {
         return { data: data.json, total: data.json.length };
     }
   },
+
+
+
+
+
   getMany: async (resource, params) => {
     switch (resource) {
       case "user":

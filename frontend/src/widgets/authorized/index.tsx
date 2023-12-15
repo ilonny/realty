@@ -1,11 +1,13 @@
 import { Header } from "../../shared/components/header";
 import { Footer } from "../../shared/components/footer";
 import { styled } from "@mui/material";
-import { Outlet, useLocation } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { useToken } from "../../features/login/hooks/useToken";
 
 const Wrapper = styled("div")`
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
+  height: auto;
   background: #f8f8f8;
 `;
 
@@ -14,7 +16,13 @@ const Content = styled("div")`
   height: auto;
 `;
 
-export const ScreenWidget = () => {
+export const Authorized = () => {
+  const [token] = useToken();
+
+  if (token === null) {
+    return <Navigate replace to="/login" />;
+  }
+
   return (
     <Wrapper>
       <Header />

@@ -1,5 +1,5 @@
 import { DataGrid } from "@mui/x-data-grid";
-import { styled } from "@mui/material";
+import { Box, styled } from "@mui/material";
 
 export const CustomDataGrid = styled(DataGrid)`
   background: #fff;
@@ -34,4 +34,13 @@ export const CustomDataGrid = styled(DataGrid)`
   .MuiDataGrid-columnHeader:focus-within {
     outline: none !important;
   }
+`;
+
+export const NoData = styled(Box)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  width: 100%;
+  height: 50px;
 `;

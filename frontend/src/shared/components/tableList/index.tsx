@@ -1,21 +1,30 @@
-import {FC} from "react";
-import {ownerColumns} from "../../../constants/app.constants";
-import {CustomDataGrid} from "./styles";
-import {GridColDef} from "@mui/x-data-grid";
+import { FC } from "react";
+import { GridColDef, GridEventListener } from "@mui/x-data-grid";
+import { CustomDataGrid, NoData } from "./styles";
 
 interface ITableListProps {
-    data: { [key: string]: any }[],
-    columns: GridColDef[]
+  data: {
+    [key: string]: any;
+  }[];
+  columns: GridColDef[];
+  onClick?: GridEventListener<"rowClick">;
 }
 
-export const TableList: FC<ITableListProps> = ({data, columns}) => {
-    return (
+export const TableList: FC<ITableListProps> = ({ data, columns, onClick }) => {
+  return (
+    <>
+      {data?.length ? (
         <CustomDataGrid
-            rows={data}
-            columns={columns}
-            hideFooterPagination
-            hideFooter
-            disableColumnMenu
+          rows={data}
+          columns={columns}
+          onRowClick={onClick}
+          hideFooterPagination
+          hideFooter
+          disableColumnMenu
         />
-    );
+      ) : (
+        <NoData>Нет данных</NoData>
+      )}
+    </>
+  );
 };
