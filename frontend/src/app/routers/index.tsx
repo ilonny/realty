@@ -4,7 +4,7 @@ import { Authorized } from "../../widgets/authorized";
 import { Unauthorized } from "../../widgets/unauthorized";
 import { OwnerDetail, OwnerList } from "../../pages/owner";
 import { RealtyList } from "../../pages/realty";
-import { UserList } from "../../pages/user";
+import { UserList, UserDetail } from "../../pages/user";
 import { SystemSettings } from "../../pages/systemSettings";
 import { Login } from "../../pages/login";
 
@@ -20,6 +20,8 @@ export const Routers: FC = () => (
         <Route path="/owner/create" element={<OwnerDetail />} />
         <Route path="/realty" element={<RealtyList />} />
         <Route path="/user" element={<UserList />} />
+        <Route path="/user/:userId" element={<UserDetail />} />
+        <Route path="/user/create" element={<UserDetail />} />
         <Route path="/other" element={<SystemSettings />} />
         <Route path="/*" element={<Navigate replace to="/owner" />} />
       </Route>

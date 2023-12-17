@@ -1,9 +1,9 @@
 import { Box, styled, Typography } from "@mui/material";
 
-export const OnwerCard = styled(Box)<{ ownerId?: string }>`
+export const UserCardWrapper = styled(Box)<{ userId?: string }>`
   padding: 30px 20px;
   border-radius: 6px;
-  background: #fff;
+  background: ${({ userId }) => (userId ? "#fff" : "transparent")};
   min-width: 300px;
   min-height: 230px;
   display: flex;
@@ -12,7 +12,7 @@ export const OnwerCard = styled(Box)<{ ownerId?: string }>`
   align-content: flex-start;
 `;
 
-export const OwnerName = styled(Typography)`
+export const UserName = styled(Typography)`
   color: #222;
   font-family: Roboto, sans-serif;
   font-size: 20px;
