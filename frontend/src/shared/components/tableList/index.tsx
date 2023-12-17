@@ -20,6 +20,7 @@ export const TableList: FC<ITableListProps> = ({ data, columns, onClick }) => {
           onRowClick={onClick}
           hideFooterPagination
           hideFooter
+          getRowHeight={() => "auto"}
           disableColumnMenu
         />
       ) : (

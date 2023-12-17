@@ -8,6 +8,7 @@ interface ITableListWrapperProps {
   children: ReactNode;
   btnTitle?: string;
   onCreate?: () => void;
+  noBtn?: boolean;
 }
 
 export const TableListWrapper: FC<ITableListWrapperProps> = ({
@@ -15,14 +16,17 @@ export const TableListWrapper: FC<ITableListWrapperProps> = ({
   children,
   btnTitle = "Создать",
   onCreate,
+  noBtn,
 }) => {
   return (
     <>
       <Block>
         <Title>{title}</Title>
-        <UIContainedButton startIcon={<AddIcon />} onClick={onCreate}>
-          {btnTitle}
-        </UIContainedButton>
+        {!noBtn && (
+          <UIContainedButton startIcon={<AddIcon />} onClick={onCreate}>
+            {btnTitle}
+          </UIContainedButton>
+        )}
       </Block>
       {children}
     </>

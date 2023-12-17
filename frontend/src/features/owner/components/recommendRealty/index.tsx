@@ -1,12 +1,12 @@
-import { TableList } from "../../shared/components/tableList";
-import { Box, CircularProgress } from "@mui/material";
-import { TableListWrapper } from "../../shared/components/tableListWrapper";
-import { realtiesColumns } from "../../constants/app.constants";
+import { RecommendRealtyWrapper } from "./styles";
+import { TableListWrapper } from "../../../../shared/components/tableListWrapper";
+import { TableList } from "../../../../shared/components/tableList";
 import { useEffect, useState } from "react";
-import { API_URL } from "../../constants/globalApi.constants";
-import { RecommendRealtyWrapper } from "../../features/owner/components/recommendRealty/styles";
+import { API_URL } from "../../../../constants/globalApi.constants";
+import { recommendRealty } from "../../../../constants/app.constants";
+import { Box, CircularProgress } from "@mui/material";
 
-export const List = () => {
+export const RecommendRealty = () => {
   const [realty, setRealty] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -46,8 +46,8 @@ export const List = () => {
   }, []);
 
   return (
-    <Box pl={2.5} pr={2.5}>
-      <TableListWrapper title="Объекты" btnTitle="Создать объект">
+    <RecommendRealtyWrapper>
+      <TableListWrapper title={"Подходящая недвижимость"} noBtn>
         {loading ? (
           <Box
             sx={{
@@ -62,9 +62,9 @@ export const List = () => {
             <CircularProgress />
           </Box>
         ) : (
-          <TableList columns={realtiesColumns} data={realty} />
+          <TableList data={realty} columns={recommendRealty} />
         )}
       </TableListWrapper>
-    </Box>
+    </RecommendRealtyWrapper>
   );
 };

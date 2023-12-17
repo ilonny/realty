@@ -5,6 +5,7 @@ import { DetailForm } from "../../features/owner/components/detailForm";
 import { API_URL } from "../../constants/globalApi.constants";
 import { TOwnerData } from "../../features/owner/shared/types";
 import { useStateContext } from "../../containers/stateContext";
+import { RecommendRealty } from "../../features/owner/components/recommendRealty";
 
 const initialOwner: TOwnerData = {
   id: null,
@@ -154,6 +155,7 @@ export const Detail = () => {
         formData={formData}
         setFormData={setFormData}
       />
+      {ownerId && <RecommendRealty />}
     </DetailWrapper>
   );
 };
