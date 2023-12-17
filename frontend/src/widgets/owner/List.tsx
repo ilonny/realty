@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import { TableList } from "../../shared/components/tableList";
 import { TableListWrapper } from "../../shared/components/tableListWrapper";
 import { API_URL } from "../../constants/globalApi.constants";
@@ -7,33 +7,44 @@ import { ownersColumns } from "../../constants/app.constants";
 import { useNavigate } from "react-router-dom";
 
 export const List = () => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [ownersData, setOwnersData] = useState([]);
-  const [agents, setAgents] = useState([]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(API_URL + "/" + "owner", {
-      headers: new Headers({
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+    setLoading(true);
+    Promise.all([
+      fetch(API_URL + "/" + "owner", {
+        headers: new Headers({
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        }),
       }),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        setOwnersData(res);
-      });
-  }, []);
+      fetch(API_URL + "/" + "user" + "/" + "protected" + "/" + "user-list", {
+        headers: new Headers({
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        }),
+      }),
+    ])
+      .then((res) => res.map((item) => item.json()))
+      .then(async (result) => {
+        const agents = await result[1];
+        const owners = await result[0];
 
-  useEffect(() => {
-    fetch(API_URL + "/" + "user" + "/" + "protected" + "/" + "user-list", {
-      headers: new Headers({
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      }),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        setAgents(res);
-      });
+        const resultOwner = owners.map((item) => {
+          if (item["agent_id"]) {
+            const agentOwner = agents.find(
+              (agent) => agent.id == item.agent_id
+            );
+            if (agentOwner) {
+              item["agent_id"] = `${agentOwner?.name}, ${agentOwner?.phone}`;
+            }
+          }
+          return item;
+        });
+        setOwnersData(resultOwner);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   const handleOwnerDetail = useCallback(
@@ -54,11 +65,26 @@ export const List = () => {
         btnTitle="Создать клиента"
         onCreate={handleCreate}
       >
-        <TableList
-          data={ownersData}
-          columns={ownersColumns}
-          onClick={handleOwnerDetail}
-        />
+        {loading ? (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              width: "100%",
+              paddingTop: "30px",
+              height: "6em",
+              background: "#fff",
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        ) : (
+          <TableList
+            data={ownersData}
+            columns={ownersColumns}
+            onClick={handleOwnerDetail}
+          />
+        )}
       </TableListWrapper>
     </Box>
   );

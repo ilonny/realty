@@ -4,7 +4,8 @@ import Select from "@mui/material/Select";
 export const CustomInput = styled(TextField)`
   padding: 10px 16px;
   border-radius: 6px;
-  border: 1px solid #202020;
+  border: ${({ error }) =>
+    error ? "2px solid rgb(211, 47, 47)" : "1px solid #202020"};
   background: #fff;
 `;
 

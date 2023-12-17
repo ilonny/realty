@@ -1,7 +1,7 @@
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import { TOwnerData } from "../../shared/types";
 import { OwnerCard } from "../ownerCard";
-import { FormDataBlock, FormWrapper } from "./styled";
+import { Error, FormDataBlock, FormWrapper } from "./styled";
 import { Grid } from "@mui/material";
 import { Input, Select } from "../../../../shared/components/input";
 import { API_URL } from "../../../../constants/globalApi.constants";
@@ -12,6 +12,7 @@ interface IDetailFormProps {
   setFormData: Dispatch<SetStateAction<TOwnerData>>;
   isEditMode: boolean;
   ownerId: string;
+  validErrors: { phone?: string; name?: string };
 }
 
 export const DetailForm: FC<IDetailFormProps> = ({
@@ -20,6 +21,7 @@ export const DetailForm: FC<IDetailFormProps> = ({
   setFormData,
   isEditMode = { isEditMode },
   ownerId,
+  validErrors,
 }) => {
   const [category, setCategory] = useState([]);
   const [state, setState] = useState([]);
@@ -81,20 +83,25 @@ export const DetailForm: FC<IDetailFormProps> = ({
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Input
+              error={validErrors?.name}
               isEditMode={isEditMode}
               fullWidth
-              labelTop={"ФИО"}
+              labelTop={"ФИО*"}
               value={formData?.name}
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, name: e.target.value }))
               }
             />
+            {isEditMode && validErrors?.name && (
+              <Error>{validErrors?.name}</Error>
+            )}
           </Grid>
           <Grid item xs={6}>
             <Input
+              error={validErrors?.phone}
               isEditMode={isEditMode}
               fullWidth
-              labelTop={"Телефон"}
+              labelTop={"Телефон*"}
               value={formData?.phone}
               onChange={(e) =>
                 setFormData((prev) =>
@@ -104,6 +111,9 @@ export const DetailForm: FC<IDetailFormProps> = ({
                 )
               }
             />
+            {isEditMode && validErrors?.phone && (
+              <Error>{validErrors?.phone}</Error>
+            )}
           </Grid>
           <Grid item xs={6}>
             <Input

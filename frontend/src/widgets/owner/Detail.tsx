@@ -4,7 +4,7 @@ import { DetailWrapper } from "../../shared/components/detailWrapper";
 import { DetailForm } from "../../features/owner/components/detailForm";
 import { API_URL } from "../../constants/globalApi.constants";
 import { TOwnerData } from "../../features/owner/shared/types";
-import { Snackbar, SnackbarOrigin } from "@mui/material";
+import { useStateContext } from "../../containers/stateContext";
 
 const initialOwner: TOwnerData = {
   id: null,
@@ -19,22 +19,18 @@ const initialOwner: TOwnerData = {
   apartment_complex_id: [],
 };
 
-interface State {
-  open: boolean;
-  message: string;
-}
-
 export const Detail = () => {
+  const { handleSnackbar } = useStateContext();
+
   const { ownerId } = useParams();
 
   const [ownerData, setOwnerData] = useState<TOwnerData>(initialOwner);
   const [formData, setFormData] = useState<TOwnerData>(initialOwner);
-  const [isEditMode, setEditMode] = useState(ownerId ? false : true);
-
-  const [state, setState] = useState<State>({
-    open: false,
-    message: "",
-  });
+  const [isEditMode, setEditMode] = useState(!ownerId);
+  const [validErrors, setValidErrors] = useState<{
+    phone?: string;
+    name?: string;
+  }>({});
 
   const navigate = useNavigate();
 
@@ -54,17 +50,36 @@ export const Detail = () => {
           });
         });
     }
-  }, []);
+  }, [ownerId]);
 
   useEffect(() => {
     if (ownerId && Object.keys(ownerData).length) {
       setFormData(ownerData);
     }
-  }, [ownerData]);
+  }, [ownerData, ownerId]);
 
   const handleEditMode = useCallback(() => setEditMode((prev) => !prev), []);
 
   const handleSave = useCallback(() => {
+    if (!formData?.name || !formData?.phone) {
+      if (!formData?.name) {
+        setValidErrors((prev) => ({
+          ...prev,
+          name: "Обязательно для заполнения",
+        }));
+      } else if (validErrors?.name && formData?.name) {
+        setValidErrors((prev) => ({ ...prev, name: undefined }));
+      }
+      if (!formData?.phone) {
+        setValidErrors((prev) => ({
+          ...prev,
+          phone: "Обязательно для заполнения",
+        }));
+      } else if (validErrors?.phone && formData?.phone) {
+        setValidErrors((prev) => ({ ...prev, phone: undefined }));
+      }
+      return;
+    }
     if (ownerId) {
       const data = new FormData();
       Object.entries(formData).forEach((arr) => data.append(arr[0], arr[1]));
@@ -79,9 +94,9 @@ export const Detail = () => {
         .then((res) => res.json())
         .then(({ message }) => {
           navigate("/owner");
-          setState({ open: true, message });
+          handleSnackbar({ open: true, message });
         })
-        .catch(({ message }) => setState({ open: true, message }));
+        .catch(({ message }) => handleSnackbar({ open: true, message }));
     } else {
       const data = new FormData();
       Object.entries(formData).forEach(
@@ -98,11 +113,11 @@ export const Detail = () => {
         .then((res) => res.json())
         .then(({ message }) => {
           navigate("/owner");
-          setState({ open: true, message });
+          handleSnackbar({ open: true, message });
         })
-        .catch(({ message }) => setState({ open: true, message }));
+        .catch(({ message }) => handleSnackbar({ open: true, message }));
     }
-  }, [ownerId, formData]);
+  }, [ownerId, formData, formData?.name, formData?.phone]);
 
   const handleDelete = useCallback(() => {
     const data = new FormData();
@@ -117,11 +132,11 @@ export const Detail = () => {
       .then((res) => res.json())
       .then(({ message }) => {
         console.log(message);
-        setState({ open: true, message });
+        handleSnackbar({ open: true, message });
         navigate("/owner");
       })
-      .catch(({ message }) => setState({ open: true, message }));
-  }, []);
+      .catch(({ message }) => handleSnackbar({ open: true, message }));
+  }, [ownerId]);
 
   return (
     <DetailWrapper
@@ -131,12 +146,8 @@ export const Detail = () => {
       onSave={handleSave}
       onDelete={handleDelete}
     >
-      <Snackbar
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        open={state.open}
-        message={state.message}
-      />
       <DetailForm
+        validErrors={validErrors}
         ownerId={ownerId}
         isEditMode={isEditMode}
         data={ownerData}
