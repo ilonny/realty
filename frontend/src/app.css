@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+* {
+  box-sizing: border-box;
+  font-family: Roboto;
+}
+
+p {
+  margin: 0;
+}
+
+/* HTML marker styles */
+.price-tag {
+  background-color: #fff;
+  box-shadow: 3px 9px 15px -1px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  color: #222222 !important;
+  font-size: 14px;
+  padding: 10px 15px;
+  position: relative;
+  font-weight: 600;
+}
+
+.price-tag::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translate(-50%, 0);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid #fff;
+  box-shadow: 3px 9px 15px -1px rgba(0, 0, 0, 0.1);
+}
+
+[class$=api-load-alpha-banner] {
+  display: none;
+}
+
+.marker-content {
+  display: flex;
+}
+
+.marker-content a{
+  color: black  !important;
+}
+
+.chakra-input, .chakra-select {
+  border-color: #eee !important;
+}
+
+.chakra-input:focus-visible,
+.chakra-select:focus-visible,
+.chakra-input[data-focus-visible],
+.chakra-select[data-focus-visible] {
+  box-shadow: 0 0 0 1px #92a6b9 !important;
+}
+
+.chakra-checkbox__control  {
+  background: #eee !important;
+}
+.chakra-checkbox__control[data-checked]  {
+  border-color: #CF1409 !important;
+  background: #CF1409 !important;
+
+}
+
+.slick-next {
+  right: 5px;
+  width: 40px;
+  height: 40px;
+}
+
+.slick-prev {
+  left: 5px;
+  width: 40px;
+  height: 40px;
+  z-index: 1;
+}
+.slick-prev:before, .slick-next:before {
+  font-size: 30px;
+}
+
+.upload__image-wrapper  {
+  width: 100%;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #ccc;
+}
+.rug-card-upload-button {
+  display: none;
+}

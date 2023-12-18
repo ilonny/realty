@@ -21,7 +21,7 @@ export const List = () => {
     })
       .then((res) => res.json())
       .then((res) => {
-        setAgentsData(res);
+        setAgentsData(res?.filter((r) => r.deleted !== "1"));
       })
       .finally(() => setLoading(false));
   }, []);

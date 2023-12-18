@@ -112,7 +112,7 @@ export const Detail = () => {
       const data = new FormData();
       Object.entries(formData).forEach((arr) => data.append(arr[0], arr[1]));
 
-      fetch(API_URL + "/" + "user" + "/" + "update", {
+      fetch(API_URL + "/user/protected/" + "user-update", {
         method: "POST",
         body: data,
         headers: new Headers({
@@ -131,7 +131,7 @@ export const Detail = () => {
         (arr) => arr?.[0] !== "id" && data.append(arr[0], arr[1])
       );
 
-      fetch(API_URL + "/" + "user" + "/" + "create", {
+      fetch(API_URL + "/user/protected/" + "user-create", {
         method: "POST",
         body: data,
         headers: new Headers({
@@ -150,7 +150,7 @@ export const Detail = () => {
   const handleDelete = useCallback(() => {
     const data = new FormData();
     data.append("id", userId);
-    fetch(API_URL + "/" + "user" + "/" + "delete", {
+    fetch(API_URL + "/user/protected/" + "user-delete", {
       method: "POST",
       body: data,
       headers: new Headers({

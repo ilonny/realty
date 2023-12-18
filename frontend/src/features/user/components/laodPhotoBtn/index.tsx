@@ -39,19 +39,29 @@ export const LoadPhotoBtn = ({
           },
         }}
       >
-        <MenuItem onClick={onLoad}>
-          {" "}
-          <ListItemIcon>
-            <img src={LoadPhotoIcon} />
-          </ListItemIcon>
-          <LoadText>Загрузить фото</LoadText>
-        </MenuItem>
-        <MenuItem onClick={onDelete}>
+        <label>
+          <MenuItem>
+            {" "}
+            <ListItemIcon>
+              <img src={LoadPhotoIcon} />
+            </ListItemIcon>
+            <LoadText>Загрузить фото</LoadText>
+            <input
+              type="file"
+              id="fileinput"
+              hidden
+              onChange={(e) => {
+                onLoad(e.target.files[0]);
+              }}
+            />
+          </MenuItem>
+        </label>
+        {/* <MenuItem onClick={onDelete}>
           <ListItemIcon>
             <img src={DeletePhotoIcon} />
           </ListItemIcon>
           <DeleteText>Удалить фото</DeleteText>
-        </MenuItem>
+        </MenuItem> */}
       </Menu>
     </Box>
   );

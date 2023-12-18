@@ -29,7 +29,15 @@ export const DetailForm: FC<IDetailFormProps> = ({
 }) => {
   return (
     <FormWrapper>
-      <UserCard data={data} userId={userId} />
+      <UserCard
+        data={data}
+        formData={formData}
+        userId={userId}
+        onChoosePhoto={(photo) => {
+          console.log("onChoosePhoto photo: ", photo);
+          setFormData((prev) => ({ ...prev, photo }));
+        }}
+      />
       <FormDataBlock>
         <Grid container spacing={2}>
           <Grid item xs={6}>

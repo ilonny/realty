@@ -1,14 +1,21 @@
+import { ChakraProvider } from "@chakra-ui/react";
 import { TableList } from "../../shared/components/tableList";
 import { Box, CircularProgress } from "@mui/material";
 import { TableListWrapper } from "../../shared/components/tableListWrapper";
 import { realtiesColumns } from "../../constants/app.constants";
-import { useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { API_URL } from "../../constants/globalApi.constants";
 import { RecommendRealtyWrapper } from "../../features/owner/components/recommendRealty/styles";
+import { FilterContext } from "./FilterContext";
+import Filters from "./Filters";
+import { useNavigate } from "react-router-dom";
 
 export const List = () => {
-  const [realty, setRealty] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const { filteredData, data } = useContext(FilterContext);
+  const realty = filteredData;
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
@@ -40,14 +47,31 @@ export const List = () => {
           }
           return item;
         });
-        setRealty(resultRealty);
       })
       .finally(() => setLoading(false));
   }, []);
 
+  const handleOwnerDetail = useCallback(
+    ({ id }: any) => {
+      navigate(`${id}`);
+    },
+    [navigate]
+  );
+
+  const handleCreate = useCallback(() => {
+    navigate("/realty/create");
+  }, [navigate]);
+
   return (
     <Box pl={2.5} pr={2.5}>
-      <TableListWrapper title="Объекты" btnTitle="Создать объект">
+      <ChakraProvider>
+        <Filters />
+      </ChakraProvider>
+      <TableListWrapper
+        title="Объекты"
+        btnTitle="Создать объект"
+        onCreate={handleCreate}
+      >
         {loading ? (
           <Box
             sx={{
@@ -62,7 +86,11 @@ export const List = () => {
             <CircularProgress />
           </Box>
         ) : (
-          <TableList columns={realtiesColumns} data={realty} />
+          <TableList
+            columns={realtiesColumns}
+            data={realty}
+            onClick={handleOwnerDetail}
+          />
         )}
       </TableListWrapper>
     </Box>

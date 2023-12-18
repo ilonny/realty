@@ -10,6 +10,7 @@
     "format": "prettier --write ./src"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fusionworks/ra-google-maps-input": "^0.1.7",
@@ -18,6 +19,7 @@
     "@mui/icons-material": "^5.14.19",
     "@mui/material": "^5.14.20",
     "@mui/x-data-grid": "^6.18.4",
+    "framer-motion": "^10.16.16",
     "ra-data-simple-rest": "^4.14.0",
     "ra-language-russian": "^4.14.1",
     "react": "^18.2.0",
@@ -25,9 +27,12 @@
     "react-dom": "^18.2.0",
     "react-google-autocomplete": "^2.7.3",
     "react-google-maps": "^9.4.5",
+    "react-images-uploading": "^3.1.7",
     "react-places-autocomplete": "^7.3.0",
     "react-router": "^6.20.1",
-    "recompose": "^0.30.0"
+    "react-upload-gallery": "^0.4.1",
+    "recompose": "^0.30.0",
+    "styled-components": "^6.1.1"
   },
   "devDependencies": {
     "@types/node": "^18.16.1",

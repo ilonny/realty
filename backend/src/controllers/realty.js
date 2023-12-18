@@ -50,12 +50,15 @@ router.post("/create", async (req, res) => {
             console.log("req?.files", req?.files);
             filesCanBeSaved.forEach((docType) => {
                 if (req?.files[docType]) {
-                    req?.files[docType].forEach((file) => {
-                        let file_path =
-                            "uploads/" + new Date().getTime() + file.name;
-                        file.mv(file_path);
-                        paths.push(file_path);
-                    });
+                    if (!Array.isArray(req?.files[docType])) {
+                        req?.files[docType] = [req?.files[docType]]
+                    }
+                        req?.files[docType].forEach((file) => {
+                            let file_path =
+                                "uploads/" + new Date().getTime() + file.name;
+                            file.mv(file_path);
+                            paths.push(file_path);
+                        });
                 }
                 dataToSave[docType] = JSON.stringify(paths);
             });

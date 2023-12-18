@@ -11,9 +11,16 @@ import { LoadPhotoBtn } from "../laodPhotoBtn";
 interface TUserCard {
   data: TUserData;
   userId: string;
+  onChoosePhoto: any;
+  formData: any;
 }
 
-export const UserCard: FC<TUserCard> = ({ data, userId }) => {
+export const UserCard: FC<TUserCard> = ({
+  data,
+  userId,
+  onChoosePhoto,
+  formData,
+}) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -36,17 +43,25 @@ export const UserCard: FC<TUserCard> = ({ data, userId }) => {
                 position: "relative",
               }}
             >
-              <img
-                src={`https://neverhaveiever.ru/${data?.photo}`}
-                alt={"photo"}
-                width={"100%"}
-              />
+              {formData?.photo?.size ? (
+                <img
+                  src={URL.createObjectURL(formData?.photo)}
+                  alt={"photo"}
+                  width={"100%"}
+                />
+              ) : (
+                <img
+                  src={`https://neverhaveiever.ru/${data?.photo}`}
+                  alt={"photo"}
+                  width={"100%"}
+                />
+              )}
               <LoadPhotoBtn
                 open={open}
                 handleClick={handleClick}
                 handleClose={handleClose}
                 anchorEl={anchorEl}
-                onLoad={console.log}
+                onLoad={onChoosePhoto}
                 onDelete={console.log}
               />
             </Box>
@@ -64,7 +79,7 @@ export const UserCard: FC<TUserCard> = ({ data, userId }) => {
                 handleClick={handleClick}
                 handleClose={handleClose}
                 anchorEl={anchorEl}
-                onLoad={console.log}
+                onLoad={onChoosePhoto}
                 onDelete={console.log}
               />
             </Box>
@@ -85,6 +100,40 @@ export const UserCard: FC<TUserCard> = ({ data, userId }) => {
             <SimpleText>{data?.other}</SimpleText>
           </SocialBlock>
         </>
+      )}
+      {!userId && (
+        <Box
+          sx={{
+            margin: "20px auto",
+            maxWidth: "372px",
+            maxHeight: "372px",
+            minWidth: "372px",
+            minHeight: "372px",
+            position: "relative",
+          }}
+        >
+          {formData?.photo?.size ? (
+            <img
+              src={URL.createObjectURL(formData?.photo)}
+              alt={"photo"}
+              width={"100%"}
+            />
+          ) : (
+            <img
+              src={`https://neverhaveiever.ru/${data?.photo}`}
+              alt={"photo"}
+              width={"100%"}
+            />
+          )}
+          <LoadPhotoBtn
+            open={open}
+            handleClick={handleClick}
+            handleClose={handleClose}
+            anchorEl={anchorEl}
+            onLoad={onChoosePhoto}
+            onDelete={console.log}
+          />
+        </Box>
       )}
     </UserCardWrapper>
   );
