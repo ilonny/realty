@@ -37,6 +37,9 @@ export const getFormDataFromParams = (params: any) => {
       }
       continue;
     }
+    if (param === "photos" && isNotUndef && typeof params[param] === "string") {
+      formData.append("oldFilesForSave", params[param].toString());
+    }
 
     if (param === "photo" && isNotUndef && typeof params[param] === "object") {
       formData.append("photo", params[param].rawFile);

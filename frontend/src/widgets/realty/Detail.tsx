@@ -35,8 +35,8 @@ export const Detail = () => {
           console.log("res?", res);
           setRealtyData({
             ...res,
-            district_id: res.district_id?.split(",") || "",
-            apartment_complex_id: res.apartment_complex_id?.split(",") || "",
+            // district_id: res?.district_id?.split(",") || "",
+            // apartment_complex_id: res?.apartment_complex_id?.split(",") || "",
           });
         });
     }
@@ -52,8 +52,10 @@ export const Detail = () => {
 
   useEffect(() => {
     const data = getFormDataFromParams(formData);
+    console.log("formData", formData);
     console.log("data.getName", data.get("name"));
     console.log("data.getPhotos", data.getAll("photos"));
+    console.log("data.oldFilesForSave", data.getAll("oldFilesForSave"));
   }, [formData]);
 
   const handleSave = useCallback(() => {

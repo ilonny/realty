@@ -20,6 +20,7 @@ export const UserCard: FC<TUserCard> = ({
   userId,
   onChoosePhoto,
   formData,
+  skipData,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -30,11 +31,16 @@ export const UserCard: FC<TUserCard> = ({
     setAnchorEl(null);
   }, []);
 
+  console.log("userCard", data, formData);
+
   return (
     <UserCardWrapper userId={userId}>
       {userId && (
         <>
-          {data?.photo ? (
+          {formData?.photo ||
+          formData?.main_photo ||
+          data?.photo ||
+          data?.main_photo ? (
             <Box
               sx={{
                 margin: "20px 0",
@@ -45,13 +51,17 @@ export const UserCard: FC<TUserCard> = ({
             >
               {formData?.photo?.size ? (
                 <img
-                  src={URL.createObjectURL(formData?.photo)}
+                  src={URL.createObjectURL(
+                    formData?.photo || formData?.main_photo
+                  )}
                   alt={"photo"}
                   width={"100%"}
                 />
               ) : (
                 <img
-                  src={`https://neverhaveiever.ru/${data?.photo}`}
+                  src={`https://neverhaveiever.ru/${
+                    data?.photo || data?.main_photo
+                  }`}
                   alt={"photo"}
                   width={"100%"}
                 />
@@ -84,21 +94,25 @@ export const UserCard: FC<TUserCard> = ({
               />
             </Box>
           )}
-          <UserName>{data?.name}</UserName>
-          <SocialBlock>
-            <img src={PhoneIcon} alt={"phone"} />
-            <SimpleText>{data?.phone}</SimpleText>
-          </SocialBlock>
-          <SocialBlock>
-            <img src={EmailIcon} alt={"phone"} />
-            <SimpleText>{data?.email}</SimpleText>
-          </SocialBlock>
-          <Box mt={1.5}>
-            <UserName>Описание</UserName>
-          </Box>
-          <SocialBlock>
-            <SimpleText>{data?.other}</SimpleText>
-          </SocialBlock>
+          {!skipData && (
+            <>
+              <UserName>{data?.name}</UserName>
+              <SocialBlock>
+                <img src={PhoneIcon} alt={"phone"} />
+                <SimpleText>{data?.phone}</SimpleText>
+              </SocialBlock>
+              <SocialBlock>
+                <img src={EmailIcon} alt={"phone"} />
+                <SimpleText>{data?.email}</SimpleText>
+              </SocialBlock>
+              <Box mt={1.5}>
+                <UserName>Описание</UserName>
+              </Box>
+              <SocialBlock>
+                <SimpleText>{data?.other}</SimpleText>
+              </SocialBlock>
+            </>
+          )}
         </>
       )}
       {!userId && (

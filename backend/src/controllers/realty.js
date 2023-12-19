@@ -130,7 +130,9 @@ router.post("/update", async (req, res) => {
             }
         }
         dataToSave["photos"] = JSON.stringify(_.union(oldSaved, paths));
-
+        if (dataToSave["photos"].length <= 5) {
+            delete dataToSave["photos"];
+        }
         console.log("oldSaved", oldSaved);
         console.log("oldFilesForSave", oldFilesForSave);
 

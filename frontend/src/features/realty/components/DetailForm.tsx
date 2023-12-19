@@ -1,11 +1,20 @@
 import { FC, useEffect, useRef, useState } from "react";
-import { Grid } from "@mui/material";
+import {
+  Grid,
+  TableContainer,
+  Table,
+  TableRow,
+  TableCell,
+  TableBody,
+} from "@mui/material";
 import { Input, Select } from "../../../shared/components/input";
 import { API_URL } from "../../../constants/globalApi.constants";
 import { Loader } from "@googlemaps/js-api-loader";
 import ImageUploading from "react-images-uploading";
-import RUG from "react-upload-gallery";
+import RUG, { Card, List } from "react-upload-gallery";
 import "react-upload-gallery/dist/style.css"; // or scss
+import { Label } from "../../../shared/components/input/styles";
+import { UserCard } from "../../user/components/userCard";
 
 const AddressInput = () => {};
 
@@ -27,7 +36,7 @@ export const DetailForm: FC<any> = (props) => {
   const [document, setDocument] = useState([]);
   const [type, setType] = useState([]);
 
-  const [images, setImages] = useState([]);
+  const [initialImages, setImages] = useState([]);
   const [galleryReady, setGalleryReady] = useState(false);
 
   useEffect(() => {
@@ -149,7 +158,7 @@ export const DetailForm: FC<any> = (props) => {
         latLng: { lat, lng },
       },
       (cb) => {
-        console.log("cb?", cb);
+        // console.log("cb?", cb);
         if (!cb?.length) {
           return;
         }
@@ -159,7 +168,7 @@ export const DetailForm: FC<any> = (props) => {
   };
 
   useEffect(() => {
-    if (!gmapsLoaded) {
+    if (!gmapsLoaded || !mapRef.current) {
       return;
     }
     const gmap = new window.google.maps.Map(mapRef.current, {
@@ -173,20 +182,43 @@ export const DetailForm: FC<any> = (props) => {
     });
 
     gmap.addListener("click", (e) => {
-      console.log("click e: ", e);
+      // console.log("click e: ", e);
       const lat = e.latLng.lat();
       const lng = e.latLng.lng();
       findPlaceByCoords(lat, lng);
       // findPlaceByCoords(lat, lng);
 
-      // console.log('geocoder', geocoder)
+      console.log("geocoder", geocoder);
     });
     gmapRef.current = gmap;
   }, [gmapsLoaded]);
 
-  console.log("formData", formData);
-  console.log("data", data);
-  console.log("images", images);
+  // console.log("formData", formData);
+  // console.log("data", data);
+  // console.log("images", images);
+
+  // if (!isEditMode) {
+  //   return (
+  //     <Grid item xs={12}>
+  //       <Grid item xs={6}>
+  //         <TableContainer>
+  //           <Table>
+  //             <TableBody>
+  //               <TableRow>
+  //                 <TableCell>ID:</TableCell>
+  //                 <TableCell>{formData?.id}</TableCell>
+  //               </TableRow>
+  //               <TableRow>
+  //                 <TableCell>ID:</TableCell>
+  //                 <TableCell>{formData?.id}</TableCell>
+  //               </TableRow>
+  //             </TableBody>
+  //           </Table>
+  //         </TableContainer>
+  //       </Grid>
+  //     </Grid>
+  //   );
+  // }
 
   return (
     <div style={{ maxWidth: "800px" }}>
@@ -550,14 +582,29 @@ export const DetailForm: FC<any> = (props) => {
             }}
           </ImageUploading>
         </Grid> */}
+        <Grid item xs={12}>
+          <Label>Основное фото</Label>
+          <UserCard
+            data={data}
+            formData={formData}
+            userId={1}
+            skipData
+            onChoosePhoto={(photo) => {
+              console.log("onChoosePhoto photo: ", photo);
+              setFormData((prev) => ({ ...prev, main_photo: photo, photo }));
+            }}
+          />
+        </Grid>
         {galleryReady && (
           <Grid item xs={12}>
+            <br />
+            <Label>Галерея фотографий</Label>
             <RUG
-              initialState={images}
+              initialState={initialImages}
               dataURLKey="source"
               autoUpload={false}
               onChange={(selectedImages) => {
-                console.log("selectedImages: ", selectedImages);
+                console.log("onChange selectedImages: ", selectedImages);
                 setFormData((prev) => ({
                   ...prev,
                   photos: selectedImages.map((i) => i.file),
@@ -568,9 +615,44 @@ export const DetailForm: FC<any> = (props) => {
               // action="/api/upload" // upload route
               // source={(response) => response.source} // response image source
             >
-              {/* {(image) => {
-                console.log("image???", image);
-              }} */}
+              {(images) => {
+                return (
+                  <div className="rug-items __card __sorting">
+                    {images.map((image) => {
+                      console.log("image??", image);
+                      return (
+                        <div>
+                          <div className="rug-item">
+                            <div className="rug-card ">
+                              <div
+                                className="rug-card-image"
+                                style={{
+                                  backgroundImage: `url(${image.source})`,
+                                }}
+                              >
+                                <img src={`${image.source}`} />
+                              </div>
+                              <div
+                                className="rug-card-remove"
+                                onClick={image.remove}
+                              >
+                                <svg viewBox="0 0 40 40">
+                                  <path
+                                    stroke="current"
+                                    stroke-linecap="round"
+                                    stroke-width="4"
+                                    d="M 10,10 L 30,30 M 30,10 L 10,30"
+                                  ></path>
+                                </svg>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              }}
             </RUG>
           </Grid>
         )}
