@@ -17,9 +17,14 @@ export const Header = () => (
         <Logo src={LogoIcon} alt={"logo"} />
       </a>
       <ProfileBlock>
-        <LoginButton variant="text">Вход</LoginButton>
-        <ProfileButton>
-          Профиль <img src={ProfileLogo} alt={"profile"} />
+        {/* <LoginButton variant="text">Вход</LoginButton> */}
+        <ProfileButton
+          onClick={() => {
+            localStorage.clear();
+            window.location.reload();
+          }}
+        >
+          Выход <img src={ProfileLogo} alt={"profile"} />
         </ProfileButton>
       </ProfileBlock>
     </Container>

@@ -5,9 +5,9 @@ import { Unauthorized } from "../../widgets/unauthorized";
 import { OwnerDetail, OwnerList } from "../../pages/owner";
 import { RealtyList } from "../../pages/realty";
 import { UserList, UserDetail } from "../../pages/user";
-import { SystemSettings } from "../../pages/systemSettings";
 import { Login } from "../../pages/login";
 import { RealtyDetail } from "../../pages/realty/RealtyDetail";
+import { AdminPanel } from "../../AdminPanel";
 
 export const Routers: FC = () => (
   <BrowserRouter>
@@ -25,7 +25,7 @@ export const Routers: FC = () => (
         <Route path="/user" element={<UserList />} />
         <Route path="/user/:userId" element={<UserDetail />} />
         <Route path="/user/create" element={<UserDetail />} />
-        <Route path="/other" element={<SystemSettings />} />
+        {/* <Route path="/other" element={<AdminPanel/>} /> */}
         <Route path="/*" element={<Navigate replace to="/owner" />} />
       </Route>
     </Routes>

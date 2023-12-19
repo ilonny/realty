@@ -11,7 +11,6 @@ export const tabNavigation: {
   { name: "Клиенты", link: "/owner", icon: OwnerIcon },
   { name: "Недвижимость", link: "/realty", icon: UserIcon },
   { name: "Агенты", link: "/user", icon: RealtyIcon },
-  { name: "Системные поля", link: "/other" },
 ];
 
 export const ownersColumns: GridColDef[] = [
