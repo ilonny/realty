@@ -23,47 +23,12 @@ export const List = () => {
   const [loading, setLoading] = useState(false);
 
   const { filteredData, data } = useContext(FilterContext);
-  // const realty = filteredData;
   const [realty, setRealty] = useState(filteredData ?? []);
   const navigate = useNavigate();
 
   useEffect(() => {
     setRealty(filteredData);
   }, [filteredData]);
-
-  // useEffect(() => {
-  //   setLoading(true);
-  //   Promise.all([
-  //     fetch(API_URL + "/" + "realty", {
-  //       headers: new Headers({
-  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //       }),
-  //     }),
-  //     fetch(API_URL + "/" + "user" + "/" + "protected" + "/" + "user-list", {
-  //       headers: new Headers({
-  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //       }),
-  //     }),
-  //   ])
-  //     .then((res) => res.map((item) => item.json()))
-  //     .then(async (result) => {
-  //       const agents = await result[1];
-  //       const realty = await result[0];
-  //
-  //       const resultRealty = realty.map((item) => {
-  //         if (item["agent_id"]) {
-  //           const agentOwner = agents.find(
-  //             (agent) => agent.id == item.agent_id
-  //           );
-  //           if (agentOwner) {
-  //             item["agent_id"] = `${agentOwner?.name}, ${agentOwner?.phone}`;
-  //           }
-  //         }
-  //         return item;
-  //       });
-  //     })
-  //     .finally(() => setLoading(false));
-  // }, []);
 
   const handleCreate = useCallback(() => {
     navigate("/realty/create");
@@ -90,7 +55,6 @@ export const List = () => {
         headerName: "Об объекте",
         flex: 1,
         renderCell: (params) => {
-          console.log("params", params);
           return (
             <AboutText
               id={params?.id}
@@ -133,9 +97,10 @@ export const List = () => {
         },
       },
       {
-        field: "",
+        field: " ",
         headerName: " ",
         width: 250,
+        sortable: false,
         renderCell: (params) => {
           return (
             <Stack

@@ -78,13 +78,18 @@ export const UserCard: FC<TUserCard> = ({
           ) : (
             <Box
               sx={{
-                margin: "20px auto",
-                maxWidth: "372px",
-                maxHeight: "372px",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "20px 0",
+                width: "100%",
+                height: "100%",
                 position: "relative",
               }}
             >
               <LoadPhotoBtn
+                noPhoto
                 open={open}
                 handleClick={handleClick}
                 handleClose={handleClose}

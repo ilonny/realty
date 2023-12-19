@@ -1,4 +1,4 @@
-import { Box, Button, ListItemIcon, Menu } from "@mui/material";
+import { Box, Button, ListItemIcon, Menu, Typography } from "@mui/material";
 import PhotoIcon from "../../../../assets/icons/photoIcon.svg";
 import LoadPhotoIcon from "../../../../assets/icons/loadPhotoIcon.svg";
 import DeletePhotoIcon from "../../../../assets/icons/deletePhotoIcon.svg";
@@ -12,9 +12,20 @@ export const LoadPhotoBtn = ({
   onLoad,
   onDelete,
   open,
+  noPhoto = false,
 }) => {
   return (
-    <Box sx={{ position: "absolute", bottom: "20px", right: "20px" }}>
+    <Box
+      sx={{
+        position: noPhoto ? "static" : "absolute",
+        bottom: "20px",
+        right: "20px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      {noPhoto && <Typography>Добавить фото</Typography>}
       <Button
         id="basic-button"
         aria-controls={open ? "basic-menu" : undefined}
