@@ -1,4 +1,5 @@
-import { FC, useEffect, useRef, useState } from "react";
+import "react-image-gallery/styles/css/image-gallery.css";
+import { FC, useEffect, useMemo, useRef, useState } from "react";
 import {
   Grid,
   TableContainer,
@@ -15,6 +16,8 @@ import RUG, { Card, List } from "react-upload-gallery";
 import "react-upload-gallery/dist/style.css"; // or scss
 import { Label } from "../../../shared/components/input/styles";
 import { UserCard } from "../../user/components/userCard";
+import ImageGallery from "react-image-gallery";
+import styled from "styled-components";
 
 const AddressInput = () => {};
 
@@ -191,34 +194,173 @@ export const DetailForm: FC<any> = (props) => {
       console.log("geocoder", geocoder);
     });
     gmapRef.current = gmap;
-  }, [gmapsLoaded]);
+  }, [gmapsLoaded, isEditMode, mapRef.current]);
 
   // console.log("formData", formData);
   // console.log("data", data);
   // console.log("images", images);
 
-  // if (!isEditMode) {
-  //   return (
-  //     <Grid item xs={12}>
-  //       <Grid item xs={6}>
-  //         <TableContainer>
-  //           <Table>
-  //             <TableBody>
-  //               <TableRow>
-  //                 <TableCell>ID:</TableCell>
-  //                 <TableCell>{formData?.id}</TableCell>
-  //               </TableRow>
-  //               <TableRow>
-  //                 <TableCell>ID:</TableCell>
-  //                 <TableCell>{formData?.id}</TableCell>
-  //               </TableRow>
-  //             </TableBody>
-  //           </Table>
-  //         </TableContainer>
-  //       </Grid>
-  //     </Grid>
-  //   );
-  // }
+  const photos = useMemo(() => {
+    if (!data) {
+      return [];
+    }
+    const res: any = [];
+    if (data.main_photo) {
+      res.push(API_URL + "/" + data.main_photo);
+    }
+    let gallery;
+    try {
+      gallery = JSON.parse(data.photos);
+    } catch (e) {}
+    if (Array.isArray(gallery)) {
+      gallery.forEach((g) => {
+        res.push(API_URL + "/" + g);
+      });
+    }
+    return Array.from(new Set(res));
+  }, [data]);
+
+  if (!isEditMode) {
+    return (
+      <Grid container spacing={2}>
+        <Grid item xs={8}>
+          <TableContainer>
+            <Table>
+              <TableBody>
+                <StyledTableRow>
+                  <TableCell>ID:</TableCell>
+                  <TableCell>{formData?.id}</TableCell>
+                </StyledTableRow>
+                <StyledTableRow>
+                  <TableCell>Цена:</TableCell>
+                  <TableCell>{formData?.price}$</TableCell>
+                </StyledTableRow>
+                <StyledTableRow>
+                  <TableCell>Комнаты:</TableCell>
+                  <TableCell>
+                    {rooms?.find((r) => r.id === formData?.rooms_id)?.name ||
+                      ""}
+                  </TableCell>
+                </StyledTableRow>
+                <StyledTableRow>
+                  <TableCell>Район:</TableCell>
+                  <TableCell>
+                    {districtData?.find((r) => r.id === formData?.district_id)
+                      ?.name || ""}
+                  </TableCell>
+                </StyledTableRow>
+                <StyledTableRow>
+                  <TableCell>Серия:</TableCell>
+                  <TableCell>
+                    {series?.find((r) => r.id === formData?.series_id)?.name ||
+                      ""}
+                  </TableCell>
+                </StyledTableRow>
+                <StyledTableRow>
+                  <TableCell>Состояние:</TableCell>
+                  <TableCell>
+                    {state?.find((r) => r.id === formData?.state_id)?.name ||
+                      ""}
+                  </TableCell>
+                </StyledTableRow>
+                <StyledTableRow>
+                  <TableCell>Категория:</TableCell>
+                  <TableCell>
+                    {category?.find((r) => r.id === formData?.category_id)
+                      ?.name || ""}
+                  </TableCell>
+                </StyledTableRow>
+                <StyledTableRow>
+                  <TableCell>Тип отношений:</TableCell>
+                  <TableCell>
+                    {type?.find((r) => r.id === formData?.type_id)?.name || ""}
+                  </TableCell>
+                </StyledTableRow>
+                <StyledTableRow>
+                  <TableCell>Адрес:</TableCell>
+                  <TableCell>{address?.formatted_address || ""}</TableCell>
+                </StyledTableRow>
+                <StyledTableRow>
+                  <TableCell>Общая площадь:</TableCell>
+                  <TableCell>{formData?.total_area || ""} кв. м.</TableCell>
+                </StyledTableRow>
+                <StyledTableRow>
+                  <TableCell>Этаж:</TableCell>
+                  <TableCell>{formData?.floor || ""} </TableCell>
+                </StyledTableRow>
+                <StyledTableRow>
+                  <TableCell>Этажей в доме:</TableCell>
+                  <TableCell>{formData?.house_floor_number || ""} </TableCell>
+                </StyledTableRow>
+                <StyledTableRow>
+                  <TableCell>Балкон:</TableCell>
+                  <TableCell>
+                    {(() => {
+                      if (formData.balcony == "balcony") {
+                        return "Балкон";
+                      }
+                      if (formData.balcony == "loggia") {
+                        return "Лоджия";
+                      }
+                      return "Нет";
+                    })()}{" "}
+                  </TableCell>
+                </StyledTableRow>
+                <StyledTableRow>
+                  <TableCell>Остекление:</TableCell>
+                  <TableCell>
+                    {(() => {
+                      if (formData.balcony_glass == "1") {
+                        return "Да";
+                      }
+                      return "Нет";
+                    })()}{" "}
+                  </TableCell>
+                </StyledTableRow>
+                <StyledTableRow>
+                  <TableCell>Коммуникации:</TableCell>
+                  <TableCell>
+                    {communication?.find(
+                      (r) => r.id === formData?.communication_id
+                    )?.name || ""}
+                  </TableCell>
+                </StyledTableRow>
+                <StyledTableRow>
+                  <TableCell>Правоустанавливающие документы:</TableCell>
+                  <TableCell>
+                    {document?.find((r) => r.id === formData?.document_id)
+                      ?.name || ""}
+                  </TableCell>
+                </StyledTableRow>
+                <StyledTableRow>
+                  <TableCell>ФИО собственника:</TableCell>
+                  <TableCell>{formData?.owner_name || ""} </TableCell>
+                </StyledTableRow>
+                <StyledTableRow>
+                  <TableCell>Телефон собственника:</TableCell>
+                  <TableCell>{formData?.owner_phone || ""} </TableCell>
+                </StyledTableRow>
+                <StyledTableRow>
+                  <TableCell>Описание:</TableCell>
+                  <TableCell>{formData?.description || ""} </TableCell>
+                </StyledTableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Grid>
+        <Grid item xs={4}>
+          <ImageGallery
+            items={photos.map((p) => {
+              return {
+                original: p,
+                thumbnail: p,
+              };
+            })}
+          />
+        </Grid>
+      </Grid>
+    );
+  }
 
   return (
     <div style={{ maxWidth: "800px" }}>
@@ -383,7 +525,7 @@ export const DetailForm: FC<any> = (props) => {
           <Select
             isEditMode={isEditMode}
             fullWidth
-            labelTop={"Балкон"}
+            labelTop={"Остекление"}
             value={formData?.balcony_glass}
             data={[
               {
@@ -660,3 +802,16 @@ export const DetailForm: FC<any> = (props) => {
     </div>
   );
 };
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: "#F2F2F2",
+  },
+  "&:nth-of-type(even)": {
+    backgroundColor: "#fff",
+  },
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));

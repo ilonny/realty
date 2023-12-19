@@ -3,11 +3,11 @@ import MenuItem from "@mui/material/MenuItem";
 import { Box, Chip, Typography } from "@mui/material";
 
 export const Input = (props) => {
-  const { labelTop, isEditMode } = props;
+  const { labelTop, isEditMode, noLabel } = props;
   return (
     <>
       <Label>
-        {labelTop}
+        {noLabel ? "" : labelTop}
         {isEditMode ? (
           <CustomInput
             variant={"standard"}
