@@ -18,6 +18,7 @@ import { Label } from "../../../shared/components/input/styles";
 import { UserCard } from "../../user/components/userCard";
 import ImageGallery from "react-image-gallery";
 import styled from "styled-components";
+import authProvider from "../../../authProvider";
 
 const AddressInput = () => {};
 
@@ -28,6 +29,7 @@ const loader = new Loader({
 });
 
 export const DetailForm: FC<any> = (props) => {
+  const [isAdmin, setIsAdmin] = useState(false);
   const { isEditMode = false, formData, setFormData, data } = props;
   const [gmapsLoaded, setGmapsLoaded] = useState(false);
   const [category, setCategory] = useState([]);
@@ -41,8 +43,29 @@ export const DetailForm: FC<any> = (props) => {
   const [developer, setDeveloper] = useState([]);
   const [apartment_complex, setApartment_complex] = useState([]);
 
+  const [agentsList, setAgentsList] = useState([]);
+
   const [initialImages, setImages] = useState([]);
   const [galleryReady, setGalleryReady] = useState(false);
+
+  useEffect(() => {
+    authProvider?.getIdentity &&
+      authProvider?.getIdentity().then((user) => {
+        if (user.role === "admin") {
+          setIsAdmin(true);
+          fetch(
+            API_URL + "/" + "user" + "/" + "protected" + "/" + "user-list",
+            {
+              headers: new Headers({
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              }),
+            }
+          )
+            .then((res) => res.json())
+            .then((res) => setAgentsList(res));
+        }
+      });
+  }, []);
 
   useEffect(() => {
     if (!data) {
@@ -865,6 +888,23 @@ export const DetailForm: FC<any> = (props) => {
                 );
               }}
             </RUG>
+          </Grid>
+        )}
+        {isAdmin && (
+          <Grid item xs={12}>
+            <Select
+              isEditMode={isEditMode}
+              fullWidth
+              labelTop={"Агент:"}
+              value={formData?.agent_id}
+              data={agentsList}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  agent_id: e.target.value,
+                }))
+              }
+            />
           </Grid>
         )}
       </Grid>

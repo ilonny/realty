@@ -66,7 +66,10 @@ export const Select = ({
                 selected.forEach((item) => {
                   const currentName = data.find(({ id }) => id == item);
                   if (currentName) {
-                    selectedName.push(currentName?.name);
+                    selectedName.push(
+                      (currentName?.surname ? currentName?.surname : "") +
+                        currentName?.name
+                    );
                   }
                 });
                 return (
