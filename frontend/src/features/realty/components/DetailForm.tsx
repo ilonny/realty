@@ -38,6 +38,8 @@ export const DetailForm: FC<any> = (props) => {
   const [state, setState] = useState([]);
   const [document, setDocument] = useState([]);
   const [type, setType] = useState([]);
+  const [developer, setDeveloper] = useState([]);
+  const [apartment_complex, setApartment_complex] = useState([]);
 
   const [initialImages, setImages] = useState([]);
   const [galleryReady, setGalleryReady] = useState(false);
@@ -143,6 +145,24 @@ export const DetailForm: FC<any> = (props) => {
       .then((res) => res.json())
       .then((res) => {
         setType(res);
+      });
+    fetch(API_URL + "/" + "developer", {
+      headers: new Headers({
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setDeveloper(res);
+      });
+    fetch(API_URL + "/" + "apartment_complex", {
+      headers: new Headers({
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setApartment_complex(res);
       });
   }, []);
 
@@ -326,6 +346,21 @@ export const DetailForm: FC<any> = (props) => {
                   </TableCell>
                 </StyledTableRow>
                 <StyledTableRow>
+                  <TableCell>Застройщик:</TableCell>
+                  <TableCell>
+                    {developer?.find((r) => r.id === formData?.developer_id)
+                      ?.name || ""}
+                  </TableCell>
+                </StyledTableRow>
+                <StyledTableRow>
+                  <TableCell>Жилой комплекс:</TableCell>
+                  <TableCell>
+                    {apartment_complex?.find(
+                      (r) => r.id === formData?.apartment_complex_id
+                    )?.name || ""}
+                  </TableCell>
+                </StyledTableRow>
+                <StyledTableRow>
                   <TableCell>Правоустанавливающие документы:</TableCell>
                   <TableCell>
                     {document?.find((r) => r.id === formData?.document_id)
@@ -407,6 +442,40 @@ export const DetailForm: FC<any> = (props) => {
             }
           />
         </Grid>
+        {formData?.category_id == 3 && (
+          <>
+            <Grid item xs={6}>
+              <Select
+                isEditMode={isEditMode}
+                fullWidth
+                labelTop={"Застройщик"}
+                value={formData?.developer_id}
+                data={developer}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    developer_id: e.target.value,
+                  }))
+                }
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Select
+                isEditMode={isEditMode}
+                fullWidth
+                labelTop={"Жилой комплекс"}
+                value={formData?.apartment_complex_id}
+                data={apartment_complex}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    apartment_complex_id: e.target.value,
+                  }))
+                }
+              />
+            </Grid>
+          </>
+        )}
         <Grid item xs={12}>
           <div style={{ pointerEvents: "none" }}>
             <Input
