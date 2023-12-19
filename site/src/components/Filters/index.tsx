@@ -196,7 +196,7 @@ const Filters = () => {
                         </Select>
                     </FiltersContainer>
                     <FiltersContainer gap={5} paddingTop={0}>
-                        <Select
+                        {/* <Select
                             placeholder="Выбор типа отношений"
                             onChange={(e) => setTypeFilter(e.target.value)}
                         >
@@ -210,7 +210,7 @@ const Filters = () => {
                                     </option>
                                 );
                             })}
-                        </Select>
+                        </Select> */}
                         <RangeWrapper>
                             <p>
                                 Ценовой диапазон:{" "}
