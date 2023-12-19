@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { DetailWrapper } from "../../shared/components/detailWrapper";
 import { DetailForm } from "../../features/realty/components/DetailForm";
 import { API_URL } from "../../constants/globalApi.constants";
@@ -10,12 +10,13 @@ const initialRealty: any = {};
 
 export const Detail = () => {
   const { handleSnackbar } = useStateContext();
+  const { state } = useLocation();
 
   const { realtyId } = useParams();
 
   const [realtyData, setRealtyData] = useState<any>(initialRealty);
   const [formData, setFormData] = useState<any>(initialRealty);
-  const [isEditMode, setEditMode] = useState(!realtyId);
+  const [isEditMode, setEditMode] = useState(state?.isEditable ?? !realtyId);
   const [validErrors, setValidErrors] = useState<{
     phone?: string;
     name?: string;
@@ -32,7 +33,6 @@ export const Detail = () => {
       })
         .then((res) => res.json())
         .then((res) => {
-          console.log("res?", res);
           setRealtyData({
             ...res,
             // district_id: res?.district_id?.split(",") || "",
@@ -52,10 +52,6 @@ export const Detail = () => {
 
   useEffect(() => {
     const data = getFormDataFromParams(formData);
-    console.log("formData", formData);
-    console.log("data.getName", data.get("name"));
-    console.log("data.getPhotos", data.getAll("photos"));
-    console.log("data.oldFilesForSave", data.getAll("oldFilesForSave"));
   }, [formData]);
 
   const handleSave = useCallback(() => {
@@ -110,14 +106,11 @@ export const Detail = () => {
     })
       .then((res) => res.json())
       .then(({ message }) => {
-        console.log(message);
         handleSnackbar({ open: true, message });
         navigate("/realty");
       })
       .catch(({ message }) => handleSnackbar({ open: true, message }));
   }, [realtyId]);
-
-  console.log("realtyData", realtyData);
 
   return (
     <DetailWrapper

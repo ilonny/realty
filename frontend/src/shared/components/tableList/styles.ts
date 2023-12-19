@@ -34,6 +34,10 @@ export const CustomDataGrid = styled(DataGrid)`
   .MuiDataGrid-columnHeader:focus-within {
     outline: none !important;
   }
+
+  & .MuiDataGrid-cell:focus-within {
+    outline: none !important;
+  }
 `;
 
 export const NoData = styled(Box)`

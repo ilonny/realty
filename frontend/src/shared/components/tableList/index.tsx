@@ -10,7 +10,12 @@ interface ITableListProps {
   onClick?: GridEventListener<"rowClick">;
 }
 
-export const TableList: FC<ITableListProps> = ({ data, columns, onClick }) => {
+export const TableList: FC<ITableListProps> = ({
+  data,
+  columns,
+  onClick,
+  ...props
+}) => {
   return (
     <>
       {data?.length ? (
@@ -22,6 +27,7 @@ export const TableList: FC<ITableListProps> = ({ data, columns, onClick }) => {
           hideFooter
           getRowHeight={() => "auto"}
           disableColumnMenu
+          {...props}
         />
       ) : (
         <NoData>Нет данных</NoData>

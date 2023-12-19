@@ -9,6 +9,7 @@ export const FilterContext = React.createContext<TCtx>(defaultState);
 
 export const FilterProvider = ({ children }: any) => {
   const [data, setData] = useState([]);
+  const [agents, setAgents] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [districtsParent, setDistrictsParent] = useState([]);
   const [series, setSeries] = useState([]);
@@ -88,7 +89,40 @@ export const FilterProvider = ({ children }: any) => {
         setDistrictsParent(res);
       })
       .finally(() => setLoading(false));
+    fetch(API_URL + "/user/protected/user-list", {
+      headers: new Headers({
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setAgents(res);
+      })
+      .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+    const resultRealty = data.map((item) => {
+      if (districts?.length && item["district_id"]) {
+        const realtyDistricts = districts.find(
+          (realty) => realty?.id == item?.district_id
+        );
+        if (realtyDistricts) {
+          item["district_id"] = realtyDistricts?.name;
+        }
+      }
+      if (agents?.length && item["agent_id"]) {
+        const realtyAgents = agents?.find(
+          (agent) => agent?.id == item?.agent_id
+        );
+        if (realtyAgents) {
+          item["agent_id"] = `${realtyAgents?.name} ${realtyAgents?.phone}`;
+        }
+      }
+      return item;
+    });
+    setData(resultRealty);
+  }, [districts, agents]);
 
   useEffect(() => {
     getData();
@@ -127,7 +161,6 @@ export const FilterProvider = ({ children }: any) => {
       });
     }
     if (roomsFilter) {
-      // console.log("roomsFilter", roomsFilter);
       result = result.filter((realty) => {
         return realty?.rooms_id == roomsFilter;
       });
@@ -162,7 +195,7 @@ export const FilterProvider = ({ children }: any) => {
         return false;
       });
     }
-    // console.log("data, result", data, result);
+
     return result;
   }, [
     data,

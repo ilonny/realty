@@ -96,34 +96,3 @@ export const recommendRealty = [
     width: 100,
   },
 ];
-export const realtiesColumns: GridColDef[] = [
-  { field: "id", headerName: "ID", flex: 1 },
-  {
-    field: "main_photo",
-    headerName: "Фото",
-    flex: 1,
-    renderCell: (params) => {
-      return (
-        <img
-          src={`https://neverhaveiever.ru/${params.value}`}
-          width={"200px"}
-        />
-      );
-    },
-  },
-  {
-    field: "name",
-    headerName: "Об объекте",
-    flex: 1,
-  },
-  {
-    field: "price",
-    headerName: "Цена",
-    flex: 1,
-  },
-  {
-    field: "agent_id",
-    headerName: "Контакты",
-    flex: 1,
-  },
-];
