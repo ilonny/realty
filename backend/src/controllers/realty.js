@@ -51,7 +51,7 @@ router.post("/create", async (req, res) => {
             filesCanBeSaved.forEach((docType) => {
                 if (req?.files[docType]) {
                     if (!Array.isArray(req?.files[docType])) {
-                        req?.files[docType] = [req?.files[docType]]
+                        req.files[docType] = [req?.files[docType]]
                     }
                         req?.files[docType].forEach((file) => {
                             let file_path =
