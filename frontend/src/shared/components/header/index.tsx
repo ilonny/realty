@@ -9,13 +9,14 @@ import {
   Logo,
 } from "./styled";
 import { NavigationTab } from "../navigation";
+import { Link } from "react-admin";
 
 export const Header = () => (
   <HeaderWrapper>
     <Container>
-      <a href={"/owner"}>
+      <Link to={"/realty"}>
         <Logo src={LogoIcon} alt={"logo"} />
-      </a>
+      </Link>
       <ProfileBlock>
         {/* <LoginButton variant="text">Вход</LoginButton> */}
         <ProfileButton
