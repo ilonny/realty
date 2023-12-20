@@ -19,6 +19,9 @@ import { UserCard } from "../../user/components/userCard";
 import ImageGallery from "react-image-gallery";
 import styled from "styled-components";
 import authProvider from "../../../authProvider";
+import Autocomplete, { usePlacesWidget } from "react-google-autocomplete";
+import { default as AutucompleteInput } from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
 
 const AddressInput = () => {};
 
@@ -30,7 +33,14 @@ const loader = new Loader({
 
 export const DetailForm: FC<any> = (props) => {
   const [isAdmin, setIsAdmin] = useState(false);
-  const { isEditMode = false, formData, setFormData, data } = props;
+  const [currentUser, setCurrentUser] = useState({});
+  const {
+    isEditMode = false,
+    formData,
+    setFormData,
+    data,
+    setEditMode,
+  } = props;
   const [gmapsLoaded, setGmapsLoaded] = useState(false);
   const [category, setCategory] = useState([]);
   const [series, setSeries] = useState([]);
@@ -51,19 +61,17 @@ export const DetailForm: FC<any> = (props) => {
   useEffect(() => {
     authProvider?.getIdentity &&
       authProvider?.getIdentity().then((user) => {
-        if (user.role === "admin") {
+        if (user.role == "admin") {
           setIsAdmin(true);
-          fetch(
-            API_URL + "/" + "user" + "/" + "protected" + "/" + "user-list",
-            {
-              headers: new Headers({
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-              }),
-            }
-          )
-            .then((res) => res.json())
-            .then((res) => setAgentsList(res));
         }
+        setCurrentUser(user);
+        fetch(API_URL + "/" + "user" + "/" + "protected" + "/" + "user-list", {
+          headers: new Headers({
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          }),
+        })
+          .then((res) => res.json())
+          .then((res) => setAgentsList(res));
       });
   }, []);
 
@@ -197,6 +205,27 @@ export const DetailForm: FC<any> = (props) => {
     address = JSON.parse(formData["address"] || "") || "";
   } catch (err) {}
 
+  const { ref: materialRef, autocompleteRef } = usePlacesWidget({
+    apiKey: "AIzaSyBbDfrPKMdXXJ4i1TVofmhrJOG7nsPDz0U",
+    inputAutocompleteValue: address?.formatted_address || "",
+    onPlaceSelected: (place) => {
+      console.log("onPlaceSelected:", place);
+      // form.setValue("address", JSON.stringify(place));
+      // form.control._updateFormState({
+      //   dirtyFields: { documents: true },
+      //   isDirty: true,
+      //   isValid: true,
+      // });
+      // // form.formState.isDirty = true;
+      // form.trigger("address");
+      // form.trigger("documents");
+      // const lat = place?.geometry?.location?.lat();
+      // const lng = place?.geometry?.location?.lng();
+      // gmapRef.current?.setCenter({ lat, lng });
+      // console.log("gmapRef", gmapRef.current?.setCenter);
+    },
+  });
+
   const findPlaceByCoords = (lat, lng) => {
     let geocoder = new window.google.maps.Geocoder();
     geocoder.geocode(
@@ -279,44 +308,46 @@ export const DetailForm: FC<any> = (props) => {
                   <TableCell>{formData?.price}$</TableCell>
                 </StyledTableRow>
                 <StyledTableRow>
+                  <TableCell>Цена на руки:</TableCell>
+                  <TableCell>{formData?.agent_price}$</TableCell>
+                </StyledTableRow>
+                <StyledTableRow>
                   <TableCell>Комнаты:</TableCell>
                   <TableCell>
-                    {rooms?.find((r) => r.id === formData?.rooms_id)?.name ||
-                      ""}
+                    {rooms?.find((r) => r.id == formData?.rooms_id)?.name || ""}
                   </TableCell>
                 </StyledTableRow>
                 <StyledTableRow>
                   <TableCell>Район:</TableCell>
                   <TableCell>
-                    {districtData?.find((r) => r.id === formData?.district_id)
+                    {districtData?.find((r) => r.id == formData?.district_id)
                       ?.name || ""}
                   </TableCell>
                 </StyledTableRow>
                 <StyledTableRow>
                   <TableCell>Серия:</TableCell>
                   <TableCell>
-                    {series?.find((r) => r.id === formData?.series_id)?.name ||
+                    {series?.find((r) => r.id == formData?.series_id)?.name ||
                       ""}
                   </TableCell>
                 </StyledTableRow>
                 <StyledTableRow>
                   <TableCell>Состояние:</TableCell>
                   <TableCell>
-                    {state?.find((r) => r.id === formData?.state_id)?.name ||
-                      ""}
+                    {state?.find((r) => r.id == formData?.state_id)?.name || ""}
                   </TableCell>
                 </StyledTableRow>
                 <StyledTableRow>
                   <TableCell>Категория:</TableCell>
                   <TableCell>
-                    {category?.find((r) => r.id === formData?.category_id)
+                    {category?.find((r) => r.id == formData?.category_id)
                       ?.name || ""}
                   </TableCell>
                 </StyledTableRow>
                 <StyledTableRow>
                   <TableCell>Тип отношений:</TableCell>
                   <TableCell>
-                    {type?.find((r) => r.id === formData?.type_id)?.name || ""}
+                    {type?.find((r) => r.id == formData?.type_id)?.name || ""}
                   </TableCell>
                 </StyledTableRow>
                 <StyledTableRow>
@@ -363,15 +394,20 @@ export const DetailForm: FC<any> = (props) => {
                 <StyledTableRow>
                   <TableCell>Коммуникации:</TableCell>
                   <TableCell>
-                    {communication?.find(
-                      (r) => r.id === formData?.communication_id
-                    )?.name || ""}
+                    {(() => {
+                      console.log("communication??", communication);
+                      return (
+                        communication?.find(
+                          (r) => r.id == formData?.communication_id
+                        )?.name || ""
+                      );
+                    })()}
                   </TableCell>
                 </StyledTableRow>
                 <StyledTableRow>
                   <TableCell>Застройщик:</TableCell>
                   <TableCell>
-                    {developer?.find((r) => r.id === formData?.developer_id)
+                    {developer?.find((r) => r.id == formData?.developer_id)
                       ?.name || ""}
                   </TableCell>
                 </StyledTableRow>
@@ -379,25 +415,35 @@ export const DetailForm: FC<any> = (props) => {
                   <TableCell>Жилой комплекс:</TableCell>
                   <TableCell>
                     {apartment_complex?.find(
-                      (r) => r.id === formData?.apartment_complex_id
+                      (r) => r.id == formData?.apartment_complex_id
                     )?.name || ""}
                   </TableCell>
                 </StyledTableRow>
                 <StyledTableRow>
                   <TableCell>Правоустанавливающие документы:</TableCell>
                   <TableCell>
-                    {document?.find((r) => r.id === formData?.document_id)
-                      ?.name || ""}
+                    {(() => {
+                      const chosenIds = formData?.document_id?.split(",");
+                      if (!chosenIds?.length) {
+                        return "";
+                      }
+                      const chosenDocs = document?.filter((d) =>
+                        chosenIds?.includes(d.id.toString())
+                      );
+                      return chosenDocs?.map((d) => d.name)?.join(", ");
+                    })()}
                   </TableCell>
                 </StyledTableRow>
                 <StyledTableRow>
                   <TableCell>ФИО собственника:</TableCell>
                   <TableCell>{formData?.owner_name || ""} </TableCell>
                 </StyledTableRow>
-                <StyledTableRow>
-                  <TableCell>Телефон собственника:</TableCell>
-                  <TableCell>{formData?.owner_phone || ""} </TableCell>
-                </StyledTableRow>
+                {(formData?.ange_id == currentUser?.id || isAdmin) && (
+                  <StyledTableRow>
+                    <TableCell>Телефон собственника:</TableCell>
+                    <TableCell>{formData?.owner_phone || ""} </TableCell>
+                  </StyledTableRow>
+                )}
                 <StyledTableRow>
                   <TableCell>Описание:</TableCell>
                   <TableCell>{formData?.description || ""} </TableCell>
@@ -500,14 +546,32 @@ export const DetailForm: FC<any> = (props) => {
           </>
         )}
         <Grid item xs={12}>
-          <div style={{ pointerEvents: "none" }}>
+          <div style={{ pointerEvents: "auto" }}>
             <Input
-              isEditMode={isEditMode}
+              isEditMode={false}
               fullWidth
               readOnly
-              labelTop={"Адрес (выберите на карте)"}
+              labelTop={"Адрес (выберите на карте или введите в поле ниже)"}
               value={address?.formatted_address || ""}
             />
+            {gmapsLoaded && (
+              <Autocomplete
+                style={{ width: "100%", height: 50, padding: 5 }}
+                apiKey={"AIzaSyBbDfrPKMdXXJ4i1TVofmhrJOG7nsPDz0U"}
+                options={{ types: [] }}
+                onPlaceSelected={(place) => {
+                  console.log(place);
+                  setFormData((prev) => ({
+                    ...prev,
+                    address: JSON.stringify(place),
+                  }));
+                  const lat = place?.geometry?.location?.lat();
+                  const lng = place?.geometry?.location?.lng();
+                  gmapRef.current?.setCenter({ lat, lng });
+                  gmapRef.current?.setZoom(15);
+                }}
+              />
+            )}
           </div>
           <br />
           <div
@@ -517,7 +581,36 @@ export const DetailForm: FC<any> = (props) => {
           />
         </Grid>
         <Grid item xs={12}>
-          <Select
+          {Object.keys(formData).length && districtData?.length && (
+            <AutucompleteInput
+              fullWidth
+              labelTop="район"
+              value={
+                districtData.find((d) => {
+                  return d.id == formData?.district_id;
+                }) || undefined
+              }
+              options={districtData}
+              getOptionLabel={(o) => {
+                return o.name;
+              }}
+              renderInput={(props) => {
+                return (
+                  <div>
+                    <Label>Район</Label>
+                    <TextField {...props} label="Район" />
+                  </div>
+                );
+              }}
+              onChange={(e, a) => {
+                setFormData((prev) => ({
+                  ...prev,
+                  district_id: a?.id || undefined,
+                }));
+              }}
+            />
+          )}
+          {/* <Select
             isEditMode={isEditMode}
             fullWidth
             labelTop={"Район"}
@@ -529,7 +622,7 @@ export const DetailForm: FC<any> = (props) => {
                 district_id: e.target.value,
               }))
             }
-          />
+          /> */}
         </Grid>
         <Grid item xs={6}>
           <Input
@@ -671,17 +764,19 @@ export const DetailForm: FC<any> = (props) => {
         </Grid>
         <Grid item xs={12}>
           <Select
+            multiple
             isEditMode={isEditMode}
             fullWidth
             labelTop={"Правоустанавливающие документы"}
-            value={formData?.document_id}
+            value={formData?.document_id?.split(",") || []}
             data={document}
-            onChange={(e) =>
+            onChange={(e) => {
+              console.log("e", e);
               setFormData((prev) => ({
                 ...prev,
-                document_id: e.target.value,
-              }))
-            }
+                document_id: e.target.value.toString(),
+              }));
+            }}
           />
         </Grid>
         <Grid item xs={6}>
@@ -890,20 +985,21 @@ export const DetailForm: FC<any> = (props) => {
             </RUG>
           </Grid>
         )}
-        {isAdmin && (
+        {agentsList?.length && (
           <Grid item xs={12}>
             <Select
-              isEditMode={isEditMode}
+              isEditMode={isAdmin}
               fullWidth
               labelTop={"Агент:"}
               value={formData?.agent_id}
               data={agentsList}
-              onChange={(e) =>
+              onChange={(e, a) => {
+                console.log("onChange", e, a);
                 setFormData((prev) => ({
                   ...prev,
-                  agent_id: e.target.value,
-                }))
-              }
+                  agent_id: a.props.value,
+                }));
+              }}
             />
           </Grid>
         )}

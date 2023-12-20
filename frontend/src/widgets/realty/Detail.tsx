@@ -5,10 +5,17 @@ import { DetailForm } from "../../features/realty/components/DetailForm";
 import { API_URL } from "../../constants/globalApi.constants";
 import { useStateContext } from "../../containers/stateContext";
 import { getFormDataFromParams } from "./helpers";
+import authProvider from "../../authProvider";
 
 const initialRealty: any = {};
 
 export const Detail = () => {
+  const [currentUser, setCurrentUser] = useState({});
+  useEffect(() => {
+    authProvider.getIdentity().then((user) => {
+      setCurrentUser(user);
+    });
+  }, []);
   const { handleSnackbar } = useStateContext();
   const { state } = useLocation();
 
@@ -112,6 +119,15 @@ export const Detail = () => {
       .catch(({ message }) => handleSnackbar({ open: true, message }));
   }, [realtyId]);
 
+  useEffect(() => {
+    if (state?.isEditable) {
+      setEditMode(false);
+      setTimeout(() => {
+        setEditMode(true);
+      }, 500);
+    }
+  }, [state?.isEditable]);
+
   return (
     <DetailWrapper
       title={"о недвижимости"}
@@ -119,6 +135,9 @@ export const Detail = () => {
       onEditMode={handleEditMode}
       onSave={handleSave}
       onDelete={handleDelete}
+      canEdit={
+        currentUser?.id == formData?.agent_id || currentUser?.role === "admin"
+      }
     >
       <DetailForm
         validErrors={validErrors}
@@ -127,6 +146,7 @@ export const Detail = () => {
         data={realtyData}
         formData={formData}
         setFormData={setFormData}
+        setEditMode={setEditMode}
       />
     </DetailWrapper>
   );

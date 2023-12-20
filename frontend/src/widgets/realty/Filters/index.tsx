@@ -62,6 +62,9 @@ const Filters = () => {
     clearFilterContext,
     onlyMyFilter,
     setOnlyMyFilter,
+    agentIdFilter,
+    setAgentIdFilter,
+    agents,
   } = useContext(FilterContext);
   const [districtsSearchString, setDistrictsSearchString] = useState("");
   const [apartmentSearchString, setApartmentSearchString] = useState("");
@@ -194,6 +197,21 @@ const Filters = () => {
               return (
                 <option selected={s.id == typeFilter} value={s.id}>
                   {s.name}
+                </option>
+              );
+            })}
+          </Select>
+          <Select
+            placeholder="Выбрать объекты по агенту"
+            onChange={(e) => setAgentIdFilter(e.target.value)}
+          >
+            <option selected={!agentIdFilter} value={""}>
+              Все агенты
+            </option>
+            {agents?.map((s) => {
+              return (
+                <option selected={s.id == agentIdFilter} value={s.id}>
+                  {s.name} {s?.surname || ""}
                 </option>
               );
             })}

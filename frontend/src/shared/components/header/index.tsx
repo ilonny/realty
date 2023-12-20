@@ -10,6 +10,7 @@ import {
 } from "./styled";
 import { NavigationTab } from "../navigation";
 import { Link } from "react-admin";
+import { redirect } from "react-router-dom";
 
 export const Header = () => (
   <HeaderWrapper>
@@ -22,7 +23,7 @@ export const Header = () => (
         <ProfileButton
           onClick={() => {
             localStorage.clear();
-            window.location.reload();
+            window.location.replace("/");
           }}
         >
           Выход <img src={ProfileLogo} alt={"profile"} />

@@ -18,9 +18,18 @@ import { PriceText } from "../../features/realty/components/priceText";
 import { AreaText } from "../../features/realty/components/areaText";
 import { AboutText } from "../../features/realty/components/aboutText";
 import { ContactsBlock } from "../../features/realty/components/contactsBlock";
+import authProvider from "../../authProvider";
 
 export const List = () => {
   const [loading, setLoading] = useState(false);
+  const [currentUser, setCurrentUser] = useState({});
+  const { agents, districts } = useContext(FilterContext);
+
+  useEffect(() => {
+    authProvider.getIdentity().then((user) => {
+      setCurrentUser(user);
+    });
+  }, []);
 
   const { filteredData, data } = useContext(FilterContext);
   const [realty, setRealty] = useState(filteredData ?? []);
@@ -58,8 +67,11 @@ export const List = () => {
           return (
             <AboutText
               id={params?.id}
-              district={params?.row?.district_id}
+              district={
+                districts?.find((d) => d.id == params?.row?.district_id)?.name
+              }
               conditions={params?.row?.conditions}
+              type={params?.row?.type_id}
             >
               {params?.value}
             </AboutText>
@@ -89,9 +101,20 @@ export const List = () => {
           return (
             <ContactsBlock
               owner={`${params?.row?.owner_name || ""} ${
-                params?.row?.owner_phone || ""
+                currentUser?.role == "admin" ||
+                params?.row?.id == currentUser?.id
+                  ? params?.row?.owner_phone
+                  : ""
               }`}
-              agent={params?.row?.agent_id || ""}
+              agent={(() => {
+                const ag = agents?.find((a) => a.id == params?.row?.agent_id);
+                if (!ag) {
+                  return "";
+                }
+                return (
+                  ag.name + (ag?.surname ? ' '+ag?.surname : "") + " " + ag?.phone
+                );
+              })()}
             />
           );
         },
@@ -109,14 +132,17 @@ export const List = () => {
               alignItems={"stretch"}
               width={"100%"}
             >
-              <UIContainedButton
-                onClick={() =>
-                  navigate(`${params.id}`, { state: { isEditable: true } })
-                }
-                startIcon={<BorderColorOutlinedIcon />}
-              >
-                Редактирование
-              </UIContainedButton>
+              {(params?.row?.agent_id == currentUser?.id ||
+                currentUser?.role === "admin") && (
+                <UIContainedButton
+                  onClick={() =>
+                    navigate(`${params.id}`, { state: { isEditable: true } })
+                  }
+                  startIcon={<BorderColorOutlinedIcon />}
+                >
+                  Редактирование
+                </UIContainedButton>
+              )}
               <UIOutlinedButton
                 onClick={() =>
                   navigate(`${params.id}`, { state: { isEditable: false } })
@@ -130,7 +156,7 @@ export const List = () => {
         },
       },
     ],
-    []
+    [currentUser]
   );
 
   return (

@@ -51,6 +51,7 @@ export const Select = ({
           <CustomSelect
             value={value}
             onChange={onChange}
+            multiple={props.multiple}
             sx={{
               "& .MuiOutlinedInput-notchedOutline": {
                 border: 0,

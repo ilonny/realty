@@ -10,7 +10,6 @@ export const FilterContext = React.createContext<TCtx>(defaultState);
 
 export const FilterProvider = ({ children }: any) => {
   const [currentUser, setCurrentUser] = useState({});
-
   useEffect(() => {
     authProvider.getIdentity().then((user) => {
       setCurrentUser(user);
@@ -40,8 +39,8 @@ export const FilterProvider = ({ children }: any) => {
   const [priceMaxFilter, setPriceMaxFilter] = useState(100000);
   const [onlyMyFilter, setOnlyMyFilter] = useState(0);
   const [apartmentComplexFilter, setApartmentComplexFilter] = useState([]);
-
   const [categoryId, setCategoryId] = useState<number>(1);
+  const [agentIdFilter, setAgentIdFilter] = useState();
 
   const getData = useCallback(() => {
     setLoading(true);
@@ -111,28 +110,28 @@ export const FilterProvider = ({ children }: any) => {
       .finally(() => setLoading(false));
   }, []);
 
-  useEffect(() => {
-    const resultRealty = data.map((item) => {
-      if (districts?.length && item["district_id"]) {
-        const realtyDistricts = districts.find(
-          (realty) => realty?.id == item?.district_id
-        );
-        if (realtyDistricts) {
-          item["district_id"] = realtyDistricts?.name;
-        }
-      }
-      if (agents?.length && item["agent_id"]) {
-        const realtyAgents = agents?.find(
-          (agent) => agent?.id == item?.agent_id
-        );
-        if (realtyAgents) {
-          item["agent_id"] = `${realtyAgents?.name} ${realtyAgents?.phone}`;
-        }
-      }
-      return item;
-    });
-    setData(resultRealty);
-  }, [districts, agents]);
+  // useEffect(() => {
+  //   const resultRealty = data.map((item) => {
+  //     if (districts?.length && item["district_id"]) {
+  //       const realtyDistricts = districts.find(
+  //         (realty) => realty?.id == item?.district_id
+  //       );
+  //       if (realtyDistricts) {
+  //         item["district_id"] = realtyDistricts?.name;
+  //       }
+  //     }
+  //     if (agents?.length && item["agent_id"]) {
+  //       const realtyAgents = agents?.find(
+  //         (agent) => agent?.id == item?.agent_id
+  //       );
+  //       if (realtyAgents) {
+  //         item["agent_id"] = `${realtyAgents?.name} ${realtyAgents?.phone}`;
+  //       }
+  //     }
+  //     return item;
+  //   });
+  //   setData(resultRealty);
+  // }, [districts, agents]);
 
   useEffect(() => {
     getData();
@@ -154,6 +153,7 @@ export const FilterProvider = ({ children }: any) => {
 
   const filteredData = useMemo(() => {
     let result = data || [];
+    // return data;
     if (categoryId) {
       result = result = result.filter((r) => r.category_id == categoryId);
     }
@@ -215,6 +215,16 @@ export const FilterProvider = ({ children }: any) => {
       });
     }
 
+    if (agentIdFilter) {
+      console.log("agentIdFilter", agentIdFilter, result);
+      result = result.filter((realty) => {
+        if (realty.agent_id == agentIdFilter) {
+          return true;
+        }
+        return false;
+      });
+    }
+
     return result;
   }, [
     data,
@@ -230,6 +240,9 @@ export const FilterProvider = ({ children }: any) => {
     typeFilter,
     onlyMyFilter,
     currentUser,
+    agentIdFilter,
+    setAgentIdFilter,
+    agents,
   ]);
 
   return (
@@ -269,6 +282,10 @@ export const FilterProvider = ({ children }: any) => {
         districtsParent,
         onlyMyFilter,
         setOnlyMyFilter,
+        agentIdFilter,
+        setAgentIdFilter,
+        currentUser,
+        agents,
       }}
     >
       {children}

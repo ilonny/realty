@@ -12,6 +12,8 @@ interface IDetailWrapperProps {
   onEditMode?: () => void;
   onSave?: () => void;
   onDelete?: () => void;
+  canEdit?: boolean;
+  canDelete?: boolean;
 }
 
 export const DetailWrapper: FC<IDetailWrapperProps> = ({
@@ -21,30 +23,37 @@ export const DetailWrapper: FC<IDetailWrapperProps> = ({
   onEditMode,
   onSave,
   onDelete,
+  canEdit = true,
+  canDelete = true,
 }) => {
+  console.log('canEdit, canDelete', canEdit, canDelete)
   return (
     <Wrapper>
       <ActionBlock>
         <Title>Информация {title}</Title>
-        <ButtonsBlock>
-          <UIOutlinedButton
-            startIcon={<DeleteOutlineOutlinedIcon />}
-            onClick={onDelete}
-          >
-            Удалить
-          </UIOutlinedButton>
-          {isEditMode && (
-            <UIOutlinedButton startIcon={<SaveIcon />} onClick={onSave}>
-              Сохранить
-            </UIOutlinedButton>
-          )}
-          <UIContainedButton
-            startIcon={<BorderColorOutlinedIcon />}
-            onClick={onEditMode}
-          >
-            {isEditMode ? "Просмотр" : "Редактировать"}
-          </UIContainedButton>
-        </ButtonsBlock>
+        {canEdit && (
+          <ButtonsBlock>
+            {canDelete && (
+              <UIOutlinedButton
+                startIcon={<DeleteOutlineOutlinedIcon />}
+                onClick={onDelete}
+              >
+                Удалить
+              </UIOutlinedButton>
+            )}
+            {isEditMode && (
+              <UIOutlinedButton startIcon={<SaveIcon />} onClick={onSave}>
+                Сохранить
+              </UIOutlinedButton>
+            )}
+            <UIContainedButton
+              startIcon={<BorderColorOutlinedIcon />}
+              onClick={onEditMode}
+            >
+              {isEditMode ? "Просмотр" : "Редактировать"}
+            </UIContainedButton>
+          </ButtonsBlock>
+        )}
       </ActionBlock>
       {children}
     </Wrapper>

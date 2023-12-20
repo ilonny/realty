@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { DetailWrapper } from "../../shared/components/detailWrapper";
 import { DetailForm } from "../../features/user/components/detailForm";
@@ -6,6 +6,8 @@ import { API_URL } from "../../constants/globalApi.constants";
 import { TUserData } from "../../features/user/shared/types";
 import { useStateContext } from "../../containers/stateContext";
 import { RecommendRealty } from "../../features/user/components/recommendRealty";
+import { FilterContext } from "../realty/FilterContext";
+import authProvider from "../../authProvider";
 
 const initialUser: TUserData = {
   id: null,
@@ -25,6 +27,12 @@ const initialUser: TUserData = {
 
 export const Detail = () => {
   const { handleSnackbar } = useStateContext();
+  const [currentUser, setCurrentUser] = useState({});
+  useEffect(() => {
+    authProvider.getIdentity().then((user) => {
+      setCurrentUser(user);
+    });
+  }, []);
 
   const { userId } = useParams();
 
@@ -165,7 +173,7 @@ export const Detail = () => {
       })
       .catch(({ message }) => handleSnackbar({ open: true, message }));
   }, [userId]);
-
+  console.log("currentUser", currentUser?.id, userId);
   return (
     <DetailWrapper
       title={"об агенте"}
@@ -173,6 +181,8 @@ export const Detail = () => {
       onEditMode={handleEditMode}
       onSave={handleSave}
       onDelete={handleDelete}
+      canEdit={currentUser?.id == userId || currentUser?.role == "admin"}
+        canDelete={currentUser?.role == "admin"}
     >
       <DetailForm
         validErrors={validErrors}

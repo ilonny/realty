@@ -100,7 +100,7 @@ export const DetailForm: FC<IDetailFormProps> = ({
               <Error>{validErrors?.surname}</Error>
             )}
           </Grid>
-          <Grid item xs={6}>
+          {/* <Grid item xs={6}>
             <Input
               isEditMode={isEditMode}
               fullWidth
@@ -111,7 +111,7 @@ export const DetailForm: FC<IDetailFormProps> = ({
               }
             />
           </Grid>
-          <Grid item xs={6}></Grid>
+          <Grid item xs={6}></Grid> */}
           <Grid item xs={6}>
             <Input
               isEditMode={isEditMode}
