@@ -25,7 +25,7 @@ const port = 3002;
 const app = express();
 
 // app.use("/uploads", express.static(__dirname + "../uploads"));
-var dir = path.join(__dirname, "../uploads");
+var dir = path.join(__dirname, "/uploads");
 app.use("/uploads", express.static(dir));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
