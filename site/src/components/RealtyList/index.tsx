@@ -307,9 +307,8 @@ const RealtyImageWrapper = styled.div`
   height: 200px;
   overflow: hidden;
   & img {
-    min-width: 100%;
-    max-width: initial !important;
-    height: 200px;
+    max-height: 200px;
+    margin: 0 auto;
   }
 `;
 

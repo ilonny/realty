@@ -22,9 +22,9 @@ export const FilterProvider = ({ children }: any) => {
 
     const [idFilter, setIdFilter] = useState("");
     const [districtsFilter, setDistrictsFilter] = useState([]);
-    const [seriesFilter, setSeriesFilter] = useState();
-    const [roomsFilter, setRoomsFilter] = useState();
-    const [stateFilter, setStateFilter] = useState();
+    const [seriesFilter, setSeriesFilter] = useState([]);
+    const [roomsFilter, setRoomsFilter] = useState([]);
+    const [stateFilter, setStateFilter] = useState([]);
     const [typeFilter, setTypeFilter] = useState();
     const [priceMinFilter, setPriceMinFilter] = useState(0);
     const [priceMaxFilter, setPriceMaxFilter] = useState(100000);
@@ -95,17 +95,16 @@ export const FilterProvider = ({ children }: any) => {
     }, [getData]);
 
     const clearFilterContext = useCallback(() => {
-        
         setIdFilter("");
         setDistrictsFilter([]);
-        setSeriesFilter(undefined);
-        setRoomsFilter(undefined);
-        setStateFilter(undefined);
+        setSeriesFilter([]);
+        setRoomsFilter([]);
+        setStateFilter([]);
         setTypeFilter(undefined);
         setPriceMinFilter(0);
         setPriceMaxFilter(100000);
         setApartmentComplexFilter([]);
-    
+
         setCategoryId(1);
     }, []);
 
@@ -117,27 +116,31 @@ export const FilterProvider = ({ children }: any) => {
         if (parseInt(idFilter)) {
             result = result.filter((r) => r.id == idFilter);
         }
+
         if (Array.isArray(districtsFilter) && districtsFilter?.length) {
             result = result.filter((realty) => {
                 return districtsFilter.some((f) => f.id == realty.district_id);
             });
         }
-        if (seriesFilter && categoryId == 1) {
+
+        if (Array.isArray(seriesFilter) && seriesFilter?.length) {
             result = result.filter((realty) => {
-                return realty?.series_id == seriesFilter;
+                return seriesFilter.some((f) => f.id == realty.series_id);
             });
         }
-        if (roomsFilter) {
-            // console.log("roomsFilter", roomsFilter);
+
+        if (Array.isArray(roomsFilter) && roomsFilter?.length) {
             result = result.filter((realty) => {
-                return realty?.rooms_id == roomsFilter;
+                return roomsFilter.some((f) => f.id == realty.rooms_id);
             });
         }
-        if (stateFilter) {
+
+        if (Array.isArray(stateFilter) && stateFilter?.length) {
             result = result.filter((realty) => {
-                return realty?.state_id == stateFilter;
+                return stateFilter.some((f) => f.id == realty.state_id);
             });
         }
+
         if (typeFilter) {
             result = result.filter((realty) => {
                 return realty?.type_id == typeFilter;

@@ -238,14 +238,16 @@ router.get("/protected/user", async (req, res) => {
 router.get("/get-agents", async (req, res) => {
     try {
         const agents = await user.findAll({
-            where: { role: null },
-            raw: true
+            // where: { role: null },
+            raw: true,
         });
-        agents?.forEach((agent) => {
-            delete agent.password;
-            delete agent.access_token;
-            delete agent.role;
-        });
+        agents
+            ?.filter((a) => a.role != "admin")
+            ?.forEach((agent) => {
+                delete agent.password;
+                delete agent.access_token;
+                delete agent.role;
+            });
         res.json(agents);
     } catch (e) {
         res.status(500).json({

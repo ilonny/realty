@@ -2,7 +2,7 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import { Flex, Spacer } from "@chakra-ui/react";
 import { MainLayout } from "../../components/MainLayout";
 import { RealtyButton, RealtyList } from "../../components/RealtyList";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { API_URL, Colors } from "../../constants";
 import {
@@ -38,11 +38,15 @@ export const RealtyScreen = (props) => {
       .then((res) => res.json())
       .then((res) => {
         setData(res);
-        fetch(API_URL + "/user/get-one?id=" + res.agent_id)
-          .then((res) => res.json())
-          .then((res) => {
-            setAgentData(res);
-          });
+        if (res?.agent_id && res?.agent_id !== 'null') {
+          fetch(API_URL + "/user/get-one?id=" + res.agent_id)
+            .then((res) => res.json())
+            .then((res) => {
+              if (res?.id) {
+                setAgentData(res);
+              }
+            });
+        }
       });
   }, [id]);
 
@@ -195,15 +199,17 @@ export const RealtyScreen = (props) => {
             </GalleryWrap>
             {!!agentData && (
               <InfoWrap>
-                <h5>Есть вопросы по объекту? Свяжитесь с агентом:</h5>
-                {agentData.photo && agentData.photo !== "null" && (
-                  <AgentImage src={API_URL + "/" + agentData.photo} />
-                )}
-                <p>
-                  {agentData.surname ? agentData.surname + " " : ""}{" "}
-                  {agentData.name ? agentData.name + " " : ""}{" "}
-                  {agentData.thirdname ? agentData.thirdname + " " : ""}
-                </p>
+                <Link to={`/agent/${agentData.id}`}>
+                  <h5>Есть вопросы по объекту? Свяжитесь с агентом:</h5>
+                  {agentData.photo && agentData.photo !== "null" && (
+                    <AgentImage src={API_URL + "/" + agentData.photo} />
+                  )}
+                  <p>
+                    {agentData.surname ? agentData.surname + " " : ""}{" "}
+                    {agentData.name ? agentData.name + " " : ""}{" "}
+                    {agentData.thirdname ? agentData.thirdname + " " : ""}
+                  </p>
+                </Link>
                 <hr style={{ marginTop: "10px", marginBottom: "10px" }} />
                 <Flex gap="10px">
                   <RealtyButton href={`tel:${agentData?.phone}`}>
@@ -423,15 +429,19 @@ export const RealtyScreen = (props) => {
             <InfoWrapBottom>
               <h5>Есть вопросы по объекту? Свяжитесь с агентом:</h5>
               <Flex alignItems={"center"} flexWrap={"wrap"}>
+              <Link to={`/agent/${agentData.id}`}>
                 {agentData.photo && agentData.photo !== "null" && (
                   <AgentImage src={API_URL + "/" + agentData.photo} />
                 )}
+              </Link>
                 <div>
-                  <div className="title">
-                    Агент: {agentData.surname ? agentData.surname + " " : ""}{" "}
-                    {agentData.name ? agentData.name + " " : ""}{" "}
-                    {agentData.thirdname ? agentData.thirdname + " " : ""}
-                  </div>
+                  <Link to={`/agent/${agentData.id}`}>
+                    <div className="title">
+                      Агент: {agentData.surname ? agentData.surname + " " : ""}{" "}
+                      {agentData.name ? agentData.name + " " : ""}{" "}
+                      {agentData.thirdname ? agentData.thirdname + " " : ""}
+                    </div>
+                  </Link>
                   <hr style={{ marginTop: "16px", marginBottom: "16px" }} />
                   <Flex gap="10px">
                     <RealtyButton href={`tel:${agentData?.phone}`}>

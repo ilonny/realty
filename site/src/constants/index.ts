@@ -6,4 +6,4 @@ export enum Colors {
 export const API_URL =
     process.env.NODE_ENV === "production"
         ? "https://neverhaveiever.ru"
-        : "http://localhost:3002";
+        : "https://neverhaveiever.ru";
