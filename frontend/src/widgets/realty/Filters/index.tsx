@@ -60,6 +60,8 @@ const Filters = () => {
     setIdFilter,
     districtsParent,
     clearFilterContext,
+    onlyMyFilter,
+    setOnlyMyFilter,
   } = useContext(FilterContext);
   const [districtsSearchString, setDistrictsSearchString] = useState("");
   const [apartmentSearchString, setApartmentSearchString] = useState("");
@@ -195,6 +197,17 @@ const Filters = () => {
                 </option>
               );
             })}
+          </Select>
+          <Select
+            placeholder=""
+            onChange={(e) => setOnlyMyFilter(Number(e.target.value))}
+          >
+            <option selected={onlyMyFilter} value={1}>
+              Только мои объекты
+            </option>
+            <option selected={!onlyMyFilter} value={0}>
+              Все объекты
+            </option>
           </Select>
           <RangeWrapper>
             <p>

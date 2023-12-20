@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { API_URL } from "../../constants/globalApi.constants";
+import authProvider from "../../authProvider";
 
 export type TCtx = any;
 
@@ -8,6 +9,14 @@ const defaultState = {};
 export const FilterContext = React.createContext<TCtx>(defaultState);
 
 export const FilterProvider = ({ children }: any) => {
+  const [currentUser, setCurrentUser] = useState({});
+
+  useEffect(() => {
+    authProvider.getIdentity().then((user) => {
+      setCurrentUser(user);
+    });
+  }, []);
+
   const [data, setData] = useState([]);
   const [agents, setAgents] = useState([]);
   const [districts, setDistricts] = useState([]);
@@ -29,6 +38,7 @@ export const FilterProvider = ({ children }: any) => {
   const [typeFilter, setTypeFilter] = useState();
   const [priceMinFilter, setPriceMinFilter] = useState(0);
   const [priceMaxFilter, setPriceMaxFilter] = useState(100000);
+  const [onlyMyFilter, setOnlyMyFilter] = useState(0);
   const [apartmentComplexFilter, setApartmentComplexFilter] = useState([]);
 
   const [categoryId, setCategoryId] = useState<number>(1);
@@ -196,6 +206,15 @@ export const FilterProvider = ({ children }: any) => {
       });
     }
 
+    if (onlyMyFilter && currentUser?.id) {
+      result = result.filter((realty) => {
+        if (realty.agent_id == currentUser?.id) {
+          return true;
+        }
+        return false;
+      });
+    }
+
     return result;
   }, [
     data,
@@ -209,6 +228,8 @@ export const FilterProvider = ({ children }: any) => {
     priceMaxFilter,
     apartmentComplexFilter,
     typeFilter,
+    onlyMyFilter,
+    currentUser,
   ]);
 
   return (
@@ -246,6 +267,8 @@ export const FilterProvider = ({ children }: any) => {
         idFilter,
         setIdFilter,
         districtsParent,
+        onlyMyFilter,
+        setOnlyMyFilter,
       }}
     >
       {children}
