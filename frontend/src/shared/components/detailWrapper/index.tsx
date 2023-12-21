@@ -14,6 +14,7 @@ interface IDetailWrapperProps {
   onDelete?: () => void;
   canEdit?: boolean;
   canDelete?: boolean;
+  canCreate?: boolean;
 }
 
 export const DetailWrapper: FC<IDetailWrapperProps> = ({

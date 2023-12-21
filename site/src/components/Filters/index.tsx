@@ -577,6 +577,7 @@ const Filters = () => {
                 isOpen={seriesModalOpened}
                 onClose={() => setSeriesModalOpened(false)}
                 size="3xl"
+                isCentered
             >
                 <ModalOverlay />
                 <ModalContent>
@@ -646,6 +647,7 @@ const Filters = () => {
                 isOpen={roomsModalOpened}
                 onClose={() => setRoomsModalOpened(false)}
                 size="3xl"
+                isCentered
             >
                 <ModalOverlay />
                 <ModalContent>
@@ -715,6 +717,7 @@ const Filters = () => {
                 isOpen={stateModalOpened}
                 onClose={() => setStateModalOpened(false)}
                 size="3xl"
+                isCentered
             >
                 <ModalOverlay />
                 <ModalContent>

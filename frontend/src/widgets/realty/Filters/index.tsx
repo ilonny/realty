@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {
   Button,
   Checkbox,
@@ -68,6 +69,9 @@ const Filters = () => {
   } = useContext(FilterContext);
   const [districtsSearchString, setDistrictsSearchString] = useState("");
   const [apartmentSearchString, setApartmentSearchString] = useState("");
+  const [seriesModalOpened, setSeriesModalOpened] = useState(false);
+  const [roomsModalOpened, setRoomsModalOpened] = useState(false);
+  const [stateModalOpened, setStateModalOpened] = useState(false);
   const [districtsModalOpened, setDistrictsModalOpened] = useState(false);
   const [apartmensModalOpened, setApartmensModalOpened] = useState(false);
   const [chosenDev, setChosenDev] = useState([]);
@@ -142,18 +146,12 @@ const Filters = () => {
             value={districtsFilter.map((f) => f.name).join(", ")}
           />
           {!!(categoryId == 1) && (
-            <Select
+            <Input
+              readOnly
+              onClick={() => setSeriesModalOpened(true)}
               placeholder="Выбрать серию"
-              onChange={(e) => setSeriesFilter(e.target.value)}
-            >
-              {series.map((s) => {
-                return (
-                  <option selected={s.id == seriesFilter} value={s.id}>
-                    {s.name}
-                  </option>
-                );
-              })}
-            </Select>
+              value={seriesFilter.map((f) => f.name).join(", ")}
+            />
           )}
           {!!(categoryId == 3) && (
             <Input
@@ -163,30 +161,18 @@ const Filters = () => {
               value={apartmentComplexFilter.map((f) => f.name).join(", ")}
             />
           )}
-          <Select
+          <Input
+            readOnly
+            onClick={() => setRoomsModalOpened(true)}
             placeholder="Выбрать комнаты"
-            onChange={(e) => setRoomsFilter(e.target.value)}
-          >
-            {rooms.map((s) => {
-              return (
-                <option selected={s.id == roomsFilter} value={s.id}>
-                  {s.name}
-                </option>
-              );
-            })}
-          </Select>
-          <Select
-            placeholder="Выбор состояния"
-            onChange={(e) => setStateFilter(e.target.value)}
-          >
-            {state.map((s) => {
-              return (
-                <option selected={s.id == stateFilter} value={s.id}>
-                  {s.name}
-                </option>
-              );
-            })}
-          </Select>
+            value={roomsFilter.map((f) => f.name).join(", ")}
+          />
+          <Input
+            readOnly
+            onClick={() => setStateModalOpened(true)}
+            placeholder="Выбрать состояние"
+            value={stateFilter.map((f) => f.name).join(", ")}
+          />
         </FiltersContainer>
         <FiltersContainer gap={5} paddingTop={0}>
           <Select
@@ -229,12 +215,12 @@ const Filters = () => {
           </Select>
           <RangeWrapper>
             <p>
-              Ценовой диапазон: <span>от $0 до $ 150,000</span>
+              Ценовой диапазон: <span>от $0 до $ 500,000</span>
             </p>
             <RangeSlider
               defaultValue={[priceMinFilter, priceMaxFilter]}
               min={0}
-              max={150000}
+              max={500000}
               step={1}
               onChange={(val) => {
                 setPriceMinFilter(val[0]);
@@ -508,6 +494,183 @@ const Filters = () => {
                 setApartmensModalOpened(false);
                 setApartmentComplexFilter([]);
                 setChosenDev([]);
+              }}
+              variant="ghost"
+            >
+              Сбросить фильтр
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+      {/*  */}
+      <Modal
+        isOpen={seriesModalOpened}
+        onClose={() => setSeriesModalOpened(false)}
+        size="3xl"
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Выбрать серию</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <ModalFiltersContainer>
+              {series.map((district) => {
+                return (
+                  <ModalItemWrapper key={district.id}>
+                    <Checkbox
+                      isChecked={
+                        !!seriesFilter?.find((d) => d.id === district.id)
+                      }
+                      onChange={() => {
+                        if (!!seriesFilter?.find((d) => d.id === district.id)) {
+                          setSeriesFilter((f) =>
+                            f.filter(
+                              (oldFilter) => oldFilter.id !== district.id
+                            )
+                          );
+                        } else {
+                          setSeriesFilter((f) => f.concat(district));
+                        }
+                      }}
+                    >
+                      {district.name}
+                    </Checkbox>
+                  </ModalItemWrapper>
+                );
+              })}
+            </ModalFiltersContainer>
+          </ModalBody>
+          <ModalFooter>
+            <SearchButton
+              colorScheme="blue"
+              mr={3}
+              onClick={() => setSeriesModalOpened(false)}
+            >
+              Сохранить
+            </SearchButton>
+            <Button
+              onClick={() => {
+                setSeriesModalOpened(false);
+                setSeriesFilter([]);
+              }}
+              variant="ghost"
+            >
+              Сбросить фильтр
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+      {/*  */}
+      <Modal
+        isOpen={roomsModalOpened}
+        onClose={() => setRoomsModalOpened(false)}
+        size="3xl"
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Выбрать комнаты</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <ModalFiltersContainer>
+              {rooms.map((district) => {
+                return (
+                  <ModalItemWrapper key={district.id}>
+                    <Checkbox
+                      isChecked={
+                        !!roomsFilter?.find((d) => d.id === district.id)
+                      }
+                      onChange={() => {
+                        if (!!roomsFilter?.find((d) => d.id === district.id)) {
+                          setRoomsFilter((f) =>
+                            f.filter(
+                              (oldFilter) => oldFilter.id !== district.id
+                            )
+                          );
+                        } else {
+                          setRoomsFilter((f) => f.concat(district));
+                        }
+                      }}
+                    >
+                      {district.name}
+                    </Checkbox>
+                  </ModalItemWrapper>
+                );
+              })}
+            </ModalFiltersContainer>
+          </ModalBody>
+          <ModalFooter>
+            <SearchButton
+              colorScheme="blue"
+              mr={3}
+              onClick={() => setRoomsModalOpened(false)}
+            >
+              Сохранить
+            </SearchButton>
+            <Button
+              onClick={() => {
+                setRoomsModalOpened(false);
+                setRoomsFilter([]);
+              }}
+              variant="ghost"
+            >
+              Сбросить фильтр
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+      {/*  */}
+      <Modal
+        isOpen={stateModalOpened}
+        onClose={() => setStateModalOpened(false)}
+        size="3xl"
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Выбрать состояние</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <ModalFiltersContainer>
+              {state.map((district) => {
+                return (
+                  <ModalItemWrapper key={district.id}>
+                    <Checkbox
+                      isChecked={
+                        !!stateFilter?.find((d) => d.id === district.id)
+                      }
+                      onChange={() => {
+                        if (!!stateFilter?.find((d) => d.id === district.id)) {
+                          setStateFilter((f) =>
+                            f.filter(
+                              (oldFilter) => oldFilter.id !== district.id
+                            )
+                          );
+                        } else {
+                          setStateFilter((f) => f.concat(district));
+                        }
+                      }}
+                    >
+                      {district.name}
+                    </Checkbox>
+                  </ModalItemWrapper>
+                );
+              })}
+            </ModalFiltersContainer>
+          </ModalBody>
+          <ModalFooter>
+            <SearchButton
+              colorScheme="blue"
+              mr={3}
+              onClick={() => setStateModalOpened(false)}
+            >
+              Сохранить
+            </SearchButton>
+            <Button
+              onClick={() => {
+                setStateModalOpened(false);
+                setStateFilter([]);
               }}
               variant="ghost"
             >

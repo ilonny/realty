@@ -22,6 +22,7 @@ import authProvider from "../../../authProvider";
 import Autocomplete, { usePlacesWidget } from "react-google-autocomplete";
 import { default as AutucompleteInput } from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
+import { Error } from "./styled";
 
 const AddressInput = () => {};
 
@@ -495,6 +496,9 @@ export const DetailForm: FC<any> = (props) => {
               }))
             }
           />
+          {isEditMode && props?.validErrors?.category_id && (
+            <Error>{props?.validErrors?.category_id}</Error>
+          )}
         </Grid>
         <Grid item xs={6}>
           <Select
@@ -534,7 +538,14 @@ export const DetailForm: FC<any> = (props) => {
                 fullWidth
                 labelTop={"Жилой комплекс"}
                 value={formData?.apartment_complex_id}
-                data={apartment_complex}
+                data={
+                  formData?.developer_id
+                    ? apartment_complex?.filter(
+                        (a) =>
+                          a.developer_id.toString() == formData?.developer_id?.toString()
+                      )
+                    : apartment_complex
+                }
                 onChange={(e) =>
                   setFormData((prev) => ({
                     ...prev,
@@ -770,12 +781,35 @@ export const DetailForm: FC<any> = (props) => {
             labelTop={"Правоустанавливающие документы"}
             value={formData?.document_id?.split(",") || []}
             data={document}
-            onChange={(e) => {
-              console.log("e", e);
-              setFormData((prev) => ({
-                ...prev,
-                document_id: e.target.value.toString(),
-              }));
+            onChange={(e, a) => {
+              setFormData((prev) => {
+                const value = e.target.value;
+                const chosen = e?.target?.value?.map((e) => e.toString());
+                const prevarr =
+                  formData?.document_id?.split(",")?.map((e) => e.toString()) ||
+                  [];
+                let res;
+                let cov = a.props.value.toString();
+                if (prevarr?.includes(cov)) {
+                  res = prevarr.filter((q) => q != cov);
+                } else {
+                  res = prevarr.concat(cov);
+                }
+                console.log("prev", prevarr, a);
+                console.log("res", res);
+                // console.log("value", value);
+                // console.log("chosen", chosen);
+                // console.log("formData?.document_id", formData?.document_id);
+                // const formArr =
+                //   formData?.document_id?.split(",")?.map((e) => e.toString()) ||
+                //   [];
+                // let nArr;
+                // if ()
+                return {
+                  ...prev,
+                  document_id: res.toString(),
+                };
+              });
             }}
           />
         </Grid>

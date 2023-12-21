@@ -101,13 +101,17 @@ export const RealtyList = (props) => {
         <CardContent>
           <FormProvider {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-              <Button onClick={() => {
-                setFilters({})
-                form.reset()
-                setTimeout(() => {
-                  window.location.reload()
-                }, 1000);
-              }}>Сбросить все фильтры</Button>
+              <Button
+                onClick={() => {
+                  setFilters({});
+                  form.reset();
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 1000);
+                }}
+              >
+                Сбросить все фильтры
+              </Button>
               <FilterList label="Категория" icon={null}>
                 <FilterListItem label="Вторичная" value={{ category_id: 1 }} />
                 <FilterListItem
@@ -133,7 +137,7 @@ export const RealtyList = (props) => {
                     agentData.surname ? agentData.surname + " " : ""
                   }${" "}
                   ${agentData.name ? agentData.name + " " : ""}${" "}
-                  ${agentData.thirdname ? agentData.thirdname + " " : ""}`;
+                  `;
                 }}
                 optionValue="id"
                 label="Агент"

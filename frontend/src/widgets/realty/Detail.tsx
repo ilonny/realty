@@ -14,6 +14,9 @@ export const Detail = () => {
   useEffect(() => {
     authProvider.getIdentity().then((user) => {
       setCurrentUser(user);
+      if (user.role != "admin") {
+        setFormData((prev) => ({ ...prev, agent_id: user.id }));
+      }
     });
   }, []);
   const { handleSnackbar } = useStateContext();
@@ -62,6 +65,15 @@ export const Detail = () => {
   }, [formData]);
 
   const handleSave = useCallback(() => {
+    if (!formData?.category_id) {
+      setValidErrors((prev) => ({
+        ...prev,
+        category_id: "Обязательно для заполнения",
+      }));
+      return;
+    } else if (validErrors?.category_id && formData?.category_id) {
+      setValidErrors((prev) => ({ ...prev, category_id: undefined }));
+    }
     if (realtyId) {
       const data = getFormDataFromParams(formData);
 
@@ -136,7 +148,9 @@ export const Detail = () => {
       onSave={handleSave}
       onDelete={handleDelete}
       canEdit={
-        currentUser?.id == formData?.agent_id || currentUser?.role === "admin"
+        currentUser?.id == formData?.agent_id ||
+        currentUser?.role === "admin" ||
+        !realtyId
       }
     >
       <DetailForm

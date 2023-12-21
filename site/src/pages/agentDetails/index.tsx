@@ -67,9 +67,6 @@ export const AgentDetailsScreen = () => {
                                 {currentAgent.name
                                     ? currentAgent.name + " "
                                     : ""}{" "}
-                                {currentAgent.thirdname
-                                    ? currentAgent.thirdname + " "
-                                    : ""}
                             </BreadcrumbLink>
                         </BreadcrumbItem>
                     </Breadcrumb>
@@ -199,9 +196,6 @@ export const AgentDetailsScreen = () => {
                                 <div className="name">
                                     {agent.surname ? agent.surname + " " : ""}{" "}
                                     {agent.name ? agent.name + " " : ""}{" "}
-                                    {agent.thirdname
-                                        ? agent.thirdname + " "
-                                        : ""}
                                 </div>
                                 <div className="count">
                                     {count}{" "}
@@ -268,9 +262,8 @@ const WhiteContent = styled(Flex)`
     & .left {
         flex-shrink: 0;
         img {
-            width: 200px;
+            // width: 200px;
             height: 200px;
-            border-radius: 200px;
             margin-bottom: 15px;
         }
     }
