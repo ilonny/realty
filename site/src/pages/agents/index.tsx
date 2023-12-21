@@ -26,7 +26,7 @@ export const AgentsScreen = () => {
         fetch(API_URL + "/" + "user/get-agents")
             .then((res) => res.json())
             .then((res) => {
-                setAgentsData(res);
+                setAgentsData(res?.filter((a) => a.deleted != "1"));
             });
     }, []);
 
