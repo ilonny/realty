@@ -194,13 +194,15 @@ const Filters = () => {
             <option selected={!agentIdFilter} value={""}>
               Все агенты
             </option>
-            {agents?.map((s) => {
-              return (
-                <option selected={s.id == agentIdFilter} value={s.id}>
-                  {s.name} {s?.surname || ""}
-                </option>
-              );
-            })}
+            {agents
+              ?.filter((a) => a.deleted !== "1")
+              ?.map((s) => {
+                return (
+                  <option selected={s.id == agentIdFilter} value={s.id}>
+                    {s.name} {s?.surname || ""}
+                  </option>
+                );
+              })}
           </Select>
           <Select
             placeholder=""

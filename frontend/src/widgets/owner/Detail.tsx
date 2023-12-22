@@ -6,6 +6,7 @@ import { API_URL } from "../../constants/globalApi.constants";
 import { TOwnerData } from "../../features/owner/shared/types";
 import { useStateContext } from "../../containers/stateContext";
 import { RecommendRealty } from "../../features/owner/components/recommendRealty";
+import authProvider from "../../authProvider";
 
 const initialOwner: TOwnerData = {
   id: null,
@@ -24,7 +25,7 @@ export const Detail = () => {
   const { handleSnackbar } = useStateContext();
 
   const { ownerId } = useParams();
-
+  const [currentUser, setCurrentUser] = useState({});
   const [ownerData, setOwnerData] = useState<TOwnerData>(initialOwner);
   const [formData, setFormData] = useState<TOwnerData>(initialOwner);
   const [isEditMode, setEditMode] = useState(!ownerId);
@@ -34,6 +35,13 @@ export const Detail = () => {
   }>({});
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    authProvider.getIdentity().then((user) => {
+      setCurrentUser(user);
+      setFormData((prev) => ({ ...prev, agent_id: user.id }));
+    });
+  }, []);
 
   useEffect(() => {
     if (ownerId) {

@@ -94,10 +94,18 @@ export const RealtyScreen = (props) => {
                 });
         }
         if (data?.document_id) {
-            fetch(API_URL + "/document/get-one?id=" + data.document_id)
+            fetch(API_URL + "/document")
                 .then((res) => res.json())
                 .then((res) => {
-                    setDocumentData(res);
+                    const idsArr =
+                        data?.document_id
+                            ?.split(",")
+                            ?.map((e) => e.toString()) || [];
+                    const docs = res?.filter((r) =>
+                        idsArr.includes(r.id.toString())
+                    );
+                    const name = docs?.map((e) => e.name)?.join(", ") || "";
+                    setDocumentData({ name });
                 });
         }
         if (data?.series_id) {
@@ -425,7 +433,7 @@ export const RealtyScreen = (props) => {
                                     </span>
                                 </div>
                             </DetailRow>
-                            <DetailRow>
+                            {/* <DetailRow>
                                 <div>
                                     <span className="bold">
                                         Тип отношений: &nbsp;
@@ -434,7 +442,7 @@ export const RealtyScreen = (props) => {
                                         {typeData?.name || "Не указано"}
                                     </span>
                                 </div>
-                            </DetailRow>
+                            </DetailRow> */}
                             <DetailRow>
                                 <div>
                                     <span className="bold">

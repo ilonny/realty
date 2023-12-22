@@ -107,7 +107,7 @@ export const List = () => {
                   : ""
               }`}
               agent={(() => {
-                const ag = agents?.find((a) => a.id == params?.row?.agent_id);
+                const ag = agents?.find((a) => a.id?.toString() == params?.row?.agent_id.toString());
                 if (!ag) {
                   return "";
                 }
@@ -156,7 +156,7 @@ export const List = () => {
         },
       },
     ],
-    [currentUser]
+    [currentUser, agents]
   );
 
   return (
