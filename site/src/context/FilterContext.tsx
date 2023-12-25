@@ -30,7 +30,7 @@ export const FilterProvider = ({ children }: any) => {
     const [priceMaxFilter, setPriceMaxFilter] = useState(100000);
     const [apartmentComplexFilter, setApartmentComplexFilter] = useState([]);
 
-    const [categoryId, setCategoryId] = useState<number>(1);
+    const [categoryId, setCategoryId] = useState<number | undefined>(0);
 
     const getData = useCallback(() => {
         setLoading(true);
@@ -105,7 +105,7 @@ export const FilterProvider = ({ children }: any) => {
         setPriceMaxFilter(100000);
         setApartmentComplexFilter([]);
 
-        setCategoryId(1);
+        setCategoryId(undefined);
     }, []);
 
     const filteredData = useMemo(() => {

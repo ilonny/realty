@@ -74,6 +74,12 @@ const Filters = () => {
                 <div>
                     <FiltersContainer gap={5} justifyContent={"space-between"}>
                         <CategoryFilter
+                            active={!categoryId}
+                            onClick={() => setCategoryId(undefined)}
+                        >
+                            <p>Все объекты</p>
+                        </CategoryFilter>
+                        <CategoryFilter
                             active={categoryId === 1}
                             onClick={
                                 () => setCategoryId(1)

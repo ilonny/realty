@@ -47,15 +47,17 @@ export const AgentsScreen = () => {
                             return (
                                 <Agent>
                                     <AgentContent>
-                                        <img
-                                            src={
-                                                agent?.photo
-                                                    ? API_URL +
-                                                      "/" +
-                                                      agent.photo
-                                                    : "https://cd45136-wordpress-o2lmf.tw1.ru/wp-content/themes/wpresidence/img/default_user.png"
-                                            }
-                                        />
+                                        <div className="image-wrapper">
+                                            <img
+                                                src={
+                                                    agent?.photo
+                                                        ? API_URL +
+                                                          "/" +
+                                                          agent.photo
+                                                        : "https://cd45136-wordpress-o2lmf.tw1.ru/wp-content/themes/wpresidence/img/default_user.png"
+                                                }
+                                            />
+                                        </div>
                                         <div className="name">
                                             {agent.surname
                                                 ? agent.surname + " "
@@ -224,9 +226,17 @@ const AgentContent = styled.div`
     box-shadow: 0 10px 31px 0 rgba(7, 152, 255, 0.09);
     padding: 15px;
     text-align: center;
-    & img {
+    .image-wrapper {
+        width: 200px;
         height: 200px;
-        margin: 0 auto;
+        margin: auto;
+        border-radius: 200px;
+        overflow: hidden;
+        margin-bottom: 15px;
+    }
+    & img {
+        // height: 200px;
+        // margin: 0 auto;
         margin-bottom: 16px;
     }
     & .count {

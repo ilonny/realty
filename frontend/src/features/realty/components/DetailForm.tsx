@@ -518,7 +518,37 @@ export const DetailForm: FC<any> = (props) => {
         {formData?.category_id == 3 && (
           <>
             <Grid item xs={6}>
-              <Select
+              {Object.keys(formData).length && developer?.length && (
+                <AutucompleteInput
+                  fullWidth
+                  labelTop="Застройщик"
+                  value={
+                    developer.find((d) => {
+                      return d.id == formData?.district_id;
+                    }) || undefined
+                  }
+                  options={developer}
+                  getOptionLabel={(o) => {
+                    return o.name;
+                  }}
+                  getOptionKey={(s) => s.id}
+                  renderInput={(props) => {
+                    return (
+                      <div>
+                        <Label>Застройщик</Label>
+                        <TextField {...props} label="Застройщик" />
+                      </div>
+                    );
+                  }}
+                  onChange={(e, a) => {
+                    setFormData((prev) => ({
+                      ...prev,
+                      developer: a?.id || undefined,
+                    }));
+                  }}
+                />
+              )}
+              {/* <Select
                 isEditMode={isEditMode}
                 fullWidth
                 labelTop={"Застройщик"}
@@ -530,10 +560,40 @@ export const DetailForm: FC<any> = (props) => {
                     developer_id: e.target.value,
                   }))
                 }
-              />
+              /> */}
             </Grid>
             <Grid item xs={6}>
-              <Select
+              {Object.keys(formData).length && apartment_complex?.length && (
+                <AutucompleteInput
+                  fullWidth
+                  labelTop="Жилой комплекс"
+                  value={
+                    apartment_complex.find((d) => {
+                      return d.id == formData?.district_id;
+                    }) || undefined
+                  }
+                  options={apartment_complex}
+                  getOptionLabel={(o) => {
+                    return o.name;
+                  }}
+                  getOptionKey={(s) => s.id}
+                  renderInput={(props) => {
+                    return (
+                      <div>
+                        <Label>Жилой комплекс</Label>
+                        <TextField {...props} label="Жилой комплекс" />
+                      </div>
+                    );
+                  }}
+                  onChange={(e, a) => {
+                    setFormData((prev) => ({
+                      ...prev,
+                      apartment_complex: a?.id || undefined,
+                    }));
+                  }}
+                />
+              )}
+              {/* <Select
                 isEditMode={isEditMode}
                 fullWidth
                 labelTop={"Жилой комплекс"}
@@ -542,7 +602,8 @@ export const DetailForm: FC<any> = (props) => {
                   formData?.developer_id
                     ? apartment_complex?.filter(
                         (a) =>
-                          a.developer_id.toString() == formData?.developer_id?.toString()
+                          a.developer_id.toString() ==
+                          formData?.developer_id?.toString()
                       )
                     : apartment_complex
                 }
@@ -552,7 +613,7 @@ export const DetailForm: FC<any> = (props) => {
                     apartment_complex_id: e.target.value,
                   }))
                 }
-              />
+              /> */}
             </Grid>
           </>
         )}

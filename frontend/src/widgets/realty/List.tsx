@@ -102,12 +102,12 @@ export const List = () => {
             <ContactsBlock
               owner={`${params?.row?.owner_name || ""} ${
                 currentUser?.role == "admin" ||
-                params?.row?.id == currentUser?.id
+                params?.row?.agent_id == currentUser?.id
                   ? params?.row?.owner_phone
                   : ""
               }`}
               agent={(() => {
-                const ag = agents?.find((a) => a.id?.toString() == params?.row?.agent_id.toString());
+                const ag = agents?.find((a) => a.id?.toString() == params?.row?.agent_id?.toString());
                 if (!ag) {
                   return "";
                 }

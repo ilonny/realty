@@ -73,13 +73,15 @@ export const AgentDetailsScreen = () => {
                     <Spacer height={5} />
                     <WhiteContent>
                         <div className="left">
-                            <img
-                                src={
-                                    currentAgent?.photo
-                                        ? API_URL + "/" + currentAgent.photo
-                                        : "https://cd45136-wordpress-o2lmf.tw1.ru/wp-content/themes/wpresidence/img/default_user.png"
-                                }
-                            />
+                            <div className="image-wrapper">
+                                <img
+                                    src={
+                                        currentAgent?.photo
+                                            ? API_URL + "/" + currentAgent.photo
+                                            : "https://cd45136-wordpress-o2lmf.tw1.ru/wp-content/themes/wpresidence/img/default_user.png"
+                                    }
+                                />
+                            </div>
                             <Flex flexDirection={"column"} gap="10px">
                                 <RealtyButton
                                     href={`tel:${agent?.phone}`}
@@ -261,10 +263,16 @@ const WhiteContent = styled(Flex)`
     }
     & .left {
         flex-shrink: 0;
+        .image-wrapper {
+            width: 200px;
+            height: 200px;
+            border-radius: 200px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
         img {
             // width: 200px;
-            height: 200px;
-            margin-bottom: 15px;
+            // height: 200px;
         }
     }
     .right {

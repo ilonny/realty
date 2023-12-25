@@ -39,7 +39,7 @@ export const FilterProvider = ({ children }: any) => {
   const [priceMaxFilter, setPriceMaxFilter] = useState(500000);
   const [onlyMyFilter, setOnlyMyFilter] = useState(0);
   const [apartmentComplexFilter, setApartmentComplexFilter] = useState([]);
-  const [categoryId, setCategoryId] = useState<number>(1);
+  const [categoryId, setCategoryId] = useState<number | undefined>();
   const [agentIdFilter, setAgentIdFilter] = useState();
 
   const getData = useCallback(() => {
@@ -148,7 +148,7 @@ export const FilterProvider = ({ children }: any) => {
     setPriceMaxFilter(100000);
     setApartmentComplexFilter([]);
 
-    setCategoryId(1);
+    setCategoryId(undefined);
   }, []);
 
   const filteredData = useMemo(() => {
@@ -169,21 +169,21 @@ export const FilterProvider = ({ children }: any) => {
 
     if (Array.isArray(seriesFilter) && seriesFilter?.length) {
       result = result.filter((realty) => {
-          return seriesFilter.some((f) => f.id == realty.series_id);
+        return seriesFilter.some((f) => f.id == realty.series_id);
       });
-  }
+    }
 
-  if (Array.isArray(roomsFilter) && roomsFilter?.length) {
+    if (Array.isArray(roomsFilter) && roomsFilter?.length) {
       result = result.filter((realty) => {
-          return roomsFilter.some((f) => f.id == realty.rooms_id);
+        return roomsFilter.some((f) => f.id == realty.rooms_id);
       });
-  }
+    }
 
-  if (Array.isArray(stateFilter) && stateFilter?.length) {
+    if (Array.isArray(stateFilter) && stateFilter?.length) {
       result = result.filter((realty) => {
-          return stateFilter.some((f) => f.id == realty.state_id);
+        return stateFilter.some((f) => f.id == realty.state_id);
       });
-  }
+    }
 
     if (typeFilter) {
       result = result.filter((realty) => {

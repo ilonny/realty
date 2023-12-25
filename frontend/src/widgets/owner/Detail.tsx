@@ -163,7 +163,6 @@ export const Detail = () => {
         formData={formData}
         setFormData={setFormData}
       />
-      {ownerId && <RecommendRealty />}
     </DetailWrapper>
   );
 };

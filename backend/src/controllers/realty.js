@@ -9,6 +9,7 @@ const sha1 = require("js-sha1");
 const fetch = require("node-fetch");
 const fs = require("fs");
 const moment = require("moment");
+const emoji = require("node-emoji");
 // import fetch from "node-fetch";
 
 function omit(key, obj) {
@@ -51,14 +52,14 @@ router.post("/create", async (req, res) => {
             filesCanBeSaved.forEach((docType) => {
                 if (req?.files[docType]) {
                     if (!Array.isArray(req?.files[docType])) {
-                        req.files[docType] = [req?.files[docType]]
+                        req.files[docType] = [req?.files[docType]];
                     }
-                        req?.files[docType].forEach((file) => {
-                            let file_path =
-                                "uploads/" + new Date().getTime() + file.name;
-                            file.mv(file_path);
-                            paths.push(file_path);
-                        });
+                    req?.files[docType].forEach((file) => {
+                        let file_path =
+                            "uploads/" + new Date().getTime() + file.name;
+                        file.mv(file_path);
+                        paths.push(file_path);
+                    });
                 }
                 dataToSave[docType] = JSON.stringify(paths);
             });
