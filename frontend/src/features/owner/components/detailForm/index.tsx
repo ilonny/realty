@@ -324,15 +324,30 @@ export const DetailForm: FC<IDetailFormProps> = ({
               <Select
                 isEditMode={isEditMode}
                 fullWidth
+                multiple
                 labelTop={"Категория"}
-                value={formData?.category_id}
+                value={formData?.category_id?.toString()?.split(",") || []}
                 data={category}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    category_id: e.target.value,
-                  }))
-                }
+                onChange={(e, a) => {
+                  setFormData((prev) => {
+                    const prevarr =
+                      formData?.category_id
+                        ?.toString()
+                        ?.split(",")
+                        ?.map((e) => e.toString()) || [];
+                    let res;
+                    let cov = a.props.value.toString();
+                    if (prevarr?.includes(cov)) {
+                      res = prevarr.filter((q) => q != cov);
+                    } else {
+                      res = prevarr.concat(cov);
+                    }
+                    return {
+                      ...prev,
+                      category_id: res.toString(),
+                    };
+                  });
+                }}
               />
             </Grid>
             <Grid item xs={6}>
@@ -351,11 +366,29 @@ export const DetailForm: FC<IDetailFormProps> = ({
                 isEditMode={isEditMode}
                 fullWidth
                 labelTop={"Состояние недвижимости"}
-                value={formData?.state_id}
+                multiple
+                value={formData?.state_id?.toString()?.split(",") || []}
                 data={state}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, state_id: e.target.value }))
-                }
+                onChange={(e, a) => {
+                  setFormData((prev) => {
+                    const prevarr =
+                      formData?.state_id
+                        ?.toString()
+                        ?.split(",")
+                        ?.map((e) => e.toString()) || [];
+                    let res;
+                    let cov = a.props.value.toString();
+                    if (prevarr?.includes(cov)) {
+                      res = prevarr.filter((q) => q != cov);
+                    } else {
+                      res = prevarr.concat(cov);
+                    }
+                    return {
+                      ...prev,
+                      state_id: res.toString(),
+                    };
+                  });
+                }}
               />
             </Grid>
             <Grid item xs={6}>
@@ -364,17 +397,28 @@ export const DetailForm: FC<IDetailFormProps> = ({
                 fullWidth
                 labelTop={"Район недвижимости"}
                 multiple
-                value={formData?.district_id}
+                value={formData?.district_id?.toString()?.split(",") || []}
                 data={district}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    district_id:
-                      typeof e.target.value === "string"
-                        ? e.target.value.split(",")
-                        : e.target.value,
-                  }))
-                }
+                onChange={(e, a) => {
+                  setFormData((prev) => {
+                    const prevarr =
+                      formData?.district_id
+                        ?.toString()
+                        ?.split(",")
+                        ?.map((e) => e.toString()) || [];
+                    let res;
+                    let cov = a.props.value.toString();
+                    if (prevarr?.includes(cov)) {
+                      res = prevarr.filter((q) => q != cov);
+                    } else {
+                      res = prevarr.concat(cov);
+                    }
+                    return {
+                      ...prev,
+                      district_id: res.toString(),
+                    };
+                  });
+                }}
               />
             </Grid>
             <Grid item xs={12}>
