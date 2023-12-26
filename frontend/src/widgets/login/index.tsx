@@ -7,7 +7,7 @@ const LoginWrapper = styled(Box)`
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  width: 100vw;
+  // width: 100vw;
   height: 100vh;
   background: radial-gradient(circle at 50% 14em, rgb(49, 50, 100) 0%, rgb(0, 2, 59) 60%, rgb(0, 2, 59) 100%);
 `

@@ -5,7 +5,7 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useToken } from "../../features/login/hooks/useToken";
 
 const Wrapper = styled("div")`
-  width: 100vw;
+  // width: 100vw;
   min-height: 100vh;
   height: auto;
   background: #f8f8f8;
