@@ -3,8 +3,10 @@ import { FilterProvider } from "../../widgets/realty/FilterContext";
 
 export const RealtyList = () => {
   return (
-    <FilterProvider>
-      <List />
-    </FilterProvider>
+    <div style={{ maxWidth: "1200px" }}>
+      <FilterProvider>
+        <List />
+      </FilterProvider>
+    </div>
   );
 };
