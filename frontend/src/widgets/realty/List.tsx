@@ -49,7 +49,7 @@ export const List = () => {
       {
         field: "main_photo",
         headerName: "Фото",
-        flex: 1,
+        width: 200,
         renderCell: (params) => {
           return (
             <img
