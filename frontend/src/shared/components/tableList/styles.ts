@@ -38,6 +38,10 @@ export const CustomDataGrid = styled(DataGrid)`
   & .MuiDataGrid-cell:focus-within {
     outline: none !important;
   }
+
+   & .MuiDataGrid-virtualScroller{
+    overflow: hidden !important; 
+  }
 `;
 
 export const NoData = styled(Box)`
