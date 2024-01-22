@@ -351,7 +351,7 @@ export const RealtyEdit = () => {
                 <TextInput
                   type="number"
                   source="agent_price"
-                  label="Цена на руки для агента"
+                  label="Цена на руки для собственника"
                   fullWidth
                 />
                 <AutocompleteInput

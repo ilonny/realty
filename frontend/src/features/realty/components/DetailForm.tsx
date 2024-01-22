@@ -844,8 +844,6 @@ export const DetailForm: FC<any> = (props) => {
             data={document}
             onChange={(e, a) => {
               setFormData((prev) => {
-                const value = e.target.value;
-                const chosen = e?.target?.value?.map((e) => e.toString());
                 const prevarr =
                   formData?.document_id?.split(",")?.map((e) => e.toString()) ||
                   [];
@@ -856,16 +854,6 @@ export const DetailForm: FC<any> = (props) => {
                 } else {
                   res = prevarr.concat(cov);
                 }
-                console.log("prev", prevarr, a);
-                console.log("res", res);
-                // console.log("value", value);
-                // console.log("chosen", chosen);
-                // console.log("formData?.document_id", formData?.document_id);
-                // const formArr =
-                //   formData?.document_id?.split(",")?.map((e) => e.toString()) ||
-                //   [];
-                // let nArr;
-                // if ()
                 return {
                   ...prev,
                   document_id: res.toString(),
@@ -892,7 +880,7 @@ export const DetailForm: FC<any> = (props) => {
           <Input
             isEditMode={isEditMode}
             fullWidth
-            labelTop={"Цена на руки для агента"}
+            labelTop={"Цена на руки для собственника"}
             value={formData?.agent_price}
             onChange={(e) =>
               setFormData((prev) => ({

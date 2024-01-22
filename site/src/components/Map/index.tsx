@@ -71,7 +71,7 @@ export const Map = ({ realty }) => {
                         infoWindow.setContent(
                             `
                             <div class="marker-content">
-                            <a href="/#/realty/${r.id}">
+                            <a href="/#/realty/${r.id}" target="_blank">
                                 ${
                                     !!r.main_photo
                                         ? `

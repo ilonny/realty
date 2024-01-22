@@ -1,4 +1,4 @@
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, useState } from "react";
 import { ActionBlock, ButtonsBlock, Title, Wrapper } from "./styles";
 import { UIContainedButton, UIOutlinedButton } from "../button";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -27,7 +27,15 @@ export const DetailWrapper: FC<IDetailWrapperProps> = ({
   canEdit = true,
   canDelete = true,
 }) => {
-  console.log('canEdit, canDelete', canEdit, canDelete)
+  console.log("canEdit, canDelete", canEdit, canDelete);
+  const [saveButtonIsDisabled, setSaveButtonIsDisabled] = useState(false);
+  const onClickSave = () => {
+    setSaveButtonIsDisabled(true);
+    setTimeout(() => {
+      setSaveButtonIsDisabled(false);
+    }, 3000);
+    onSave && onSave();
+  };
   return (
     <Wrapper>
       <ActionBlock>
@@ -43,7 +51,11 @@ export const DetailWrapper: FC<IDetailWrapperProps> = ({
               </UIOutlinedButton>
             )}
             {isEditMode && (
-              <UIOutlinedButton startIcon={<SaveIcon />} onClick={onSave}>
+              <UIOutlinedButton
+                startIcon={<SaveIcon />}
+                disabled={saveButtonIsDisabled}
+                onClick={onClickSave}
+              >
                 Сохранить
               </UIOutlinedButton>
             )}
