@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { SyntheticEvent, useContext, useEffect, useState } from "react";
 import Slider from "react-slick";
 import { StyledContent } from "../StyledContent";
 import { FilterContext } from "../../context/FilterContext";
@@ -111,6 +111,14 @@ export const RealtyList = ({ agentId }) => {
       .then((res) => res.json())
       .then((res) => {
         setAgents(res);
+      });
+    const listener = (e) => e.stopPropagation();
+    document.querySelectorAll(".slick-arrow").forEach((elem) => {
+      elem.addEventListener("click", listener);
+    });
+    return () =>
+      document.querySelectorAll(".slick-arrow").forEach((elem) => {
+        elem.removeEventListener("click", listener);
       });
   }, []);
 
@@ -295,7 +303,7 @@ const RealtyWrapper = styled.div`
 `;
 
 const RealtyContent = styled.div`
-  background-color: #fff  !important;
+  background-color: #fff !important;
 `;
 
 const RealtyContentPadding = styled.div`
@@ -315,23 +323,23 @@ const RealtyImageWrapper = styled.div`
 const RealtyTitle = styled.div`
   font-size: 18px;
   font-weight: bold;
-  color: ${Colors.MAIN_BLACK}  !important;
+  color: ${Colors.MAIN_BLACK} !important;
   margin-bottom: 5px;
   transition: all 250ms ease;
   cursor: pointer;
   &:hover {
-    color: ${Colors.MAIN_RED}  !important;
+    color: ${Colors.MAIN_RED} !important;
   }
 `;
 
 const RealtyPrice = styled.p`
-  color: ${Colors.MAIN_RED}  !important;
+  color: ${Colors.MAIN_RED} !important;
   font-weight: bold;
   margin-bottom: 5px;
 `;
 
 const RealtyText = styled.p`
-  color: #5c727d  !important;
+  color: #5c727d !important;
 `;
 
 export const RealtyButton = styled.a`
@@ -343,7 +351,7 @@ export const RealtyButton = styled.a`
   height: 100%;
   background: #cf14091a;
   padding: 5px 15px;
-  color: ${Colors.MAIN_RED}  !important;
+  color: ${Colors.MAIN_RED} !important;
   border-radius: 5px;
   font-size: 14px;
   display: flex;
@@ -355,7 +363,7 @@ export const RealtyButton = styled.a`
   }
   transition: all 250ms ease;
   &:hover {
-    color: #fff  !important;
+    color: #fff !important;
     background: ${Colors.MAIN_RED};
     & svg,
     & path {
